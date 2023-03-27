@@ -16,6 +16,10 @@ import Details from "./NavbarFormcase/Details";
 import ProblemType from "./NavbarFormcase/ProblemType";
 
 
+
+import { Input } from "antd";
+const { TextArea } = Input;
+
 const FormComponent = () => {
   const [values, setValues] = useState({
     reporter: "",
@@ -78,8 +82,6 @@ const FormComponent = () => {
 
   return (
     <div>
-   
-
       <Form onSubmit={submitForm}>
         <div className="mt-3">
           <InputGroup className="mt-3">
@@ -136,12 +138,18 @@ const FormComponent = () => {
             >
               รายละเอียด
             </InputGroup.Text>
-            <Form.Control
+            <TextArea
               className="form-control input-lg"
               name="detail"
               onChange={inputValue("detail")}
               value={detail}
             />
+            {/* <Form.Control
+              className="form-control input-lg"
+              name="detail"
+              onChange={inputValue("detail")}
+              value={detail}
+            /> */}
           </InputGroup>
         </div>
 

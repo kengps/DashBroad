@@ -4,6 +4,8 @@ import { listCases } from "../../api/case";
 import { Button, Card, Tag, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
+
+
 const ListCaseAll = () => {
   const [data, setData] = useState([]);
 
@@ -23,13 +25,15 @@ const ListCaseAll = () => {
   };
 
   const cardRef = useRef(null);
-  const textRef = useRef(null);
+  const textRef = useRef([]);
 
   const handleCopy = (e) => {
     e.preventDefault();
     const textToCopy = textRef.current.innerText;
-    navigator.clipboard.writeText(textToCopy);
+     navigator.clipboard.writeText(textToCopy);
     message.success("Copied to clipboard");
+
+    console.log('eee',textRef.current.innerText);
   };
 
   return (
@@ -50,31 +54,54 @@ const ListCaseAll = () => {
         </thead>
         <tbody>
           {data
-            .reverse((a, b) => b._id - a._id)
+            .reverse((a, b) => b.id - a.id)
             .map((data, index) => (
               <tr key={index}>
                 <th scope="row">{data.caseId}</th>
                 <td>{data.reporter}</td>
                 <td>{data.typeproblem}</td>
-                <td>{data.detail}</td>
+                <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
+                  {data.detail}
+                </td>
                 <td>{data.campgame}</td>
                 <td>{data.team}</td>
                 <td>{data.editors}</td>
                 <td>{data.status}</td>
                 <td>
                   <Card
-                    ref={cardRef}
+                    ref={textRef}
                     style={{ background: "#f0f0f0", border: "1px solid gray" }}
                   >
-                    <div ref={textRef}>
-                      <p>เคส: {data.caseId}</p>
-                      <p>ผู้แจ้งปัญหา: {data.reporter}</p>
-                      <p>ประเภทปัญหา: {data.typeproblem}</p>
-                      <p>รายละเอียด:{data.detail}</p>
-                      <p>ค่ายเกม: {data.campgame}</p>
-                      <p>ผู้ลงเคส: {data.team}2</p>
-                      <p>ผู้แก้ไข: {data.editors}</p>
-                      <p>ผู้แก้ไข: {data.editors}</p>
+                    <div>
+                      <p className="d-block m-0">
+                        <strong>เคส:</strong> {data.caseId}
+                      </p>
+                      <p className="d-block m-0">
+                        <strong>ผู้แจ้งปัญหา: </strong>
+                        {data.reporter}
+                      </p>
+                      <p className="d-block m-0">
+                        <strong>ประเภทปัญหา: </strong>
+                        {data.typeproblem}
+                      </p>
+                      <p
+                        className="d-block m-0"
+                        style={{ wordWrap: "break-word", maxWidth: "30ch" }}
+                      >
+                        <strong>รายละเอียด: </strong>
+                        {data.detail}
+                      </p>
+                      <p className="d-block m-0 font-weight-bold">
+                        <strong>ค่ายเกม:</strong> {data.campgame}
+                      </p>
+                      <p className="d-block m-0">
+                        <strong> ผู้ลงเคส: </strong>
+                        {data.team}
+                      </p>
+                      <p className="d-block m-0">
+                        <strong> ผู้แก้ไข: </strong>
+                        {data.editors}
+                      </p>
                     </div>
 
                     <Button
