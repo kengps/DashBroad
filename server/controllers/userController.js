@@ -1,22 +1,26 @@
 const Cases = require("../models/caseModel");
 
+let count = 0;
 exports.requestUser = async (req, res) => {
-  const { reporter, typeproblem, casedetail, campgame, team, editors } =
-    req.body;
+  const { reporter, typeproblem, detail, campgame, wallet, editors } = req.body;
   try {
+    count++;
+    const caseId = `BGMC${count.toString().padStart(5, "0")}`;
     // const cases = await Cases.create({ reporter, typeproblem, casedetail ,campgame ,team,editors });
     // res.json(cases);
     let cases = await Cases.findOne({});
     cases = new Cases({
+      caseId,
       reporter,
       typeproblem,
-      casedetail,
+      detail,
       campgame,
-      team,
+      wallet,
       editors,
     });
     await cases.save();
-    res.send(cases)
+    res.send({message: 'Save case Success', cases})
+    console.log(cases);
   } catch (error) {
     console.log(error);
   }

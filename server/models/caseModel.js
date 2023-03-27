@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const schemaCase = mongoose.Schema(
   {
+    caseId: {
+      type: String,
+    },
     reporter: {
       type: String,
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
@@ -12,13 +15,13 @@ const schemaCase = mongoose.Schema(
     },
     detail: {
       type: {},
-      required: true, 
+      required: true,
     },
     campgame: {
       type: String,
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
-    team: {
+    wallet: {
       type: String,
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
@@ -28,7 +31,7 @@ const schemaCase = mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'active',
+      default: "active",
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
   },

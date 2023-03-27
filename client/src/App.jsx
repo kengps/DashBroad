@@ -1,14 +1,14 @@
 
 import './App.css'
-import NavbarComponent from './components/layouts/NavbarComponent'
+import MainPage from "./components/layouts/MainPage";
 
 function App() {
   
   return (
     <div className="App">
-       <NavbarComponent/>
+      <MainPage />
     </div>
-  )
+  );
 }
 
 export default App

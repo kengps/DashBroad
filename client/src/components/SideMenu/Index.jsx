@@ -5,37 +5,37 @@ import { useNavigate } from 'react-router-dom'
 const SideMenu = () => {
   const navigate = useNavigate()
   return (
-    <div className='SideMenu'>
-
-      <Menu onClick={(item)=> {
-        //item.key
-        navigate(item.key)
-      }} items={[
-        {
-          label: "home1",
-          key: '/1'
-        },
-        {
-          label: "home2",
-          key: '/2'
-        },
-        {
-          label: "home3",
-          key: '/3'
-        },
-        {
-          label: "home4",
-          key: '/4'
-        },
-        {
-          label: "home5",
-          key: '/5'
-        },
-      ]}>
-
-      </Menu>
-      </div>
-  )
+    <div className="SideMenu">
+      <Menu
+        onClick={(item) => {
+          //item.key
+          navigate(item.key);
+        }}
+        items={[
+          {
+            label: "DashBorad",
+            key: "/",
+          },
+          {
+            label: "ฟอร์มบันทึกเคส",
+            key: "/formcontrol",
+          },
+          {
+            label: "รายการเคสทั้งหมด",
+            key: "/listcase",
+          },
+          {
+            label: "รายการเคสที่ยังไม่ได้แก้ไข",
+            key: "/listunresolve",
+          },
+          {
+            label: "Customers",
+            key: "/listuser",
+          },
+        ]}
+      ></Menu>
+    </div>
+  );
 }
 
 export default SideMenu 
