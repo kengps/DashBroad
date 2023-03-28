@@ -16,3 +16,13 @@ export const listCases = async (value) => {
     value
   );
 };
+
+
+
+export const changeStatus = async (value) => {
+  console.log("ข้อมูลที่ส่งมา", value);
+  return await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/change-status`,
+    value
+  );
+};

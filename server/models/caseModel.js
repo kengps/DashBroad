@@ -31,7 +31,7 @@ const schemaCase = mongoose.Schema(
     },
     status: {
       type: String,
-      default: "active",
+      default: "รอการแก้ไข",
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
   },

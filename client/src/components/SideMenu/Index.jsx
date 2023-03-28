@@ -33,7 +33,7 @@ const SideMenu = () => {
               icon: <UnorderedListOutlined />
             },
             {
-              label: "รายการเคสที่ยังไม่ได้แก้ไข",
+              label: "รายการเคสที่รอการแก้ไข",
               key: "/listunresolve",
               icon:<LoadingOutlined />
             },

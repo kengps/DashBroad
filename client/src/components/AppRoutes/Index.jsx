@@ -6,10 +6,13 @@ import ListCaseUnResolve from '../pages/ListCaseUnResolve'
 import ListCaseAll from '../pages/ListCaseAll'
 import ListUser from '../pages/ListUser'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppRoutes = () => {
   return (
     <div className="AppRoutes">
+      <ToastContainer/>
       <Routes>
         <Route path="/" element={<DashBoard />} />
         <Route path="/formcontrol" element={<FormCase />} />

@@ -54,6 +54,7 @@ const ListCaseAll = () => {
         </thead>
         <tbody>
           {data
+            
             .reverse((a, b) => b.id - a.id)
             .map((data, index) => (
               <tr key={index}>
@@ -104,12 +105,7 @@ const ListCaseAll = () => {
                       </p>
                     </div>
 
-                    <Button
-                      onClick={handleCopy}
-                      className="btn-primary float-end"
-                    >
-                      <CopyOutlined />
-                    </Button>
+                  
                   </Card>
                 </td>
               </tr>
