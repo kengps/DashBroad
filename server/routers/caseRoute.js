@@ -1,5 +1,5 @@
 const express = require('express');
-const { requestUser , allCase ,updateCase ,removeCase ,findCase ,changeStatus} = require('../controllers/userController');
+const { requestUser , allCase ,updateCase ,removeCase ,findCase ,changeStatus} = require('../controllers/caseController');
 const router = express.Router();
 
 //สร้าง case 

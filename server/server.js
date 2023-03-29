@@ -4,8 +4,15 @@ const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser =require('body-parser')
 const mongoose = require('mongoose');
-const userRouter = require('./routers/userRoute')
 const app = express();
+
+//router
+const caseRouter = require('./routers/caseRoute')
+const ReAndLogRouter = require('./routers/LoginAndRegister')
+const userRouter = require('./routers/userRouter')
+
+
+
 
 const port = process.env.PORT || 3001
 const mongoAtlas = process.env.DATABASE
@@ -30,6 +37,8 @@ app.use(cors());
 
 
 
+app.use('/api' , caseRouter)
+app.use('/api' , ReAndLogRouter)
 app.use('/api' , userRouter)
 
 

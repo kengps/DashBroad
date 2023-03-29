@@ -1,84 +1,92 @@
-const Cases = require("../models/caseModel");
+const jwt = require("jsonwebtoken");
+const { expressjwt: exJwt } = require("express-jwt");
 
-let count = 0;
-exports.requestUser = async (req, res) => {
-  const { reporter, typeproblem, detail, campgame, wallet, editors } = req.body;
+const bcrypt = require("bcrypt");
+const Users = require("../models/register");
+
+//ค้นหา user ทั้งหมด
+exports.listUser = async (req, res) => {
   try {
-    count++;
-    const caseId = `BGMC${count.toString().padStart(5, "0")}`;
-    // const cases = await Cases.create({ reporter, typeproblem, casedetail ,campgame ,team,editors });
-    // res.json(cases);
-    let cases = await Cases.findOne({});
-    cases = new Cases({
-      caseId,
-      reporter,
-      typeproblem,
-      detail,
-      campgame,
-      wallet,
-      editors,
-    });
-    await cases.save();
-    res.send({message: 'Save case Success', cases})
-    console.log(cases);
+    const user = await Users.find({}).select("-password").exec();
+    res.json(user);
   } catch (error) {
-    console.log(error);
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
 };
 
-
-exports.findCase = async(req, res) => {
-  const id = req.params.id
- // console.log(req.params.id);
+//ค้นหา user แค่ 1  user
+exports.readUser = async (req, res) => {
   try {
-    const cases = await Cases.find({_id: id}).exec();
-    res.json(cases)
-
+    const id = req.params.id;
+    const user = await Users.find({ _id: id }).select("-password").exec();
+    res.json(user);
   } catch (error) {
-    console.log(error);
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
-}
+};
 
-exports.allCase = async(req, res) => {
-      try {
-        const cases = await Cases.find({}).exec();
-        res.json(cases)
-      } catch (error) {
-        console.log(error);
-      }
-}
-
-exports.updateCase = async(req, res) => {
+// ค้นหา user 1 user และทำการ update
+exports.updatePassword = async (req, res) => {
   try {
-     console.log(req.body);
+    const {id , password} = req.body.values
+    // 1 gen salt
+const  salt = await bcrypt.genSalt(10)
+// encrypt 
+const enPassword = await bcrypt.hash(password , salt)
+
+const user = await Users.findOneAndUpdate(
+  { _id: id },// ตัวที่ค้นหา
+  { password: enPassword } // ตัวที่ต้องการให้ update
+
+).exec();
+res.json(user);
    
   } catch (error) {
-    console.log(error);
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
-}
-exports.removeCase = async(req, res) => {
-  const id = req.params.id
+};
+
+// ค้นหา user 1 user และทำการ delete
+
+exports.deleteUser = async (req, res) => {
   try {
-    const cases = await Cases.findOneAndRemove({_id:id}).exec();
-    res.json({message: 'delete Success!!'})
+    const id = req.params.id;
+
+    // { new: true } คือ การให้แสดงค่าใหม่
+    await Users.findOneAndRemove({ _id: id }).exec();
+    res.json({ message: "ทำการลบข้อมูลสำเร็จ" });
   } catch (error) {
-    
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
-}
+};
 
-
-
-exports.changeStatus = async(req, res) => {
-  console.log(req.body);
-  console.log(req.params);
- 
+// ค้นหา user 1 user และทำการ update
+exports.changStatus = async (req, res) => {
   try {
-    const cases = await Cases.findOneAndUpdate({_id: req.body.id} , {status: req.body.status})
-    res.send(cases)
+    const user = await Users.findOneAndUpdate(
+      { _id: req.body.id },// ตัวที่ค้นหา
+      { enabled: req.body.enabled } // ตัวที่ต้องการให้ update
+    ).exec();
+    res.json(user);
   } catch (error) {
-    res.status(400).send('SerVer is Error')
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
-}
-
-
-
+};
+// ค้นหา user 1 user และทำการ update
+exports.changeRole = async (req, res) => {
+  try {
+    const user = await Users.findOneAndUpdate(
+      { _id: req.body.id },// ตัวที่ค้นหา
+      { role: req.body.role } // ตัวที่ต้องการให้ update
+    ).exec();
+    res.json(user);
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
+  }
+};

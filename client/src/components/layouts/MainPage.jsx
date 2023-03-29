@@ -1,10 +1,12 @@
-import React from 'react'
-import AppHeader from '../AppHeader/Index'
+import React from "react";
+import AppHeader from "../AppHeader/Index";
 
-import {Space} from 'antd'
-import SideMenu from '../SideMenu/Index'
-import PageContent from '../PageContent/Index'
-import AppFooter from '../AppFooter/Index'
+import { Space } from "antd";
+import SideMenu from "../SideMenu/Index";
+import PageContent from "../PageContent/Index";
+import AppFooter from "../AppFooter/Index";
+import Register from "../pages/Register/Register";
+
 const MainPage = () => {
   return (
     <div className="App">

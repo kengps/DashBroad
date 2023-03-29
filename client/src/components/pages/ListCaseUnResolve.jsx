@@ -6,6 +6,8 @@ import { CopyOutlined } from "@ant-design/icons";
 
 import { toast } from 'react-toastify';
 
+import sweetAlert from 'sweetalert2'
+
 const ListCaseUnResolve = () => {
   const [data, setData] = useState([]);
 
@@ -16,7 +18,8 @@ const ListCaseUnResolve = () => {
   const loadData = () => {
     listCases()
       .then((res) => {
-        console.log(res.data);
+        console.log('ทดสอบ',res.data);
+      
         setData(res.data);
       })
       .catch((err) => {
@@ -47,7 +50,9 @@ const handleOnchange = (e , id) =>{
     }
     changeStatus(values).then((res) => { console.log(res)}).catch((err) => {console.log(err)})
     // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
-    toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
+
+    sweetAlert.fire('แจ้งเตือน','ทำการเปลี่ยนแปลงสถานะสำเร็จ' , 'success')
+    // toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
 }
 
 

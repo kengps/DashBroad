@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import App2 from "./AgentName";
 
 const CampGameAndEditor = () => {
   return (
-    <div>CampGameAndEditor</div>
-  )
-}
+    <div>
+      <div className="row">
+        <div className="col-md-2">
+          <App2 />
+        </div>
+      <div className="col">CampGameAndEditor</div>
+      </div>
+    </div>
+  );
+};
 
-export default CampGameAndEditor
+export default CampGameAndEditor;

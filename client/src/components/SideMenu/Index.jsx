@@ -14,7 +14,7 @@ const SideMenu = () => {
         }}
         items={[
           {
-            label: "Dashborad",
+            label: "Dashboard",
             key: "/",
             icon: <DashboardOutlined />
           },
@@ -47,7 +47,7 @@ const SideMenu = () => {
               children:[
                 {
                   label: "แก้ไขรหัสผ่าน",
-                  key: "/listuser",
+                  key: "/reset-password",
                   icon:<EditOutlined />
                 },
                 {

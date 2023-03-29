@@ -7,20 +7,20 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 
-
-
+import { toast } from "react-toastify";
+import SweetAlert from "sweetalert2";
 
 import AgentName from "./NavbarFormcase/AgentName";
 import CampGameAndEditor from "./NavbarFormcase/CampGameAndEditor";
 import Details from "./NavbarFormcase/Details";
 import ProblemType from "./NavbarFormcase/ProblemType";
 
-
-
 import { Input } from "antd";
+import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
 const FormComponent = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     reporter: "",
     typeproblem: "",
@@ -48,7 +48,19 @@ const FormComponent = () => {
     sendCase(values)
       .then((res) => {
         console.log("ได้อะไร", res);
-        alert(res.data.message);
+        // toast.success(res.data.message);
+        setValues({
+          reporter: "",
+          typeproblem: "",
+          detail: "",
+          campgame: "",
+          wallet: "",
+          editors: "",
+        });
+        SweetAlert.fire('แจ้งเตือน' , res.data.message, 'success')
+        setTimeout(() => {
+          navigate("/listunresolve");
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
