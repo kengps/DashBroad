@@ -49,7 +49,7 @@ const ListCaseAll = () => {
             <th scope="col">ผู้ลงเคส</th>
             <th scope="col">ผู้แก้ไข</th>
             <th scope="col">สถานะ</th>
-            <th scope="col">CopyCase</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
