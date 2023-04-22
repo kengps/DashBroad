@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { listUser } from "../../api/user";
+import moment from "moment/min/moment-with-locales";
 
 const ListUser = () => {
   const [value, setValue] = useState([]);
@@ -26,23 +27,21 @@ const ListUser = () => {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-            <th scope="col">Handle</th>
-            <th scope="col">Handle</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Username</th>
+            <th scope="col">Role</th>
+            <th scope="col">Status</th>
+            <th scope="col">CreatedAt</th>
+            <th scope="col">ActiveAt</th>
           </tr>
         </thead>
         <tbody>
-          {value.map((item,index) => (
+          {value.map((item, index) => (
             <tr key={index}>
-              <th scope="row">{index+1}</th>
+              <th scope="row">{index + 1}</th>
               <td>{item.username}</td>
               <td>Otto</td>
               <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
+              <td> {moment(item.createdAt).locale("th").format("lll")} น.</td>
               <td>@mdo</td>
             </tr>
           ))}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const sendCase = async (value) => {
-  console.log("ข้อมูลที่ส่งมา", value);
+  console.log("ข้อมูลที่ส่งมา1", value);
   return await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/createcase`,
     value
@@ -10,7 +10,7 @@ export const sendCase = async (value) => {
 
 
 export const listCases = async (value) => {
-  console.log("ข้อมูลที่ส่งมา", value);
+ 
   return await axios.get(
     `${import.meta.env.VITE_REACT_APP_API}/listcase`,
     value
@@ -20,7 +20,7 @@ export const listCases = async (value) => {
 
 
 export const changeStatus = async (value) => {
-  console.log("ข้อมูลที่ส่งมา", value);
+  console.log("ข้อมูลที่ส่งมา3", value);
   return await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/change-status`,
     value

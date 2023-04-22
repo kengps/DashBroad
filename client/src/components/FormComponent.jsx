@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 //import Form from 'react-bootstrap/Form'
-import { Form, InputGroup } from "react-bootstrap";
+import { Form, InputGroup, FormGroup, FormLabel } from "react-bootstrap";
 import { sendCase } from "../api/case";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -15,7 +15,7 @@ import CampGameAndEditor from "./NavbarFormcase/CampGameAndEditor";
 import Details from "./NavbarFormcase/Details";
 import ProblemType from "./NavbarFormcase/ProblemType";
 
-import { Input } from "antd";
+import { Input, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
@@ -34,7 +34,8 @@ const FormComponent = () => {
 
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
-
+    setCampGames(e.target.value);
+    setSelectedDetail(e.target.value);
     console.log(e.target.value);
     //console.log(name);
   };
@@ -57,7 +58,7 @@ const FormComponent = () => {
           wallet: "",
           editors: "",
         });
-        SweetAlert.fire('แจ้งเตือน' , res.data.message, 'success')
+        SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
         setTimeout(() => {
           navigate("/listunresolve");
         }, 2000);
@@ -91,10 +92,76 @@ const FormComponent = () => {
   const handleFacultyChange = (e) => {
     setFaculty(e.target.value); // Reset major when faculty changes
   };
+  // state ของการเลือก ประเภทของปัญหา
+  const [selectedOption, setSelectedOption] = useState("");
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+    console.log(event.target.value);
+  };
+  // state ของการเลือก รายละเอียดของปัญหา
+  const [selectedDetail, setSelectedDetail] = useState("");
+  const handleChangeDetail = (event) => {
+    setSelectedDetail(event.target.value);
+    console.log(event.target.value);
+  };
+  // state ของการเลือกค่ายเกม
+  const [campGames, setCampGames] = useState("");
 
+  const handleChangeCampGame = (event) => {
+    setCampGames(event.target.value);
+    console.log(event.target.value);
+  };
+  //ประเภทของปัญหา
+  const typeProblem = [
+    { id: "1", name: "หลังบ้าน bio" },
+    { id: "2", name: "กลุ่ม lsm-Pretty Gaming-PG-Evoplay-AMBPOKER" },
+    { id: "3", name: "ขอ API" },
+    { id: "4", name: "เรื่องทั่วไป" },
+  ];
+
+  const detailProblem = [
+    { id: "1", name: "ตรวจสอบ Report" },
+    { id: "2", name: "รายการเล่นค้าง" },
+    { id: "3", name: "Credit ไม่ถูกต้อง" },
+    { id: "4", name: "Report ไม่ถูกต้อง" },
+    { id: "5", name: "Report ไม่อัปเดต" },
+    { id: "6", name: "ยกเลิกตั๋วแต่ไม่คืนเครดิต" },
+    { id: "7", name: "Outstanding ไม่พบข้อมูล" },
+    { id: "8", name: "อื่นๆ" },
+  ];
+
+  const detailProblemTwo = [
+    { id: "1", name: "ตรวจสอบรายการเล่น" },
+    { id: "2", name: "ขอ Production Key" },
+    { id: "3", name: "สอบถาม" },
+  ];
+
+  const selectCampGames = [
+    { id: "1", name: "Sport" },
+    { id: "2", name: "SA Gaming" },
+    { id: "3", name: "Sexy Baccarat" },
+    { id: "4", name: "Dream Gaming" },
+    { id: "5", name: "Pretty Gaming" },
+    { id: "6", name: "PG Slot" },
+    { id: "7", name: "SpiniX" },
+    { id: "8", name: "Evoplay" },
+    { id: "9", name: "Slot XO" },
+    { id: "10", name: "Live22" },
+    { id: "11", name: "Joker" },
+    { id: "12", name: "DragoonSoft" },
+    { id: "13", name: "Biogame & AMB" },
+    { id: "14", name: "BioFishing" },
+    { id: "15", name: "VwinLotto" },
+  ];
+
+  const handleChange1 = (value) => {
+    console.log(`selected ${value}`);
+  };
   return (
     <div>
       <Form onSubmit={submitForm}>
+   
+
         <div className="mt-3">
           <InputGroup className="mt-3">
             <InputGroup.Text
@@ -129,12 +196,52 @@ const FormComponent = () => {
             >
               ประเภทปัญหา
             </InputGroup.Text>
-            <Form.Control
-              className="form-control input-lg"
-              name="typeproblem"
-              onChange={inputValue("typeproblem")}
-              value={typeproblem}
-            />
+            <Form.Select
+              aria-label="test"
+              value={selectedOption}
+              onChange={handleChange}
+            >
+              <option key={9999} value="">
+                --กรุณาเลือกประเภทปัญหา--
+              </option>
+              {typeProblem.map((items, index) => (
+                <option key={index}>{items.name}</option>
+              ))}
+            </Form.Select>
+
+            {selectedOption === "หลังบ้าน bio" && (
+              <Form.Select
+                aria-label="test"
+                value={values.typeproblem}
+                //onChange={handleChangeDetail}
+                onChange={inputValue("typeproblem")}
+              >
+                <option key={9999} value="">
+                  --กรุณาเลือกรายละเอียดปัญหา--
+                </option>
+                {detailProblem.map((items, index) => (
+                  <option key={index}>{items.name}</option>
+                ))}
+              </Form.Select>
+            )}
+            {selectedOption ===
+              "กลุ่ม lsm-Pretty Gaming-PG-Evoplay-AMBPOKER" && (
+              <Form.Select
+                aria-label="test"
+                value={values.typeproblem}
+                //onChange={handleChangeDetail}
+                onChange={inputValue("typeproblem")}
+              >
+                <option key={9999} value="">
+                  --กรุณาเลือกรายละเอียดปัญหา--
+                </option>
+                {detailProblemTwo.map((items, index) => (
+                  <option value={items.name} key={index}>
+                    {items.name}
+                  </option>
+                ))}
+              </Form.Select>
+            )}
           </InputGroup>
         </div>
 
@@ -151,7 +258,7 @@ const FormComponent = () => {
               รายละเอียด
             </InputGroup.Text>
             <TextArea
-              className="form-control input-lg"
+              rows={5}
               name="detail"
               onChange={inputValue("detail")}
               value={detail}
@@ -177,12 +284,19 @@ const FormComponent = () => {
             >
               ค่ายเกม
             </InputGroup.Text>
-            <Form.Control
-              className="form-control input-lg"
-              name="campgame"
+            <Form.Select
+              aria-label="test"
+              value={values.campgame}
+              //onChange={handleChangeCampGame}
               onChange={inputValue("campgame")}
-              value={campgame}
-            />
+            >
+              <option key={9999} value="">
+                --กรุณาเลือกค่ายเกม--
+              </option>
+              {selectCampGames.map((items, index) => (
+                <option key={index} value={items.name}>{items.name}</option>
+              ))}
+            </Form.Select>
           </InputGroup>
         </div>
         <div className="mt-3">
