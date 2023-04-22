@@ -22,7 +22,7 @@ exports.readUser = async (req, res) => {
     const user = await Users.find({ _id: id }).select("-password").exec();
     res.json(user);
   } catch (error) {
-    console.log("เกิดข้อผิดพลาด", error);
+    // console.log("เกิดข้อผิดพลาด", error);
     res.status(400).json({ error: "Server isError" });
   }
 };
@@ -44,7 +44,7 @@ const user = await Users.findOneAndUpdate(
 res.json(user);
    
   } catch (error) {
-    console.log("เกิดข้อผิดพลาด", error);
+    // console.log("เกิดข้อผิดพลาด", error);
     res.status(400).json({ error: "Server isError" });
   }
 };
@@ -59,7 +59,7 @@ exports.deleteUser = async (req, res) => {
     await Users.findOneAndRemove({ _id: id }).exec();
     res.json({ message: "ทำการลบข้อมูลสำเร็จ" });
   } catch (error) {
-    console.log("เกิดข้อผิดพลาด", error);
+    // console.log("เกิดข้อผิดพลาด", error);
     res.status(400).json({ error: "Server isError" });
   }
 };
@@ -73,7 +73,7 @@ exports.changStatus = async (req, res) => {
     ).exec();
     res.json(user);
   } catch (error) {
-    console.log("เกิดข้อผิดพลาด", error);
+    // console.log("เกิดข้อผิดพลาด", error);
     res.status(400).json({ error: "Server isError" });
   }
 };
@@ -86,7 +86,7 @@ exports.changeRole = async (req, res) => {
     ).exec();
     res.json(user);
   } catch (error) {
-    console.log("เกิดข้อผิดพลาด", error);
+    // console.log("เกิดข้อผิดพลาด", error);
     res.status(400).json({ error: "Server isError" });
   }
 };

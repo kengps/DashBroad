@@ -69,8 +69,8 @@ exports.removeCase = async(req, res) => {
 
 
 exports.changeStatus = async(req, res) => {
-  console.log(req.body);
-  console.log(req.params);
+  // console.log(req.body);
+  // console.log(req.params);
  
   try {
     const cases = await Cases.findOneAndUpdate({_id: req.body.id} , {status: req.body.status})

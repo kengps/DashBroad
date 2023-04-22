@@ -42,7 +42,7 @@ app.use('/api' , ReAndLogRouter)
 app.use('/api' , userRouter)
 
 
-app.listen(port , ()=> console.log(`Server is running MY port ${port}`));
+app.listen(port , ()=> console.log(`Server is running MY port ${port} 🚀`));
 
 
 
