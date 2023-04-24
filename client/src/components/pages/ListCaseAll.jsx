@@ -3,39 +3,55 @@ import MyForm from "../NavbarFormcase/ProblemType";
 import { listCases } from "../../api/case";
 import { Button, Card, Tag, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
-
-
+import axios from "axios";
+import Paginate from 'react-paginate';
 
 const ListCaseAll = () => {
+
+// Paginate 
+const [currentPage , setCurrentPage] = useState([]);
+const ITEM_PER_PAGE = 10;
+
+
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    loadData();
-  }, []);
 
-  const loadData = () => {
-    listCases()
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_REACT_APP_API
+        }/listcase?page=${currentPage}&limit=${ITEM_PER_PAGE}`
+      );
+
+      setData(response.data);
+    } catch (error) {
+      alert(error);
+    }
   };
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
 
   const cardRef = useRef(null);
   const textRef = useRef([]);
 
-  const handleCopy = (e) => {
-    e.preventDefault();
-    const textToCopy = textRef.current.innerText;
-     navigator.clipboard.writeText(textToCopy);
-    message.success("Copied to clipboard");
+  // const handleCopy = (e) => {
+  //   e.preventDefault();
+  //   const textToCopy = textRef.current.innerText;
+  //    navigator.clipboard.writeText(textToCopy);
+  //   message.success("Copied to clipboard");
 
-    console.log('eee',textRef.current.innerText);
-  };
+  //   console.log('eee',textRef.current.innerText);
+  // };
 
+
+
+  const handlePageClick=({selected}) => {
+    setCurrentPage(selected)
+    
+  }
   return (
     <div>
       <table className="table table-striped">
@@ -54,7 +70,7 @@ const ListCaseAll = () => {
         </thead>
         <tbody>
           {data
-            
+            .slice(currentPage * ITEM_PER_PAGE ,(currentPage+1)*ITEM_PER_PAGE)
             .reverse((a, b) => b.id - a.id)
             .map((data, index) => (
               <tr key={index}>
@@ -112,6 +128,26 @@ const ListCaseAll = () => {
             ))}
         </tbody>
       </table>
+     
+      <Paginate
+          previousLabel="< previous"
+          nextLabel="next >"
+          breakLabel="..."
+          pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={5}
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+          onPageChange={handlePageClick}
+        />
     </div>
   );
 };

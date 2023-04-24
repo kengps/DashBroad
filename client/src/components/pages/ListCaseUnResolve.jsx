@@ -7,9 +7,14 @@ import { CopyOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
 import sweetAlert from "sweetalert2";
+import { Form, InputGroup } from "react-bootstrap";
+
+
 
 const ListCaseUnResolve = () => {
   const [data, setData] = useState([]);
+  // state สำหรับการค้นหาข้อมูล
+  const [search , setSearch] = useState('');
 
   useEffect(() => {
     loadData();
@@ -47,6 +52,7 @@ const ListCaseUnResolve = () => {
     };
     changeStatus(values)
       .then((res) => {
+       
         console.log(res);
       })
       .catch((err) => {
@@ -71,9 +77,15 @@ const ListCaseUnResolve = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+// console.log(search);
+const handleSearch = (e) => {
+  e.preventDefault();
+  // handle search logic here
 
+};
   return (
     <div>
+     
       <table className="table table-striped ">
         <thead>
           <tr className="table-secondary" style={{fontSize:'16px'}}>

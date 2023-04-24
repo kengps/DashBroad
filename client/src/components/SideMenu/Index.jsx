@@ -1,9 +1,35 @@
-import { Menu } from 'antd'
-import React from 'react'
+import { Menu, Tag ,Avatar, Badge, Space } from 'antd'
+import React, { useState ,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {HomeOutlined , DashboardOutlined , FormOutlined ,UnorderedListOutlined ,LoadingOutlined ,UserOutlined ,EditOutlined ,TeamOutlined} from '@ant-design/icons'
+import { listCases } from '../../api/case'
+
+
+
 const SideMenu = () => {
   const navigate = useNavigate()
+
+  const [data, setData] = useState([]);
+
+
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = () => {
+    listCases()
+      .then((res) => {
+        //console.log("ทดสอบนะ", res.data);
+
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
   return (
     <div className="SideMenu">
       <Menu
@@ -33,9 +59,23 @@ const SideMenu = () => {
               icon: <UnorderedListOutlined />
             },
             {
-              label: "รายการเคสที่รอการแก้ไข",
+             label:( 
+              <span>
+                รายการเคสที่รอการแก้ไข{' '}
+                <Badge
+                 color='red'
+                  count={data.filter((data) => data.status === 'รอการแก้ไข').length}
+                  style={{  fontWeight: 'bold' }}
+                >
+                  
+                </Badge>
+              </span>
+            ),
               key: "/listunresolve",
-              icon:<LoadingOutlined />
+              icon:<LoadingOutlined />,
+              // badge: <Badge count={data.filter((data) => data.status === 'รอการแก้ไข').length} />
+
+              
             },
             ]
           },
@@ -59,6 +99,7 @@ const SideMenu = () => {
           },
         ]}
       ></Menu>
+      
     </div>
   );
 }
