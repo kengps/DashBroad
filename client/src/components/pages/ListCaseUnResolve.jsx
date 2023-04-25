@@ -1,27 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
 import MyForm from "../NavbarFormcase/ProblemType";
 import { changeStatus, listCases } from "../../api/case";
-import { Button, Card, Tag, message, Select, Modal } from "antd";
+import { Button, Card, Tag, message, Select, Modal,Input } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
 import { toast } from "react-toastify";
 
 import sweetAlert from "sweetalert2";
-import { Form, InputGroup } from "react-bootstrap";
-
-
+import { Form, InputGroup  } from "react-bootstrap";
+import Pagination from "react-paginate";
+import { RxCross2 } from "react-icons/rx";
 
 const ListCaseUnResolve = () => {
   const [data, setData] = useState([]);
   // state สำหรับการค้นหาข้อมูล
-  const [search , setSearch] = useState('');
+  const [search, setSearch] = useState("");
+
+  const [currentPage, setCurrentPage] = useState([]);
+  const ITEM_PER_PAGE = 10;
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [currentPage]);
 
   const loadData = () => {
-    listCases()
+    listCases(currentPage, ITEM_PER_PAGE)
       .then((res) => {
         console.log("ทดสอบ", res.data);
 
@@ -52,7 +55,6 @@ const ListCaseUnResolve = () => {
     };
     changeStatus(values)
       .then((res) => {
-       
         console.log(res);
       })
       .catch((err) => {
@@ -77,32 +79,82 @@ const ListCaseUnResolve = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-// console.log(search);
-const handleSearch = (e) => {
-  e.preventDefault();
-  // handle search logic here
+  // console.log(search);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // handle search logic here
+  };
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
-};
+  const onClickButton = (e) => {
+    e.preventDefault();
+    setSearch("");
+    console.log("ลบข้อมูลเรียบร้อยแล้ว");
+  };
+
   return (
     <div>
-     
+
+
+      <InputGroup className="mb-3">
+        <Form.Control
+       
+          placeholder="ค้นหาCodeCase"
+          value={search}
+          onChange={(event) => {
+            setSearch(event.target.value);
+          }}
+        />
+          <Button
+        variant="danger"
+        value="Submit"
+        onClick={onClickButton}
+        className="btn-1"
+      >
+        <RxCross2 />
+      </Button>
+      </InputGroup>
+
+
+    
+
       <table className="table table-striped ">
         <thead>
-          <tr className="table-secondary" style={{fontSize:'16px'}}>
+          <tr className="table-secondary" style={{ fontSize: "16px" }}>
             <th scope="col">CodeCase</th>
             <th scope="col">ผู้แจ้งปัญหา</th>
             <th scope="col">ประเภทปัญหา</th>
             <th scope="col">รายละเอียด</th>
             <th scope="col">ค่ายเกม</th>
-            <th scope="col" className="text-center">ผู้ลงเคส</th>
-            <th scope="col" className="text-center">ผู้แก้ไข</th>
-            <th scope="col"  className="text-center">สถานะ</th>
-            <th scope="col" className="text-center">การจัดการ</th>
+            <th scope="col" className="text-center">
+              ผู้ลงเคส
+            </th>
+            <th scope="col" className="text-center">
+              ผู้แก้ไข
+            </th>
+            <th scope="col" className="text-center">
+              สถานะ
+            </th>
+            <th scope="col" className="text-center">
+              การจัดการ
+            </th>
           </tr>
         </thead>
         <tbody>
           {data
-            .filter((data) => data.status === "รอการแก้ไข")
+            .filter((item) =>
+              item.caseId.toLowerCase().includes(search.toLowerCase())
+            )
+            .filter(
+              (item) =>
+                item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
+            )
+            .slice(
+              currentPage * ITEM_PER_PAGE,
+              (currentPage + 1) * ITEM_PER_PAGE
+            )
             .reverse((a, b) => b.id - a.id)
             .map((data, index) => (
               <tr key={index}>
@@ -133,9 +185,11 @@ const handleSearch = (e) => {
                   </Select>
                 </td>
                 <td>
-                <Button danger className="me-1">แก้ไข</Button>
+                  <Button danger className="me-1">
+                    แก้ไข
+                  </Button>
                   <Button
-                  className="mt-1"
+                    className="mt-1"
                     type="primary"
                     onClick={() => {
                       setSelectedCase(data);
@@ -160,7 +214,7 @@ const handleSearch = (e) => {
                       >
                         <div>
                           <p className="d-block m-0">
-                          "<strong> เคส:</strong> {selectedCase.caseId}
+                            "<strong> เคส:</strong> {selectedCase.caseId}
                           </p>
                           <p className="d-block m-0">
                             <strong>ผู้แจ้งปัญหา: </strong>
@@ -198,14 +252,32 @@ const handleSearch = (e) => {
                         </Button>
                       </Card>
                     )}
-                 
                   </Modal>
-                
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+
+      <Pagination
+        previousLabel="< ก่อนหน้า"
+        nextLabel="ถัดไป >"
+        breakLabel="..."
+        pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
+        marginPagesDisplayed={3}
+        pageRangeDisplayed={5}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+        activeClassName={"active"}
+        onPageChange={handlePageClick}
+      />
     </div>
   );
 };
@@ -257,3 +329,6 @@ style={{ background: "#f0f0f0", border: "1px solid gray" }}
 </Button>
 </Card> */
 }
+
+//* startsWith() เป็น method ของ string ใน JavaScript ที่ใช้สำหรับตรวจสอบว่า string ที่เรียกใช้ method นี้เริ่มต้นด้วยค่าที่กำหนดหรือไม่
+//*  โดยจะ return ค่าเป็น boolean โดย true หาก string เริ่มต้นด้วยค่าที่กำหนด และ false หากไม่เริ่มต้นด้วยค่าที่กำหนด ตัวอย่างการใช้งาน:

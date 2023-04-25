@@ -1,7 +1,7 @@
 import { Menu, Tag ,Avatar, Badge, Space } from 'antd'
 import React, { useState ,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {HomeOutlined , DashboardOutlined , FormOutlined ,UnorderedListOutlined ,LoadingOutlined ,UserOutlined ,EditOutlined ,TeamOutlined} from '@ant-design/icons'
+import {BugOutlined  ,SyncOutlined ,HomeOutlined , DashboardOutlined , FormOutlined ,UnorderedListOutlined ,LoadingOutlined ,UserOutlined ,EditOutlined ,TeamOutlined} from '@ant-design/icons'
 import { listCases } from '../../api/case'
 
 
@@ -59,20 +59,18 @@ const SideMenu = () => {
               icon: <UnorderedListOutlined />
             },
             {
-             label:( 
-              <span>
-                รายการเคสที่รอการแก้ไข{' '}
-                <Badge
-                 color='red'
-                  count={data.filter((data) => data.status === 'รอการแก้ไข').length}
-                  style={{  fontWeight: 'bold' }}
-                >
-                  
-                </Badge>
-              </span>
+              label: (
+                <span>
+                  รายการเคสที่รอการแก้ไข{' '}
+                  <Badge
+                    
+                    count={data.filter((data) => data.status === 'รอการแก้ไข').length}
+                    style={{ backgroundColor: 'red', fontWeight: 'bold', animation: 'blinking 1s infinite'}}
+                  />
+                </span>
             ),
               key: "/listunresolve",
-              icon:<LoadingOutlined />,
+              icon:<BugOutlined />,
               // badge: <Badge count={data.filter((data) => data.status === 'รอการแก้ไข').length} />
 
               
