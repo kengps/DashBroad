@@ -1,15 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
 import MyForm from "../NavbarFormcase/ProblemType";
-import { changeStatus, listCases } from "../../api/case";
-import { Button, Card, Tag, message, Select, Modal,Input } from "antd";
+import { changeStatus, listCases, deleteCase } from "../../api/case";
+import { Button, Card, Tag, message, Select, Modal, Input } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
 import { toast } from "react-toastify";
 
 import sweetAlert from "sweetalert2";
-import { Form, InputGroup  } from "react-bootstrap";
+import { Form, InputGroup } from "react-bootstrap";
 import Pagination from "react-paginate";
 import { RxCross2 } from "react-icons/rx";
+import moment from "moment/min/moment-with-locales";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
+const { TextArea } = Input;
+
+
+
+
 
 const ListCaseUnResolve = () => {
   const [data, setData] = useState([]);
@@ -70,6 +78,8 @@ const ListCaseUnResolve = () => {
   const [selectedCase, setSelectedCase] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -78,6 +88,16 @@ const ListCaseUnResolve = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  const showModal2 = (id) => {
+    setIsModalOpen2(true);
+    console.log(id);
+  };
+  const handleOk2 = () => {
+    setIsModalOpen2(false);
+  };
+  const handleCancel2 = () => {
+    setIsModalOpen2(false);
   };
   // console.log(search);
   const handleSearch = (e) => {
@@ -94,31 +114,64 @@ const ListCaseUnResolve = () => {
     console.log("ลบข้อมูลเรียบร้อยแล้ว");
   };
 
+  // ปุ่มคลิก
+
+  const confirmDelete = (id) => {
+    deleteCase(id)
+      .then((res) => {
+        sweetAlert.fire("แจ้งเตือน", res.data.message, "success");
+        console.log("การลบ", res);
+        loadData();
+        // loadUser(user.token);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
+  const handleClick = async (id) => {
+    // หากกดปุ่ม จะให้ปุ่มยืนยันการลบขึ้นมา
+    try {
+      const result = await sweetAlert.fire({
+        title: "คุณต้องการลบบทความหรือไม่",
+        icon: "warning",
+        showCancelButton: true,
+      });
+      console.log("ยืนยันการลบ", result);
+      //ถ้ากดปุ่ม OK หรือ ตกลง
+      if (result.isConfirmed) {
+        //ส่ง request ไปที่  api เพื่อลบข้อมูล
+
+        confirmDelete(id); //หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  };
+
+  const showModalChang = (id) => {
+    console.log(id);
+  };
   return (
     <div>
-
-
       <InputGroup className="mb-3">
         <Form.Control
-       
           placeholder="ค้นหาCodeCase"
           value={search}
           onChange={(event) => {
             setSearch(event.target.value);
           }}
         />
-          <Button
-        variant="danger"
-        value="Submit"
-        onClick={onClickButton}
-        className="btn-1"
-      >
-        <RxCross2 />
-      </Button>
+        <Button
+          variant="danger"
+          value="Submit"
+          onClick={onClickButton}
+          className="btn-1"
+        >
+          <RxCross2 />
+        </Button>
       </InputGroup>
-
-
-    
 
       <table className="table table-striped ">
         <thead>
@@ -133,6 +186,9 @@ const ListCaseUnResolve = () => {
             </th>
             <th scope="col" className="text-center">
               ผู้แก้ไข
+            </th>
+            <th scope="col" className="text-center">
+              เวลาสร้างเคส
             </th>
             <th scope="col" className="text-center">
               สถานะ
@@ -151,6 +207,7 @@ const ListCaseUnResolve = () => {
               (item) =>
                 item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
             )
+            .reverse((a, b) => b.id - a.id)
             .slice(
               currentPage * ITEM_PER_PAGE,
               (currentPage + 1) * ITEM_PER_PAGE
@@ -167,6 +224,7 @@ const ListCaseUnResolve = () => {
                 <td>{data.campgame}</td>
                 <td>{data.team}</td>
                 <td>{data.editors}</td>
+                <td>{moment(data.createdAt).locale("th").format("lll")} น.</td>
                 <td>
                   <Select
                     style={{ width: "100%" }}
@@ -185,19 +243,31 @@ const ListCaseUnResolve = () => {
                   </Select>
                 </td>
                 <td>
-                  <Button danger className="me-1">
-                    แก้ไข
-                  </Button>
                   <Button
-                    className="mt-1"
+                    className="mt-1 me-1"
                     type="primary"
                     onClick={() => {
                       setSelectedCase(data);
                       showModal();
                     }}
                   >
-                    CopyCase
+                    คัดลอก
                   </Button>
+                  <Button
+                    className="me-1 btn-change"
+                    onClick={() => showModal2(data._id)}
+                  >
+                    แก้ไข
+                  </Button>
+                  <Button
+                    type="primary"
+                    danger
+                    className="me-1 mt-1"
+                    onClick={() => handleClick(data._id)}
+                  >
+                    ลบ
+                  </Button>
+
                   <Modal
                     title="Basic Modal"
                     open={isModalOpen}
@@ -252,6 +322,28 @@ const ListCaseUnResolve = () => {
                         </Button>
                       </Card>
                     )}
+                  </Modal>
+
+                  <Modal
+                    title="Basic Modal2"
+                    open={isModalOpen2}
+                    onOk={handleOk2}
+                    onCancel={handleCancel2}
+                  >
+                    <p>{data.detail}</p>
+                    <InputGroup>
+                      <InputGroup.Text>รายละเอียด</InputGroup.Text>
+                     </InputGroup>
+                    
+                      <TextArea
+                      rows={5}
+                        value={data.detail}
+                        type="text"
+                        name="password"
+                        // onChange={handleChangePassword}
+                        className="form-control"
+                      />
+                  
                   </Modal>
                 </td>
               </tr>

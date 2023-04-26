@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 .App {
   display: flex;
@@ -66,7 +67,10 @@
   
 }
 
-
+.btn-change{
+  background-color: #ffc107 ;
+  color: white;
+}
 
 @keyframes blinking {
   0% { opacity: 0; }

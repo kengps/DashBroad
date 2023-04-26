@@ -59,10 +59,13 @@ const FormComponent = () => {
           editors: "",
         });
         SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
+        
         setTimeout(() => {
           navigate("/listunresolve");
         }, 2000);
+      
       })
+      
       .catch((err) => {
         console.log(err);
       });

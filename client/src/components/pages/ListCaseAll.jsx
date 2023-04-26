@@ -4,18 +4,15 @@ import { listCases } from "../../api/case";
 import { Button, Card, Tag, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import axios from "axios";
-import Paginate from 'react-paginate';
+import Paginate from "react-paginate";
+import moment from "moment/min/moment-with-locales";
 
 const ListCaseAll = () => {
-
-// Paginate 
-const [currentPage , setCurrentPage] = useState([]);
-const ITEM_PER_PAGE = 10;
-
+  // Paginate
+  const [currentPage, setCurrentPage] = useState([]);
+  const ITEM_PER_PAGE = 10;
 
   const [data, setData] = useState([]);
-
-
 
   const fetchData = async () => {
     try {
@@ -46,12 +43,9 @@ const ITEM_PER_PAGE = 10;
   //   console.log('eee',textRef.current.innerText);
   // };
 
-
-
-  const handlePageClick=({selected}) => {
-    setCurrentPage(selected)
-    
-  }
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
   return (
     <div>
       <table className="table table-striped">
@@ -64,14 +58,18 @@ const ITEM_PER_PAGE = 10;
             <th scope="col">ค่ายเกม</th>
             <th scope="col">ผู้ลงเคส</th>
             <th scope="col">ผู้แก้ไข</th>
+            <th scope="col">เวลาสร้างเคส</th>
             <th scope="col">สถานะ</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           {data
-            .slice(currentPage * ITEM_PER_PAGE ,(currentPage+1)*ITEM_PER_PAGE)
             .reverse((a, b) => b.id - a.id)
+            .slice(
+              currentPage * ITEM_PER_PAGE,
+              (currentPage + 1) * ITEM_PER_PAGE
+            )
             .map((data, index) => (
               <tr key={index}>
                 <th scope="row">{data.caseId}</th>
@@ -83,6 +81,8 @@ const ITEM_PER_PAGE = 10;
                 <td>{data.campgame}</td>
                 <td>{data.team}</td>
                 <td>{data.editors}</td>
+                <td>{moment(data.createdAt).locale("th").format("lll")} น.</td>
+
                 <td>{data.status}</td>
                 <td>
                   <Card
@@ -120,34 +120,32 @@ const ITEM_PER_PAGE = 10;
                         {data.editors}
                       </p>
                     </div>
-
-                  
                   </Card>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
-     
+
       <Paginate
-          previousLabel="< previous"
-          nextLabel="next >"
-          breakLabel="..."
-          pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
-          marginPagesDisplayed={3}
-          pageRangeDisplayed={5}
-          containerClassName={"pagination justify-content-center"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          activeClassName={"active"}
-          onPageChange={handlePageClick}
-        />
+        previousLabel="< previous"
+        nextLabel="next >"
+        breakLabel="..."
+        pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
+        marginPagesDisplayed={3}
+        pageRangeDisplayed={5}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+        activeClassName={"active"}
+        onPageChange={handlePageClick}
+      />
     </div>
   );
 };

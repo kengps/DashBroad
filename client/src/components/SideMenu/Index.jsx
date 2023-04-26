@@ -54,7 +54,16 @@ const SideMenu = () => {
               icon: <FormOutlined />
             },
             {
-              label: "รายการเคสทั้งหมด",
+              label: (
+                <span>
+                  รายการเคสทั้งหมด{' '}
+                  <Badge
+                    
+                    count={data.filter((data) => data._id).length}
+                    style={{ backgroundColor: '#52BE80', fontWeight: 'bold', animation: 'blinking 1s infinite'}}
+                  />
+                </span>
+            ),
               key: "/listcase",
               icon: <UnorderedListOutlined />
             },
@@ -65,7 +74,7 @@ const SideMenu = () => {
                   <Badge
                     
                     count={data.filter((data) => data.status === 'รอการแก้ไข').length}
-                    style={{ backgroundColor: 'red', fontWeight: 'bold', animation: 'blinking 1s infinite'}}
+                    style={{ backgroundColor: '#E74C3C ', fontWeight: 'bold', animation: 'blinking 1s infinite'}}
                   />
                 </span>
             ),

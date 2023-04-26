@@ -33,6 +33,14 @@ export const changeStatus = async (value) => {
   );
 };
 
+export const deleteCase = async (id) => {
+  console.log("ข้อมูลที่ส่งมา3", id);
+  return await axios.delete(
+    `${import.meta.env.VITE_REACT_APP_API}/delete/${id}` );
+};
+
+
+
 
 
 
