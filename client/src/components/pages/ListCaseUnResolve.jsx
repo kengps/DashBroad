@@ -64,6 +64,7 @@ const ListCaseUnResolve = () => {
     changeStatus(values)
       .then((res) => {
         console.log(res);
+        loadData();
       })
       .catch((err) => {
         console.log(err);
@@ -228,7 +229,7 @@ const ListCaseUnResolve = () => {
                 <td>
                   <Select
                     style={{ width: "100%" }}
-                    defaultValue={data.status}
+                    value={data.status}
                     onChange={(e) => handleOnchange(e, data._id)}
                   >
                     {statusCase.map((item, index) => (

@@ -29,10 +29,10 @@ const schemaCase = mongoose.Schema(
       type: String,
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
-    recordist: {
-      type: String,
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-    },
+    // recordist: {
+    //   type: String,
+    //   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+    // },
     status: {
       type: String,
       default: "รอการแก้ไข",

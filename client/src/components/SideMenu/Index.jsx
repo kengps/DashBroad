@@ -29,6 +29,11 @@ const SideMenu = () => {
       });
   };
 
+  // const handleAddData = () => {
+   
+  //   loadData();
+  // };
+
 
   return (
     <div className="SideMenu">
@@ -37,11 +42,12 @@ const SideMenu = () => {
         onClick={(item) => {
           //item.key
           navigate(item.key);
+          
         }}
         items={[
           {
             label: "Dashboard",
-            key: "/",
+            key: "/dashboard/app",
             icon: <DashboardOutlined />
           },
           {
@@ -50,8 +56,9 @@ const SideMenu = () => {
             icon: <HomeOutlined /> ,
             children:[{
               label: "ฟอร์มบันทึกเคส",
-              key: "/formcontrol",
-              icon: <FormOutlined />
+              key: "/dashboard/formcontrol",
+              icon: <FormOutlined />,
+              // handleAddData: handleAddData()
             },
             {
               label: (
@@ -64,7 +71,7 @@ const SideMenu = () => {
                   />
                 </span>
             ),
-              key: "/listcase",
+              key: "/dashboard/listcase",
               icon: <UnorderedListOutlined />
             },
             {
@@ -78,7 +85,7 @@ const SideMenu = () => {
                   />
                 </span>
             ),
-              key: "/listunresolve",
+              key: "/dashboard/listunresolve",
               icon:<BugOutlined />,
               // badge: <Badge count={data.filter((data) => data.status === 'รอการแก้ไข').length} />
 
@@ -94,17 +101,28 @@ const SideMenu = () => {
               children:[
                 {
                   label: "แก้ไขรหัสผ่าน",
-                  key: "/reset-password",
+                  key: "/dashboard/reset-password",
                   icon:<EditOutlined />
                 },
                 {
                   label: "สมาชิกทั้งหมด",
-                  key: "/listuser",
+                  key: "/dashboard/listuser",
                   icon:<TeamOutlined />
                 }
               ]
           },
         ]}
+
+
+
+               // ส่งฟังก์ชัน handleAddData ไปยัง FormControl component       
+
+
+
+
+
+
+        
       ></Menu>
       
     </div>
