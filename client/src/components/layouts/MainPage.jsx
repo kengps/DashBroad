@@ -32,13 +32,7 @@ const MainPage = () => {
           </Space>
           <AppFooter />
         </div>
-      ),
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: "app", element: <DashBoard /> },
-        { path: "formcontrol", element: <FormCase /> },
-        { path: "listunresolve", element: <ListCaseUnResolve /> }, // เพิ่ม path นี้
-      ],
+      )
     },
     {
       path: "/",
