@@ -19,6 +19,20 @@ import { Input, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import ListSubheader from '@mui/material/ListSubheader';
+// import FormControl from '@mui/material/FormControl';
+import Select1 from "@mui/material/Select";
+
+import {
+  InputLabel,
+  MenuItem,
+  ListSubheader,
+  FormControl,
+  FormHelperText,
+} from "@mui/material";
+
 const FormComponent = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -59,13 +73,12 @@ const FormComponent = () => {
           editors: "",
         });
         SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
-        
+
         setTimeout(() => {
           navigate("/listunresolve");
         }, 2000);
-      
       })
-      
+
       .catch((err) => {
         console.log(err);
       });
@@ -160,10 +173,11 @@ const FormComponent = () => {
   const handleChange1 = (value) => {
     console.log(`selected ${value}`);
   };
+
   return (
     <div>
       <Form onSubmit={submitForm}>
-   
+       
 
         <div className="mt-3">
           <InputGroup className="mt-3">
@@ -287,19 +301,75 @@ const FormComponent = () => {
             >
               ค่ายเกม
             </InputGroup.Text>
-            <Form.Select
-              aria-label="test"
-              value={values.campgame}
-              //onChange={handleChangeCampGame}
-              onChange={inputValue("campgame")}
-            >
-              <option key={9999} value="">
-                --กรุณาเลือกค่ายเกม--
-              </option>
-              {selectCampGames.map((items, index) => (
-                <option key={index} value={items.name}>{items.name}</option>
-              ))}
-            </Form.Select>
+         
+            <FormControl
+             //variant="standard"
+            size="small"
+            sx={{ m: 1, minWidth:400 }}>
+             
+          <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+          <Select1
+            defaultValue=""
+            id="grouped-select"
+            label="Grouping"
+            value={values.campgame}
+            onChange={inputValue("campgame")}
+          >
+            
+            <MenuItem value="">
+              <em>--กรุณาเลือกค่ายเกม--</em>
+            </MenuItem>
+            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Sport</ListSubheader>
+            {selectCampGames.map((items, index) =>
+              items.name === "Sport" ? (
+                <MenuItem key={index} value={items.name}>
+                  {items.name}
+                </MenuItem>
+              ) : null
+            )}
+            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Baccarat</ListSubheader>
+            {selectCampGames.map((items, index) =>
+              items.name === "Sexy Baccarat" ||
+              items.name === "SA Gaming" ||
+              items.name === "Pretty Gaming" ||
+              items.name === "Dream Gaming" ? (
+                <MenuItem key={index} value={items.name}>
+                  {items.name}
+                </MenuItem>
+              ) : null
+            )}
+            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }} >Slot</ListSubheader>
+            {selectCampGames.map((items, index) =>
+              items.name === "PG Slot" ||
+              items.name === "SpiniX" ||
+              items.name === "Evoplay" ||
+              items.name === "Slot XO" ||
+              items.name === "Joker" ||
+              items.name === "Live22" ||
+              items.name === "DragoonSoft" ? (
+                <MenuItem key={index} value={items.name}>
+                  {items.name}
+                </MenuItem>
+              ) : null
+            )}
+            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Other</ListSubheader>
+            {selectCampGames.map((items, index) =>
+              items.name !== "Sport" &&
+              items.name !== "Sexy Baccarat" &&
+              items.name !== "SA Gaming" &&
+              items.name !== "Dream Gaming" &&
+              items.name !== "PG Slot" &&
+              items.name !== "Slot XO" &&
+              items.name !== "Live22" ? (
+                <MenuItem key={index} value={items.name}>
+                  {items.name}
+                </MenuItem>
+              ) : null
+            )}
+          </Select1>
+          
+        </FormControl>
+
           </InputGroup>
         </div>
         <div className="mt-3">

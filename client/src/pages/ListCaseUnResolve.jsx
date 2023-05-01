@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import MyForm from "../NavbarFormcase/ProblemType";
-import { changeStatus, listCases, deleteCase } from "../../api/case";
+import MyForm from "../components/NavbarFormcase/ProblemType";
+import { changeStatus, listCases, deleteCase } from "../api/case";
 import { Button, Card, Tag, message, Select, Modal, Input } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 

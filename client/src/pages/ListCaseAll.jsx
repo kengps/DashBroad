@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import MyForm from "../NavbarFormcase/ProblemType";
-import { listCases } from "../../api/case";
+import MyForm from "../components/NavbarFormcase/ProblemType";
+import { listCases } from "../api/case";
 import { Button, Card, Tag, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import axios from "axios";

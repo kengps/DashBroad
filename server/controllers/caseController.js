@@ -1,4 +1,5 @@
 const Cases = require("../models/caseModel");
+const Users = require('../models/register')
 
 let count = 0;
 exports.requestUser = async (req, res) => {
@@ -19,14 +20,16 @@ exports.requestUser = async (req, res) => {
     //   : 1;
 
     // const caseId = `${codeCaseId}${countString}`;
- // หา caseId ที่ใหม่ที่สุดในฐานข้อมูล
- const latestCase = await Cases.findOne({}, { caseId: 1 }).sort({ createdAt: -1 });
+    // หา caseId ที่ใหม่ที่สุดในฐานข้อมูล
+    const latestCase = await Cases.findOne({}, { caseId: 1 }).sort({
+      createdAt: -1,
+    });
 
- // สร้าง caseId ใหม่โดยเพิ่มค่าลำดับต่อไปจาก caseId ที่ใหม่ที่สุด
- const caseIdCounter = latestCase ? parseInt(latestCase.caseId.substring(5)) + 1 : 1;
- const caseId = `BGMC${caseIdCounter.toString().padStart(5, "0")}`;
-
-
+    // สร้าง caseId ใหม่โดยเพิ่มค่าลำดับต่อไปจาก caseId ที่ใหม่ที่สุด
+    const caseIdCounter = latestCase
+      ? parseInt(latestCase.caseId.substring(5)) + 1
+      : 1;
+    const caseId = `BGMC${caseIdCounter.toString().padStart(5, "0")}`;
 
     // const cases = await Cases.create({ reporter, typeproblem, casedetail ,campgame ,team,editors });
     // res.json(cases);
@@ -97,3 +100,14 @@ exports.changeStatus = async (req, res) => {
     res.status(400).send("SerVer is Error");
   }
 };
+
+// exports.changeStatus1 = async (req, res) => {
+//   // console.log(req.body);
+//   // console.log(req.params);
+
+//   try {
+//     const user = await Users.findOneAndUpdate
+//   } catch (error) {
+//     res.status(400).send("SerVer is Error");
+//   }
+// };

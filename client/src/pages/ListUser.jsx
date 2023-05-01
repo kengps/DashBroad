@@ -2,7 +2,7 @@ import { Typography } from "antd";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { listUser } from "../../api/user";
+import { listUser } from "../api/user";
 import moment from "moment/min/moment-with-locales";
 
 const ListUser = () => {

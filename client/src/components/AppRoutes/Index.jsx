@@ -5,13 +5,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //Component
-import DashBoard from "../pages/DashBoard";
-import FormCase from "../pages/FormCase";
-import ListCaseUnResolve from "../pages/ListCaseUnResolve";
-import ListCaseAll from "../pages/ListCaseAll";
-import ListUser from "../pages/ListUser";
-import Register from "../pages/Register/Register";
-import ChangPassword from "../pages/ChangPassword";
+import DashBoard from "../../pages/DashBoard";
+import FormCase from "../../pages/FormCase";
+import ListCaseUnResolve from "../../pages/ListCaseUnResolve";
+import ListCaseAll from "../../pages/ListCaseAll";
+import ListUser from "../../pages/ListUser";
+//import Register from "../pages/Register/Register";
+import ChangPassword from "../../pages/ChangPassword";
 
 const AppRoutes = () => {
   return(

@@ -1,10 +1,8 @@
-const registers = require('../models/register');
-const bcrypt = require('bcryptjs')
+const registers = require("../models/register");
+const bcrypt = require("bcryptjs");
 
-
-
-exports.register =(req,res) =>{
-  const { username, password  } = req.body;
+exports.register = (req, res) => {
+  const { username, password } = req.body;
 
   switch (true) {
     case !username:
@@ -14,35 +12,37 @@ exports.register =(req,res) =>{
       res.status(400).json({ error: "กรุณากรอกข้อมูล password" });
       break;
   }
-    //การบันทึกข้อมูล จะใช้คำสั่ง create และตามด่วย document
-  registers.create({username ,password},(err, register) => {
-    if(err) {
-        res.status(400).json({ error: err });
+  //การบันทึกข้อมูล จะใช้คำสั่ง create และตามด่วย document
+  registers.create({ username, password }, (err, register) => {
+    if (err) {
+      res.status(400).json({ error: err });
     }
-    res.json(register)
+    res.json(register);
+  });
+  //   res.json({
+  //       data: {username , password , confirmpass}
+  //   })
+};
 
-  })
-//   res.json({
-//       data: {username , password , confirmpass}
-//   })
-}
+exports.register2 = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    let user = await registers.findOne({ username });
 
+    if (user) {
+      return res.status(400).send("User Already exists");
+    }
+    const salt = await bcrypt.genSalt(10);
 
-exports.register2 = async (req,res) =>{
-  const { username, password  } = req.body;
-  let user = await registers.findOne({username});
+    user = new registers({
+      username,
+      password,
+    });
+    user.password = await bcrypt.hash(password, salt);
 
-  if(user){
-      return res.status(400).send('User Already exists')
+    await user.save();
+    res.send("Register Success!!");
+  } catch (error) {
+    res.status(500).send('server is error!!!!')
   }
-const  salt = await bcrypt.genSalt(10);
-
-user = new registers({
-  username,
-  password
-});
-user.password = await bcrypt.hash(password , salt);
-
-await user.save();
-res.send('Register Success!!')
-}
+};

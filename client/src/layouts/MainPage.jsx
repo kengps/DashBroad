@@ -1,22 +1,26 @@
 import React from "react";
-import AppHeader from "../AppHeader/Index";
+import AppHeader from "../components/AppHeader/Index";
 
 import { Space } from "antd";
-import SideMenu from "../SideMenu/Index";
-import PageContent from "../PageContent/Index";
-import AppFooter from "../AppFooter/Index";
-import Register from "../pages/Register/Register";
+import SideMenu from "../components/SideMenu/Index";
+import PageContent from "../components/PageContent/Index";
+import AppFooter from "../components/AppFooter/Index";
+
 import { Navigate, useRoutes } from "react-router-dom";
 
-
 //Component
-import DashBoard from "../pages/DashBoard";
 import FormCase from "../pages/FormCase";
 import ListCaseUnResolve from "../pages/ListCaseUnResolve";
 import ListCaseAll from "../pages/ListCaseAll";
 import ListUser from "../pages/ListUser";
 
 import ChangPassword from "../pages/ChangPassword";
+
+import Register from "../components/Register/Register";
+import Login from "../components/Login/LoginForm";
+
+import DashBorad from "../pages/DashBoard";
+//import DashBoard from "../pages/DashBoard";
 
 
 const MainPage = () => {
@@ -36,11 +40,15 @@ const MainPage = () => {
     },
     {
       path: "/",
-      element: <Register />,
+      element: <Navigate to="/login" />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
     {
       path: "*",
-      element: <Navigate to="/dashboard" />,
+      element: <Navigate to="/dashboard/app" />,
     },
   ]);
 

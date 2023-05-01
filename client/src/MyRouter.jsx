@@ -1,15 +1,17 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import MainPage from "./components/layouts/MainPage";
+// import MainPage from "./components/layouts/MainPage";
 import App2 from "./components/NavbarFormcase/AgentName";
 import CampGameAndEditor from "./components/NavbarFormcase/CampGameAndEditor";
+//import PageContent from "./components/PageContent/Index";
+//import DashBorad from "./components/pages/DashBoard";
+import FormCase from "./pages/FormCase";
+import ListCaseAll from "./pages/ListCaseAll";
+import ListCaseUnResolve from "./pages/ListCaseUnResolve";
+import ListUser from "./pages/ListUser";
+import Register from "./components/Register/Register";
+import DashBorad from "./pages/DashBoard";
 import PageContent from "./components/PageContent/Index";
-import DashBorad from "./components/pages/DashBoard";
-import FormCase from "./components/pages/FormCase";
-import ListCaseAll from "./components/pages/ListCaseAll";
-import ListCaseUnResolve from "./components/pages/ListCaseUnResolve";
-import ListUser from "./components/pages/ListUser";
-import Register from "./components/pages/Register/Register";
 
 
 

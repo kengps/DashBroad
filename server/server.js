@@ -10,6 +10,7 @@ const app = express();
 const caseRouter = require('./routers/caseRoute')
 const ReAndLogRouter = require('./routers/LoginAndRegister')
 const userRouter = require('./routers/userRouter')
+const LoginAuth = require('./routers/login')
 
 
 
@@ -40,6 +41,7 @@ app.use(cors());
 app.use('/api' , caseRouter)
 app.use('/api' , ReAndLogRouter)
 app.use('/api' , userRouter)
+app.use('/api' , LoginAuth)
 
 
 app.listen(port , ()=> console.log(`Server is running MY port ${port} 🚀`));
