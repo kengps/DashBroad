@@ -33,7 +33,13 @@ import {
   FormHelperText,
 } from "@mui/material";
 
+import { useDispatch, useSelector } from "react-redux";
+
 const FormComponent = () => {
+  const { user } = useSelector((state) => ({ ...state }));
+
+  const getUser = user.username;
+
   const navigate = useNavigate();
   const [values, setValues] = useState({
     reporter: "",
@@ -41,10 +47,11 @@ const FormComponent = () => {
     detail: "",
     campgame: "",
     wallet: "",
-    editors: "",
+   
+    recorder: getUser,
   });
 
-  const { reporter, typeproblem, detail, campgame, wallet, editors } = values;
+  const { reporter, typeproblem, detail, campgame, wallet  } = values;
 
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -70,12 +77,12 @@ const FormComponent = () => {
           detail: "",
           campgame: "",
           wallet: "",
-          editors: "",
+         
         });
         SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
 
         setTimeout(() => {
-          navigate("/listunresolve");
+          navigate("/dashboard/listunresolve");
         }, 2000);
       })
 
@@ -170,6 +177,12 @@ const FormComponent = () => {
     { id: "15", name: "VwinLotto" },
   ];
 
+  const selectPlatform = [
+    { id: "1", name: "Biogaming" },
+    { id: "2", name: "BioClub" },
+    { id: "3", name: "PrettyGaming168" },
+    { id: "4", name: "BioBet789" },
+  ];
   const handleChange1 = (value) => {
     console.log(`selected ${value}`);
   };
@@ -177,8 +190,6 @@ const FormComponent = () => {
   return (
     <div>
       <Form onSubmit={submitForm}>
-       
-
         <div className="mt-3">
           <InputGroup className="mt-3">
             <InputGroup.Text
@@ -301,96 +312,161 @@ const FormComponent = () => {
             >
               ค่ายเกม
             </InputGroup.Text>
-         
-            <FormControl
-             //variant="standard"
-            size="small"
-            sx={{ m: 1, minWidth:400 }}>
-             
-          <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
-          <Select1
-            defaultValue=""
-            id="grouped-select"
-            label="Grouping"
-            value={values.campgame}
-            onChange={inputValue("campgame")}
-          >
-            
-            <MenuItem value="">
-              <em>--กรุณาเลือกค่ายเกม--</em>
-            </MenuItem>
-            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Sport</ListSubheader>
-            {selectCampGames.map((items, index) =>
-              items.name === "Sport" ? (
-                <MenuItem key={index} value={items.name}>
-                  {items.name}
-                </MenuItem>
-              ) : null
-            )}
-            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Baccarat</ListSubheader>
-            {selectCampGames.map((items, index) =>
-              items.name === "Sexy Baccarat" ||
-              items.name === "SA Gaming" ||
-              items.name === "Pretty Gaming" ||
-              items.name === "Dream Gaming" ? (
-                <MenuItem key={index} value={items.name}>
-                  {items.name}
-                </MenuItem>
-              ) : null
-            )}
-            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }} >Slot</ListSubheader>
-            {selectCampGames.map((items, index) =>
-              items.name === "PG Slot" ||
-              items.name === "SpiniX" ||
-              items.name === "Evoplay" ||
-              items.name === "Slot XO" ||
-              items.name === "Joker" ||
-              items.name === "Live22" ||
-              items.name === "DragoonSoft" ? (
-                <MenuItem key={index} value={items.name}>
-                  {items.name}
-                </MenuItem>
-              ) : null
-            )}
-            <ListSubheader style={{ fontWeight: "bold", color: "gray" , fontSize: '15px' }}>Other</ListSubheader>
-            {selectCampGames.map((items, index) =>
-              items.name !== "Sport" &&
-              items.name !== "Sexy Baccarat" &&
-              items.name !== "SA Gaming" &&
-              items.name !== "Dream Gaming" &&
-              items.name !== "PG Slot" &&
-              items.name !== "Slot XO" &&
-              items.name !== "Live22" ? (
-                <MenuItem key={index} value={items.name}>
-                  {items.name}
-                </MenuItem>
-              ) : null
-            )}
-          </Select1>
-          
-        </FormControl>
 
+            <FormControl
+              //variant="standard"
+              size="small"
+              sx={{ m: 1, minWidth: 400 }}
+            >
+              <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+              <Select1
+                defaultValue=""
+                id="grouped-select"
+                label="Grouping"
+                value={values.campgame}
+                onChange={inputValue("campgame")}
+              >
+                <MenuItem value="">
+                  <em>--กรุณาเลือกค่ายเกม--</em>
+                </MenuItem>
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Sport
+                </ListSubheader>
+                {selectCampGames.map((items, index) =>
+                  items.name === "Sport" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Baccarat
+                </ListSubheader>
+                {selectCampGames.map((items, index) =>
+                  items.name === "Sexy Baccarat" ||
+                  items.name === "SA Gaming" ||
+                  items.name === "Pretty Gaming" ||
+                  items.name === "Dream Gaming" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Slot
+                </ListSubheader>
+                {selectCampGames.map((items, index) =>
+                  items.name === "PG Slot" ||
+                  items.name === "SpiniX" ||
+                  items.name === "Evoplay" ||
+                  items.name === "Slot XO" ||
+                  items.name === "Joker" ||
+                  items.name === "Live22" ||
+                  items.name === "DragoonSoft" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Other
+                </ListSubheader>
+                {selectCampGames.map((items, index) =>
+                  items.name !== "Sport" &&
+                  items.name !== "Sexy Baccarat" &&
+                  items.name !== "SA Gaming" &&
+                  items.name !== "Dream Gaming" &&
+                  items.name !== "PG Slot" &&
+                  items.name !== "Slot XO" &&
+                  items.name !== "Live22" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+              </Select1>
+            </FormControl>
           </InputGroup>
         </div>
         <div className="mt-3">
           <InputGroup className="mt-3">
-            <InputGroup.Text>wallet</InputGroup.Text>
-
-            <Form.Select
-              aria-label="Wallet"
-              onChange={inputValue("wallet")}
-              value={wallet}
-            >
-              <option>Open this select menu</option>
+            <InputGroup.Text>แพลตฟอร์ม</InputGroup.Text>
+            <FormControl size="small" sx={{ m: 1, minWidth: 400 }}>
+              <Select1
+                aria-label="Wallet"
+                onChange={inputValue("wallet")}
+                value={wallet}
+              >
+                {/* <option>Open this select menu</option>
               <option value="bioclub">bioclub</option>
               <option value="bioone">bioone</option>
-              <option value="biok">biok</option>
-            </Form.Select>
+              <option value="biok">biok</option> */}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Biogaming
+                </ListSubheader>
+                {selectPlatform.map((items, index) =>
+                  items.name === "Biogaming" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                  }}
+                >
+                  Wallet
+                </ListSubheader>
+                {selectPlatform.map((items, index) =>
+                  items.name === "BioClub" ||
+                  items.name === "PrettyGaming168" ||
+                  //items.name === "Pretty Gaming" ||
+                  items.name === "BioBet789" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+              </Select1>
+            </FormControl>
           </InputGroup>
         </div>
 
         <div>
-          <div>
+          {/* <div>
             <InputGroup className="mt-2 pt-2">
               <div>
                 <Form.Check
@@ -416,8 +492,8 @@ const FormComponent = () => {
                 />
               </div>
             </InputGroup>
-          </div>
-          {faculty === "biogaming" && (
+          </div> */}
+          {/* {faculty === "biogaming" && (
             <div>
               <Form.Select value={editors} onChange={inputValue("editors")}>
                 <option value="">-- Select Biogaming --</option>
@@ -440,7 +516,7 @@ const FormComponent = () => {
                 </option>
               </Form.Select>
             </div>
-          )}
+          )} */}
         </div>
         <hr />
         <Button

@@ -20,9 +20,9 @@ import Register from "../components/Register/Register";
 import Login from "../components/Login/LoginForm";
 
 import DashBorad from "../pages/DashBoard";
+import IndexRouter from "../components/LoadingAndRedirect";
 //import DashBoard from "../pages/DashBoard";
-
-
+//IndexRouter คือ component ที่จะแสดงเมื่อไม่มีการ login
 const MainPage = () => {
   const routes = useRoutes([
     {
@@ -32,11 +32,12 @@ const MainPage = () => {
           <AppHeader />
           <Space className="SideMenuAndPageContent">
             <SideMenu />
+
             <PageContent />
           </Space>
           <AppFooter />
         </div>
-      )
+      ),
     },
     {
       path: "/",

@@ -42,6 +42,17 @@ export const deleteCase = async (id) => {
 
 
 
+export const resetPassword1 = async (authtoken, id , values) => {
+  return await axios.put(
+    `${import.meta.env.VITE_REACT_APP_API}/user/${id}`,values,
+
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
 
 
 //*listCases

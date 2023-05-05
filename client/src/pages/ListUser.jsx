@@ -41,7 +41,7 @@ const ListUser = () => {
               <td>{item.username}</td>
               <td>Otto</td>
               <td>@mdo</td>
-              <td> {moment(item.createdAt).locale("th").format("lll")} น.</td>
+              <td> {moment(item.updatedAt).locale("th").format("lll")} น.</td>
               <td>@mdo</td>
             </tr>
           ))}

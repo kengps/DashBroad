@@ -79,7 +79,7 @@ const ListCaseAll = () => {
                   {data.detail}
                 </td>
                 <td>{data.campgame}</td>
-                <td>{data.team}</td>
+                <td>{data.recorder}</td>
                 <td>{data.editors}</td>
                 <td>{moment(data.createdAt).locale("th").format("lll")} น.</td>
 
@@ -113,7 +113,7 @@ const ListCaseAll = () => {
                       </p>
                       <p className="d-block m-0">
                         <strong> ผู้ลงเคส: </strong>
-                        {data.team}
+                        {data.recorder}
                       </p>
                       <p className="d-block m-0">
                         <strong> ผู้แก้ไข: </strong>

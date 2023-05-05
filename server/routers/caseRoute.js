@@ -1,5 +1,5 @@
 const express = require('express');
-const { requestUser , allCase ,updateCase ,removeCase ,findCase ,changeStatus} = require('../controllers/caseController');
+const { requestUser , allCase ,updateCase ,removeCase ,findCase ,changeStatus, updateDetail} = require('../controllers/caseController');
 const router = express.Router();
 
 //สร้าง case 
@@ -21,6 +21,6 @@ router.post('/change-status', changeStatus)
 // delete case
 router.delete('/delete/:id', removeCase)
 
-
+// router.put('/changdetail/:id' , updateDetail)
 
 module.exports = router;

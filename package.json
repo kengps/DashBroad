@@ -1,0 +1,26 @@
+{
+  "name": "11_dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kengps/DashBroad.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kengps/DashBroad/issues"
+  },
+  "homepage": "https://github.com/kengps/DashBroad#readme",
+  "dependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

@@ -3,7 +3,8 @@ export function useReducer(state = null, action) {
     case "LOGIN":
       return action.payload; //ต้องการอะไรให้ส่งอันนั้น
     case "LOGOUT":
-      return "";
+      localStorage.clear();
+      return action.payload;
 
     default:
       return state;

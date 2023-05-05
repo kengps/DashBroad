@@ -81,3 +81,35 @@
  
   100% { opacity: 0; }
 }
+
+.redirectLogin {
+  
+  text-align: center;
+  position: relative;
+  height: 100px;
+  margin: 30px;
+  font-size: large;
+  font-weight: 'Bold';
+  //animation: cycle 1s infinite;
+  text-shadow: 0px 0px 100px rgba(11,124,199,0.5);
+}
+
+@keyframes color-change {
+  0% { color: red; }
+  50% { color: blue; }
+  100% { color: red; }
+}
+
+@keyframes cycle {
+  0% { text-shadow: 0px 0px 100px rgba(11,124,199,0.5);}
+  20% { text-shadow: 0px 0px 100px rgba(168,11,199,0.5);}
+  40% { text-shadow: 0px 0px 100px rgba(11,199,96,0.5);}
+  60% { text-shadow: 0px 0px 100px rgba(199,11,11,0.5);}
+  80% { text-shadow: 0px 0px 100px rgba(199,96,11,0.5);}
+}
+
+.navmenu {
+  display: 'flex';
+  align-items: 'center';
+  gap: '10px';
+}

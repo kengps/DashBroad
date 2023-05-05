@@ -25,6 +25,7 @@ exports.logged = async (req, res) => {
         user: {
           username: user.username,
           role: user.role,
+          id: user._id,
         },
       };
       // // Token
@@ -35,5 +36,19 @@ exports.logged = async (req, res) => {
     } else {
       res.status(400).json({ error: "User is not Found!!" });
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).send("SerVer is Error");
+  }
+};
+
+exports.currentUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.user.username })
+      .select("-password")
+      .exec();
+
+    res.send(user);
+  } catch (error) {
+    res.status(400).send("SerVer is Error!!");
+  }
 };

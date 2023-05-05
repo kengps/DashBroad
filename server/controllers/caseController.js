@@ -1,9 +1,10 @@
 const Cases = require("../models/caseModel");
-const Users = require('../models/register')
+const Users = require("../models/register");
 
 let count = 0;
 exports.requestUser = async (req, res) => {
-  const { reporter, typeproblem, detail, campgame, wallet, editors } = req.body;
+  const { reporter, typeproblem, detail, campgame, wallet, recorder } =
+    req.body;
   try {
     count++;
     // const codeCaseId = "BGMC";
@@ -41,7 +42,7 @@ exports.requestUser = async (req, res) => {
       detail,
       campgame,
       wallet,
-      editors,
+      recorder,
     });
     await cases.save();
     res.send({ message: "ทำการบันทึกข้อมูลสำเร็จ!!!", cases });
@@ -111,3 +112,23 @@ exports.changeStatus = async (req, res) => {
 //     res.status(400).send("SerVer is Error");
 //   }
 // };
+
+exports.updateDetail1 = async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const { id } = req.body.values;
+    const { detail } = req.body;
+
+    const detailNew = await Cases.findOneAndUpdate(
+      { _id: id }, // ตัวที่ค้นหา
+      { detail }, // ตัวที่ต้องการให้ update
+      { new: true }
+    ).exec();
+    res.json(detailNew);
+  } catch (error) {
+    // console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
+  }
+};
+

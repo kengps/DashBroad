@@ -15,11 +15,11 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-
-
-
+import ReactQuill from "react-quill";
 
 const ListCaseUnResolve = () => {
+  //state สำหรับการแก้ไข
+  const [detailContent, setDetailContent] = useState("");
   const [data, setData] = useState([]);
   // state สำหรับการค้นหาข้อมูล
   const [search, setSearch] = useState("");
@@ -56,6 +56,7 @@ const ListCaseUnResolve = () => {
   };
 
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
+
   const handleOnchange = (e, id) => {
     let values = {
       id: id,
@@ -151,9 +152,11 @@ const ListCaseUnResolve = () => {
     }
   };
 
-  const showModalChang = (id) => {
-    console.log(id);
+  const handleChangeDetail = (event) => {
+    setDetailContent(event.target.value);
+    console.log("การแก้ไขdetail", event.target.value);
   };
+
   return (
     <div>
       <InputGroup className="mb-3">
@@ -223,7 +226,7 @@ const ListCaseUnResolve = () => {
                   {data.detail}
                 </td>
                 <td>{data.campgame}</td>
-                <td>{data.team}</td>
+                <td>{data.recorder}</td>
                 <td>{data.editors}</td>
                 <td>{moment(data.createdAt).locale("th").format("lll")} น.</td>
                 <td>
@@ -307,7 +310,7 @@ const ListCaseUnResolve = () => {
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้ลงเคส: </strong>
-                            {selectedCase.team}
+                            {selectedCase.recorder}
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้แก้ไข: </strong>
@@ -331,20 +334,18 @@ const ListCaseUnResolve = () => {
                     onOk={handleOk2}
                     onCancel={handleCancel2}
                   >
-                    <p>{data.detail}</p>
+                    <p>{}</p>
                     <InputGroup>
                       <InputGroup.Text>รายละเอียด</InputGroup.Text>
-                     </InputGroup>
-                    
-                      <TextArea
+                    </InputGroup>
+
+                    <TextArea
                       rows={5}
-                        value={data.detail}
-                        type="text"
-                        name="password"
-                        // onChange={handleChangePassword}
-                        className="form-control"
-                      />
-                  
+                      type="text"
+                      name="detail"
+                      onChange={handleChangeDetail}
+                      value={detailContent}
+                    />
                   </Modal>
                 </td>
               </tr>

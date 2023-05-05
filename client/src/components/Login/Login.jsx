@@ -8,10 +8,9 @@ import SweetAl from "sweetalert2";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
-
-//redux
-const dispatch = useDispatch();
-const redirect = useNavigate();
+  //redux
+  const dispatch = useDispatch();
+  const redirect = useNavigate();
 
   const [value, setValue] = useState({
     username: "",
@@ -27,7 +26,7 @@ const redirect = useNavigate();
     }
   };
 
-// การตรวจสอบ
+  // การตรวจสอบ
   const levelRole = (role) => {
     if (role === "user") {
       redirect("/dashboard");
@@ -36,26 +35,34 @@ const redirect = useNavigate();
     }
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     //console.log({title , content , author});
     try {
       login(value)
         .then((res) => {
-          console.log(res);
-          SweetAl.fire("แจ้งเตือน", "เข้าสู่ระบบสำเร็จ", "success");
+          console.log("มี user ไหม", res.data.payLoad.user.password);
+          const user = res.data.payLoad.user.username;
+          SweetAl.fire(
+            "แจ้งเตือน",
+            `ยินดีต้อนรับ ${user} เข้าทำงาน`,
+            "success"
+          );
 
-
-      // payload มาจาก userReducer จากการ return action.payload
-      dispatch({type: 'LOGIN' , payload: {
-          token: res.data.token,
-          username: res.data.payLoad.user.username,
-          role: res.data.payLoad.user.role
-      }})
-      localStorage.setItem('token',res.data.token)
-      levelRole(res.data.payLoad.user.role);
-
+          const idUser = res.data.payLoad.user.id;
+          // payload มาจาก userReducer จากการ return action.payload
+          dispatch({
+            type: "LOGIN",
+            payload: {
+              token: res.data.token,
+              username: res.data.payLoad.user.username,
+              role: res.data.payLoad.user.role,
+              id: res.data.payLoad.user.id,
+      
+            },
+          });
+          localStorage.setItem("token", res.data.token);
+          levelRole(res.data.payLoad.user.role);
         })
         .catch((error) => {
           console.log(error);
@@ -70,9 +77,6 @@ const redirect = useNavigate();
           SweetAl.fire("แจ้งเตือน", errorMessage, "error");
         });
 
-
-
-          
       // ถ้าlogin สำเร็จ
 
       // authenticate(response, () => history("/create"));
@@ -82,7 +86,6 @@ const redirect = useNavigate();
     }
   };
 
-
   const navigate = useNavigate();
 
   return (
@@ -91,7 +94,12 @@ const redirect = useNavigate();
         <Stack spacing={3}>
           <TextField name="username" label="Username" onChange={handleChange} />
 
-          <TextField type="password" name="password" label="Password" onChange={handleChange} />
+          <TextField
+            type="password"
+            name="password"
+            label="Password"
+            onChange={handleChange}
+          />
         </Stack>
         <hr />
         <LoadingButton fullWidth size="large" type="submit" variant="contained">

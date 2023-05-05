@@ -90,3 +90,27 @@ exports.changeRole = async (req, res) => {
     res.status(400).json({ error: "Server isError" });
   }
 };
+
+
+
+// update ข้อมูลฝั่ง Server
+exports.resetPassword = async(req, res) => {
+  try {
+    const {id , password} = req.body.values
+    // 1 gen salt
+const  salt = await bcrypt.genSalt(10)
+// encrypt 
+const enPassword = await bcrypt.hash(password , salt)
+
+const user = await Users.findOneAndUpdate(
+  { _id: id },// ตัวที่ค้นหา
+  { password: enPassword } // ตัวที่ต้องการให้ update
+
+).exec();
+res.json(user);
+   
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
+  }
+};
