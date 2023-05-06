@@ -1,7 +1,7 @@
-import { Menu, Tag ,Avatar, Badge, Space } from 'antd'
+import { Menu, Tag ,Avatar, Badge, Space,Switch  } from 'antd'
 import React, { useState ,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {BugOutlined  ,SyncOutlined ,HomeOutlined , DashboardOutlined , FormOutlined ,UnorderedListOutlined ,LoadingOutlined ,UserOutlined ,EditOutlined ,TeamOutlined} from '@ant-design/icons'
+import {BugOutlined  ,SyncOutlined ,HomeOutlined , DashboardOutlined , FormOutlined ,UnorderedListOutlined ,LoadingOutlined ,UserOutlined ,EditOutlined ,TeamOutlined,TableOutlined } from '@ant-design/icons'
 import { listCases } from '../../api/case'
 
 
@@ -34,10 +34,24 @@ const SideMenu = () => {
   //   loadData();
   // };
 
+//change theme
+const [theme, setTheme] = useState('light');
+const changeTheme = (value) => {
+  setTheme(value ? 'dark' : 'light');
+};
 
   return (
     <div className="SideMenu">
+       <Switch
+        checked={theme === 'dark'}
+        onChange={changeTheme}
+        checkedChildren="Dark"
+        unCheckedChildren="Light"
+      />
+      <br />
+      <br />
       <Menu
+      theme={theme}
       mode='inline'
         onClick={(item) => {
           //item.key
@@ -100,9 +114,9 @@ const SideMenu = () => {
             icon:<UserOutlined />,
               children:[
                 {
-                  label: "แก้ไขรหัสผ่าน",
+                  label: "ตารางวันทำงาน",
                   key: "/dashboard/reset-password",
-                  icon:<EditOutlined />
+                  icon:<TableOutlined  />
                 },
                 {
                   label: "สมาชิกทั้งหมด",

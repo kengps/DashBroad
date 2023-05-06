@@ -44,6 +44,7 @@ const AppRoutes = () => {
 
   return (
   <IndexRouter>
+   
     <Routes>
       <Route path="/app" element={<DashBoard />} />
       <Route path="/formcontrol" element={<FormCase />} />

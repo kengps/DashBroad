@@ -1,8 +1,21 @@
-import { DollarCircleFilled, ShoppingCartOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  DollarCircleFilled,
+  ShoppingCartOutlined,
+  ShoppingOutlined,
+} from "@ant-design/icons";
 import { Card, Space, Statistic, Typography } from "antd";
-import React from "react";
+import React, { useContext } from "react";
+//import { Pie } from "react-chartjs-2";
+import "chart.js/auto";
+import Pies from "../components/Charts/Pie";
+
+
+
 
 const DashBorad = () => {
+  
+
+  //console.log('จะสามารถออกมาได้หรือไม่',data);
   return (
     <div>
       <Typography.Title>DashBoard</Typography.Title>
@@ -27,7 +40,7 @@ const DashBorad = () => {
             <ShoppingOutlined
               style={{
                 color: "blue",
-                backgroundColor: 'rgba(0,0,0,0)',
+                backgroundColor: "rgba(0,0,0,0)",
                 borderRadius: 20,
                 fontSize: 25,
                 padding: 8,
@@ -53,11 +66,15 @@ const DashBorad = () => {
           value={123123}
         />
       </Space>
+      <Pies/>
+      <div>
+     
+      </div>
     </div>
   );
 };
 
-const DashBoradShop = ({title , value , icon}) => {
+const DashBoradShop = ({ title, value, icon }) => {
   return (
     <Card>
       <Space direction="horizontal">

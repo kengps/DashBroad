@@ -113,11 +113,11 @@ exports.changeStatus = async (req, res) => {
 //   }
 // };
 
-exports.updateDetail1 = async (req, res) => {
+exports.updateDetail = async (req, res) => {
   try {
     console.log(req.body);
-
-    const { id } = req.body.values;
+    console.log(req.params);
+    const { id } = req.body.detailContent;
     const { detail } = req.body;
 
     const detailNew = await Cases.findOneAndUpdate(

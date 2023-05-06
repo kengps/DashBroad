@@ -16,6 +16,8 @@ router.get('/findcase/:id', findCase)
 // update case
 router.put('/change-status/:id', updateCase)
 
+router.put('/change-detail/:id', updateDetail)
+
 router.post('/change-status', changeStatus)
 
 // delete case

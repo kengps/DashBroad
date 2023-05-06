@@ -113,3 +113,17 @@
   align-items: 'center';
   gap: '10px';
 }
+
+#pie-table {
+  display: none;
+}
+
+.btn-excel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.btn-excel > button {
+  margin-left: 10px;
+}

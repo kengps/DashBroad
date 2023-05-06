@@ -35,6 +35,12 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
+const navDropdownItemStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "1px",
+};
+
 const FormComponent = () => {
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -47,11 +53,11 @@ const FormComponent = () => {
     detail: "",
     campgame: "",
     wallet: "",
-   
+
     recorder: getUser,
   });
 
-  const { reporter, typeproblem, detail, campgame, wallet  } = values;
+  const { reporter, typeproblem, detail, campgame, wallet } = values;
 
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -77,7 +83,6 @@ const FormComponent = () => {
           detail: "",
           campgame: "",
           wallet: "",
-         
         });
         SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
 
@@ -212,7 +217,7 @@ const FormComponent = () => {
         </div>
 
         <div className="mt-3">
-          <InputGroup className="mt-3">
+          <InputGroup className="mt-3" style={navDropdownItemStyle}>
             <InputGroup.Text
               className=""
               style={{
@@ -301,7 +306,7 @@ const FormComponent = () => {
         </div>
 
         <div className="mt-3">
-          <InputGroup className="mt-3">
+          <InputGroup className="mt-3" style={navDropdownItemStyle}>
             <InputGroup.Text
               style={{
                 color: "blue",
@@ -413,14 +418,29 @@ const FormComponent = () => {
           </InputGroup>
         </div>
         <div className="mt-3">
-          <InputGroup className="mt-3">
-            <InputGroup.Text>แพลตฟอร์ม</InputGroup.Text>
+          <InputGroup className="mt-3" style={navDropdownItemStyle}>
+            <InputGroup.Text
+              className=""
+              style={{
+                color: "blue",
+                fontSize: "15px",
+                fontFamily: "Times New Roman",
+              }}
+            >
+              แพลตฟอร์ม
+            </InputGroup.Text>
             <FormControl size="small" sx={{ m: 1, minWidth: 400 }}>
+              <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
               <Select1
-                aria-label="Wallet"
+                defaultValue=""
+                id="grouped-select"
+                label="Grouping"
                 onChange={inputValue("wallet")}
                 value={wallet}
               >
+                <MenuItem value="">
+                  <em>--กรุณาเลือกแพลตฟอร์ม--</em>
+                </MenuItem>
                 {/* <option>Open this select menu</option>
               <option value="bioclub">bioclub</option>
               <option value="bioone">bioone</option>

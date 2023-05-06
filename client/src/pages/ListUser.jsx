@@ -26,23 +26,24 @@ const ListUser = () => {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">Role</th>
-            <th scope="col">Status</th>
-            <th scope="col">CreatedAt</th>
-            <th scope="col">ActiveAt</th>
+            <th scope="col">ลำดับ</th>
+            <th scope="col">ชื่อ</th>
+            <th scope="col">ระดับ</th>
+            <th scope="col">สถานะ</th>
+            <th scope="col"className="text-center">วันที่สร้าง</th>
+            <th scope="col">เข้าใช้งานล่าสุด</th>
           </tr>
         </thead>
         <tbody>
           {value.map((item, index) => (
-            <tr key={index}>
+            <tr key={index} className="text-center">
               <th scope="row">{index + 1}</th>
               <td>{item.username}</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td> {moment(item.updatedAt).locale("th").format("lll")} น.</td>
-              <td>@mdo</td>
+              <td>{item.role}</td>
+              <td>{item.enabled}</td>
+              <td >{moment(item.createdAt).locale("th").format("lll")}</td>
+              <td> {moment(item.updatedAt).locale("th").startOf('hour').fromNow()}</td>
+              {/* <td> {moment(item.updatedAt).locale("th").format("lll")} น.</td> */}
             </tr>
           ))}
         </tbody>

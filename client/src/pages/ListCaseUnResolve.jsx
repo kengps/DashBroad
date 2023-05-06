@@ -25,7 +25,7 @@ const ListCaseUnResolve = () => {
   const [search, setSearch] = useState("");
 
   const [currentPage, setCurrentPage] = useState([]);
-  const ITEM_PER_PAGE = 10;
+  const ITEM_PER_PAGE = 20;
 
   useEffect(() => {
     loadData();

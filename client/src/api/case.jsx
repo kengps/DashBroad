@@ -7,6 +7,13 @@ export const sendCase = async (value) => {
     value
   );
 };
+export const listCases2 = async (value) => {
+  console.log("ข้อมูลที่ส่งมา1", value);
+  return await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/listcase`,
+    value
+  );
+};
 
 
 export const listCases = async (value,currentPage,ITEM_PER_PAGE) => {
@@ -54,6 +61,13 @@ export const resetPassword1 = async (authtoken, id , values) => {
   );
 };
 
+export const changeDetail = async (id,value) => {
+  console.log("ข้อมูลที่ส่งมา5", value);
+  return await axios.put(
+    `${import.meta.env.VITE_REACT_APP_API}/change-detail/${id}`,
+    value
+  );
+};
 
 //*listCases
 // params ใน axios.get() ใช้สำหรับกำหนด query parameters ที่จะส่งไปยัง API endpoint ที่เราต้องการเรียกใช้ โดยมีรูปแบบเป็น object ที่ประกอบไปด้วย key-value pairs ของ query parameters ที่ต้องการส่ง ในที่นี้ เรากำหนด params ได้ดังนี้:
