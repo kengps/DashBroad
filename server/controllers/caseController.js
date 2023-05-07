@@ -3,7 +3,7 @@ const Users = require("../models/register");
 
 let count = 0;
 exports.requestUser = async (req, res) => {
-  const { reporter, typeproblem, detail, campgame, wallet, recorder } =
+  const { reporter, problemDetail,problem, detail, campgame, wallet, recorder } =
     req.body;
   try {
     count++;
@@ -38,7 +38,8 @@ exports.requestUser = async (req, res) => {
     cases = new Cases({
       caseId,
       reporter,
-      typeproblem,
+      problem,
+      problemDetail,
       detail,
       campgame,
       wallet,

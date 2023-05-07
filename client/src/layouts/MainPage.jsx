@@ -32,7 +32,6 @@ const MainPage = () => {
           <AppHeader />
           <Space className="SideMenuAndPageContent">
             <SideMenu />
-
             <PageContent />
           </Space>
           <AppFooter />
@@ -51,6 +50,7 @@ const MainPage = () => {
       path: "*",
       element: <Navigate to="/dashboard/app" />,
     },
+   
   ]);
 
   return routes;

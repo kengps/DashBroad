@@ -122,6 +122,11 @@ const changeTheme = (value) => {
                   label: "สมาชิกทั้งหมด",
                   key: "/dashboard/listuser",
                   icon:<TeamOutlined />
+                },
+                {
+                  label: "สมาชิกทั้งหมด",
+                  key: "/dashboard/work",
+                  icon:<TeamOutlined />
                 }
               ]
           },

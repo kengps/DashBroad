@@ -9,10 +9,15 @@ const schemaCase = mongoose.Schema(
       type: String,
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
-    typeproblem: {
+    problem: {
       type: {},
       required: true,
     },
+    problemDetail: {
+      type: {},
+      required: true,
+    },
+
     detail: {
       type: {},
       required: true,
@@ -27,7 +32,7 @@ const schemaCase = mongoose.Schema(
     },
     editors: {
       type: String,
-      default: '@pr0jectsp',
+      default: "@pr0jectsp",
       required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
     recorder: {

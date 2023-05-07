@@ -16,6 +16,7 @@ import { currentUser } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import IndexRouter from "../LoadingAndRedirect";
 import Password from "antd/es/input/Password";
+import Work from "../../pages/Work";
 
 
 const AppRoutes = () => {
@@ -52,6 +53,7 @@ const AppRoutes = () => {
       <Route path="/listcase" element={<ListCaseAll />} />
       <Route path="/listuser" element={<ListUser />} />
       <Route path="/reset-password" element={<ChangPassword />} />
+      <Route path="/work" element={<Work />} />
     </Routes>
   </IndexRouter>
   );

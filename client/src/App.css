@@ -127,3 +127,19 @@
 .btn-excel > button {
   margin-left: 10px;
 }
+
+
+
+/* หน้าจอเล็ก */
+@media only screen and (max-width: 600px) {
+  .MuiTypography-root {
+    font-size: 1.5rem;
+  }
+}
+
+/* หน้าจอขนาดกลาง */
+@media only screen and (min-width: 601px) {
+  .MuiTypography-root {
+    font-size: 2rem;
+  }
+}

@@ -49,7 +49,8 @@ const FormComponent = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     reporter: "",
-    typeproblem: "",
+    problem: "",
+    problemDetail: "",
     detail: "",
     campgame: "",
     wallet: "",
@@ -57,7 +58,7 @@ const FormComponent = () => {
     recorder: getUser,
   });
 
-  const { reporter, typeproblem, detail, campgame, wallet } = values;
+  const { reporter, problemDetail, problem, detail, campgame, wallet } = values;
 
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -79,7 +80,8 @@ const FormComponent = () => {
         // toast.success(res.data.message);
         setValues({
           reporter: "",
-          typeproblem: "",
+          problem: "",
+          problemDetail: "",
           detail: "",
           campgame: "",
           wallet: "",
@@ -232,7 +234,11 @@ const FormComponent = () => {
             <Form.Select
               aria-label="test"
               value={selectedOption}
-              onChange={handleChange}
+              //onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                inputValue("problem")(e);
+              }}
             >
               <option key={9999} value="">
                 --กรุณาเลือกประเภทปัญหา--
@@ -245,9 +251,9 @@ const FormComponent = () => {
             {selectedOption === "หลังบ้าน bio" && (
               <Form.Select
                 aria-label="test"
-                value={values.typeproblem}
+                value={values.problemDetail}
                 //onChange={handleChangeDetail}
-                onChange={inputValue("typeproblem")}
+                onChange={inputValue("problemDetail")}
               >
                 <option key={9999} value="">
                   --กรุณาเลือกรายละเอียดปัญหา--
@@ -261,9 +267,9 @@ const FormComponent = () => {
               "กลุ่ม lsm-Pretty Gaming-PG-Evoplay-AMBPOKER" && (
               <Form.Select
                 aria-label="test"
-                value={values.typeproblem}
+                value={values.problemDetail}
                 //onChange={handleChangeDetail}
-                onChange={inputValue("typeproblem")}
+                onChange={inputValue("problemDetail")}
               >
                 <option key={9999} value="">
                   --กรุณาเลือกรายละเอียดปัญหา--
@@ -339,6 +345,7 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
                   Sport
@@ -355,6 +362,7 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
                   Baccarat
@@ -374,6 +382,7 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
                   Slot
@@ -396,18 +405,31 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
-                  Other
+                  Biogame & AMB
                 </ListSubheader>
                 {selectCampGames.map((items, index) =>
-                  items.name !== "Sport" &&
-                  items.name !== "Sexy Baccarat" &&
-                  items.name !== "SA Gaming" &&
-                  items.name !== "Dream Gaming" &&
-                  items.name !== "PG Slot" &&
-                  items.name !== "Slot XO" &&
-                  items.name !== "Live22" ? (
+                  items.name === "Biogame & AMB" ||
+                  items.name === "BioFishing" ? (
+                    <MenuItem key={index} value={items.name}>
+                      {items.name}
+                    </MenuItem>
+                  ) : null
+                )}
+                <ListSubheader
+                  style={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    fontSize: "15px",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Lotto
+                </ListSubheader>
+                {selectCampGames.map((items, index) =>
+                  items.name === "VwinLotto" ? (
                     <MenuItem key={index} value={items.name}>
                       {items.name}
                     </MenuItem>
@@ -450,6 +472,7 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
                   Biogaming
@@ -466,6 +489,7 @@ const FormComponent = () => {
                     fontWeight: "bold",
                     color: "gray",
                     fontSize: "15px",
+                    textDecoration: "underline",
                   }}
                 >
                   Wallet
