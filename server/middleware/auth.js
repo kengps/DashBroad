@@ -11,7 +11,7 @@ exports.authen = async (req, res, next) => {
     // ถ้ามี token ให้ทำการแปลง verify
     const decoded = jwt.verify(token , 'jwtSecret')
 
-    console.log(decoded);
+    // console.log(decoded);
     req.user = decoded.user;
     
     next();

@@ -47,7 +47,7 @@ exports.requestUser = async (req, res) => {
     });
     await cases.save();
     res.send({ message: "ทำการบันทึกข้อมูลสำเร็จ!!!", cases });
-    console.log(cases);
+    // console.log(cases);
   } catch (error) {
     console.log(error);
   }
@@ -75,7 +75,7 @@ exports.allCase = async (req, res) => {
 
 exports.updateCase = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
   } catch (error) {
     console.log(error);
   }
@@ -116,8 +116,8 @@ exports.changeStatus = async (req, res) => {
 
 exports.updateDetail = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log(req.params);
+    // console.log(req.body);
+    // console.log(req.params);
     const { id } = req.body.detailContent;
     const { detail } = req.body;
 
