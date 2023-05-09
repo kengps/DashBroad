@@ -9,7 +9,7 @@ export const sendCase = async (value) => {
 };
 export const listCases2 = async (value) => {
   console.log("ข้อมูลที่ส่งมา1", value);
-  return await axios.post(
+  return await axios.get(
     `${import.meta.env.VITE_REACT_APP_API}/listcase`,
     value
   );

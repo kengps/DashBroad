@@ -3,7 +3,8 @@ import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { SiMicrosoftexcel } from "react-icons/all";
-import { listUser } from "../../api/user";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { listCases2 } from "../../api/case";
 
 const Doughnuts = () => {
   const [value, setValue] = useState([]);
@@ -13,7 +14,7 @@ const Doughnuts = () => {
   }, []);
 
   const loadData = () => {
-    listUser()
+    listCases2()
       .then((res) => {
         console.log(res);
         setValue(res.data);
@@ -37,45 +38,73 @@ const Doughnuts = () => {
   const UserEnabled = value.filter((item) => item.enabled === true).length;
   const UserEnabled1 = value.filter((item) => item.enabled === false).length;
   console.log(UserEnabled);
+
+  const groupedData = value.reduce((acc, cur) => {
+    // ตรวจสอบว่ามีข้อมูลหรือไม่  problemDetail ที่เป็นค่าว่างจะไม่นำมาใช้
+    if (cur.problemDetail)
+      acc[cur.problemDetail] = acc[cur.problemDetail]
+        ? acc[cur.problemDetail] + 1
+        : 1;
+    return acc;
+  }, {});
+  //
+  console.log("problemDetail", groupedData);
+
+  //กำหนดสี
+  const colorBg = [
+    "rgba(255, 99, 132, 1)",
+    "rgba(54, 162, 235, 1)",
+    "rgba(255, 206, 86, 1)",
+    "rgba(75, 192, 192, 1)",
+    "rgba(153, 102, 255, 1)",
+    "rgba(255, 159, 64, 1)",
+    "rgba(255, 0, 255, 1)",
+  ];
+  const colorBg2 = [
+    "rgba(255, 99, 132, 0.2)",
+    "rgba(54, 162, 235, 0.2)",
+    "rgba(255, 206, 86, 0.2)",
+    "rgba(75, 192, 192, 0.2)",
+    "rgba(153, 102, 255, 0.2)",
+    "rgba(255, 159, 64, 0.2)",
+    "rgba(255, 0, 255, 0.2)",
+  ];
   const data = {
-    labels: ["Users", "Admins", "Userที่ Active", "Userที่โดนปิด"],
+    labels: Object.keys(groupedData),
     datasets: [
       {
-        label: "# of Votes",
-        data: [userCount, adminCount, UserEnabled, UserEnabled1],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 0, 255, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-          "rgba(255, 0, 255, 1)",
-        ],
+        label: "# จำนวน",
+        data: Object.values(groupedData),
+        backgroundColor: colorBg2,
+        borderColor: colorBg,
         borderWidth: 1,
       },
     ],
   };
   const options = {
-    tooltips: {
-      callbacks: {
-        label: function (tooltipItem, data) {
-          var dataset = data.datasets[tooltipItem.datasetIndex];
-          var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-            return previousValue + currentValue;
+    plugins: {
+      title: {
+        display: true,
+        text: "รายละเอียด",
+      },
+      datalabels: {
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
           });
-          var currentValue = dataset.data[tooltipItem.index];
-          var percentage = parseFloat(((currentValue / total) * 100).toFixed(1));
-          return percentage + "%";
+          let percentage = ((value * 100) / sum).toFixed(2) + "%";
+          return percentage;
+        },
+        color: colorBg,
+        labels: {
+          title: {
+            font: {
+              size: "8",
+              weight: "bold",
+            },
+          },
         },
       },
     },
@@ -108,7 +137,7 @@ const Doughnuts = () => {
           buttonText={<SiMicrosoftexcel />}
         />
       </div>
-      <Doughnut data={data} options={options}/>
+      <Doughnut data={data} options={options} plugins={[ChartDataLabels]} />
     </div>
   );
 };

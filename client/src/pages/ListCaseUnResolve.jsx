@@ -182,7 +182,7 @@ const ListCaseUnResolve = () => {
           <tr className="table-secondary" style={{ fontSize: "16px" }}>
             <th scope="col">CodeCase</th>
             <th scope="col">ผู้แจ้งปัญหา</th>
-            <th scope="col">ประเภทปัญหา</th>
+            <th scope="col">ประเภท</th>
             <th scope="col">รายละเอียด</th>
             <th scope="col">ค่ายเกม</th>
             <th scope="col" className="text-center">
@@ -221,7 +221,7 @@ const ListCaseUnResolve = () => {
               <tr key={index}>
                 <th scope="row">{data.caseId}</th>
                 <td>{data.reporter}</td>
-                <td>{data.typeproblem}</td>
+                <td>{data.problem}</td>
                 <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
                   {data.detail}
                 </td>

@@ -144,7 +144,7 @@ const FormComponent = () => {
   //ประเภทของปัญหา
   const typeProblem = [
     { id: "1", name: "หลังบ้าน bio" },
-    { id: "2", name: "กลุ่ม lsm-Pretty Gaming-PG-Evoplay-AMBPOKER" },
+    { id: "2", name: "กลุ่ม lsm-Pretty Gaming" },
     { id: "3", name: "ขอ API" },
     { id: "4", name: "เรื่องทั่วไป" },
   ];
@@ -264,7 +264,7 @@ const FormComponent = () => {
               </Form.Select>
             )}
             {selectedOption ===
-              "กลุ่ม lsm-Pretty Gaming-PG-Evoplay-AMBPOKER" && (
+              "กลุ่ม lsm-Pretty Gaming" && (
               <Form.Select
                 aria-label="test"
                 value={values.problemDetail}

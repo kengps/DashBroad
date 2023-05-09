@@ -21,8 +21,6 @@ import Bars from "../components/Charts/Bar";
 import Doughnuts from "../components/Charts/Doughnut";
 import PieChart from "../components/Charts/PieChart";
 
-
-
 const DashBorad = () => {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -43,16 +41,14 @@ const DashBorad = () => {
         </Typography>
 
         <Grid container spacing={3}>
-
-
-        <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={3}>
             <Item>
               <PieChart />
             </Item>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <Item>
-              <Pies />
+              <Doughnuts />
             </Item>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -65,7 +61,6 @@ const DashBorad = () => {
               <Pies />
             </Item>
           </Grid>
-
 
           <Grid item xs={12} md={6} lg={8}>
             <Item>
