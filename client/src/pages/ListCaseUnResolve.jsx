@@ -273,7 +273,7 @@ const ListCaseUnResolve = () => {
                   </Button>
 
                   <Modal
-                    title="Basic Modal"
+                    title="Copy Case"
                     open={isModalOpen}
                     onOk={handleOk}
                     onCancel={handleCancel}
@@ -296,7 +296,7 @@ const ListCaseUnResolve = () => {
                           </p>
                           <p className="d-block m-0">
                             <strong>ประเภทปัญหา: </strong>
-                            {selectedCase.typeproblem}
+                            {selectedCase.problemDetail}
                           </p>
                           <p
                             className="d-block m-0"
@@ -334,7 +334,7 @@ const ListCaseUnResolve = () => {
                     onOk={handleOk2}
                     onCancel={handleCancel2}
                   >
-                    <p>{}</p>
+                   
                     <InputGroup>
                       <InputGroup.Text>รายละเอียด</InputGroup.Text>
                     </InputGroup>
