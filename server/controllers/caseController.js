@@ -3,8 +3,15 @@ const Users = require("../models/register");
 
 let count = 0;
 exports.requestUser = async (req, res) => {
-  const { reporter, problemDetail,problem, detail, campgame, wallet, recorder } =
-    req.body;
+  const {
+    reporter,
+    problemDetail,
+    problem,
+    detail,
+    campgame,
+    wallet,
+    recorder,
+  } = req.body;
   try {
     count++;
     // const codeCaseId = "BGMC";
@@ -116,10 +123,10 @@ exports.changeStatus = async (req, res) => {
 
 exports.updateDetail = async (req, res) => {
   try {
-    // console.log(req.body);
-    // console.log(req.params);
-    const { id } = req.body.detailContent;
-    const { detail } = req.body;
+ 
+
+    const {id, detail} = req.body.values
+    //console.log('ข้อมูลที่ส่งมาจาก client','>> ID',id,'>> Detail', detail);
 
     const detailNew = await Cases.findOneAndUpdate(
       { _id: id }, // ตัวที่ค้นหา
@@ -133,3 +140,7 @@ exports.updateDetail = async (req, res) => {
   }
 };
 
+exports.updateCaseDetail = (req, res) => {
+  console.log(req.body);
+  console.log(req.params);
+};

@@ -13,9 +13,14 @@ import {
   EditOutlined,
   TeamOutlined,
   TableOutlined,
+  AreaChartOutlined,
 } from "@ant-design/icons";
 import { listCases } from "../../api/case";
-
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
+import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
+import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
+import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 const SideMenu = () => {
   const navigate = useNavigate();
 
@@ -23,7 +28,6 @@ const SideMenu = () => {
 
   useEffect(() => {
     loadData();
-    
   }, []);
 
   const loadData = () => {
@@ -80,17 +84,17 @@ const SideMenu = () => {
           {
             label: "Dashboard",
             key: "/dashboard/app",
-            icon: <DashboardOutlined />,
+            icon: <QueryStatsIcon />,
           },
           {
             label: "หน้าการทำงาน",
             key: "homework",
-            icon: <HomeOutlined />,
+            icon: <WidgetsOutlinedIcon />,
             children: [
               {
                 label: "ฟอร์มบันทึกเคส",
                 key: "/dashboard/formcontrol",
-                icon: <FormOutlined />,
+                icon: <DynamicFormIcon />,
                 // handleAddData: handleAddData()
               },
               {
@@ -108,7 +112,7 @@ const SideMenu = () => {
                   </span>
                 ),
                 key: "/dashboard/listcase",
-                icon: <UnorderedListOutlined />,
+                icon: <FormatListBulletedOutlinedIcon />,
               },
               {
                 label: (
@@ -128,7 +132,7 @@ const SideMenu = () => {
                   </span>
                 ),
                 key: "/dashboard/listunresolve",
-                icon: <BugOutlined />,
+                icon: <PendingActionsOutlinedIcon />,
                 // badge: <Badge count={data.filter((data) => data.status === 'รอการแก้ไข').length} />
               },
             ],

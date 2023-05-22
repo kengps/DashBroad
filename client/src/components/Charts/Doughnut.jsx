@@ -16,7 +16,7 @@ const Doughnuts = () => {
   const loadData = () => {
     listCases2()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setValue(res.data);
       })
       .catch((err) => {
@@ -37,7 +37,7 @@ const Doughnuts = () => {
   const adminCount = value.filter((item) => item.role === "admin").length;
   const UserEnabled = value.filter((item) => item.enabled === true).length;
   const UserEnabled1 = value.filter((item) => item.enabled === false).length;
-  console.log(UserEnabled);
+  // console.log(UserEnabled);
 
   const groupedData = value.reduce((acc, cur) => {
     // ตรวจสอบว่ามีข้อมูลหรือไม่  problemDetail ที่เป็นค่าว่างจะไม่นำมาใช้
@@ -48,7 +48,7 @@ const Doughnuts = () => {
     return acc;
   }, {});
   //
-  console.log("problemDetail", groupedData);
+  // console.log("problemDetail", groupedData);
 
   //กำหนดสี
   const colorBg = [

@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { getUser } from "../Services/authorize";
 import { NavDropdown, InputGroup } from "react-bootstrap";
 import { BiUser, AiOutlineSetting } from "react-icons/all";
@@ -76,7 +76,7 @@ const AppHeader = () => {
     .then((res) => {
       swal.fire('แจ้งเตือน','ทำการเปลี่ยนรหัสผ่านสำเร็จ', 'success')
       setValues('')
-      console.log(res);
+      console.log('ง/ง',res);
     })
     .catch((err) => {
       console.log(err);
@@ -134,7 +134,7 @@ const AppHeader = () => {
           <NavDropdown
             title={
               <>
-                <BiUser /> {user.username}
+                <AccountCircleIcon /> {user.username}
               </>
             }
             id="basic-nav-dropdown"

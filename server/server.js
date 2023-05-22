@@ -6,6 +6,8 @@ const bodyParser =require('body-parser')
 const mongoose = require('mongoose');
 const app = express();
 
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 //router
 const caseRouter = require('./routers/caseRoute')
 const ReAndLogRouter = require('./routers/LoginAndRegister')
@@ -20,7 +22,7 @@ const mongoAtlas = process.env.DATABASE
 
 
 
-
+// เชื่อมต่อ MongoDB
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: false
@@ -28,7 +30,20 @@ mongoose.connect(process.env.DATABASE, {
 .catch((err) => console.log('เกิดข้อผิดพลาด'+err))
 
 
-
+//  เชื่อมต่อ socket
+io.on('connection', (socket) => {
+    console.log('A user connected');
+  
+    socket.on('chat message', (message) => {
+      console.log('Received message:', message);
+      io.emit('chat message', message); // ส่งข้อมูล message ให้กับทุกคนที่เชื่อมต่อ
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('A user disconnected');
+    });
+  });
+  
 
 //app.use(bodyParser.json({limit: "20mb"}))
 app.use(express.json());

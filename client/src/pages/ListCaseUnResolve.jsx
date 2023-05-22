@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import MyForm from "../components/NavbarFormcase/ProblemType";
-import { changeStatus, listCases, deleteCase } from "../api/case";
+import { changeStatus, listCases, deleteCase, changeDetail } from "../api/case";
 import { Button, Card, Tag, message, Select, Modal, Input } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
@@ -12,14 +12,17 @@ import Pagination from "react-paginate";
 import { RxCross2 } from "react-icons/rx";
 import moment from "moment/min/moment-with-locales";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-
+import swal from "sweetalert2";
 const { TextArea } = Input;
 
 import ReactQuill from "react-quill";
 
 const ListCaseUnResolve = () => {
   //state สำหรับการแก้ไข
-  const [detailContent, setDetailContent] = useState("");
+  const [values, setValues] = useState({
+    id: "",
+    detail: "",
+  });
   const [data, setData] = useState([]);
   // state สำหรับการค้นหาข้อมูล
   const [search, setSearch] = useState("");
@@ -50,8 +53,18 @@ const ListCaseUnResolve = () => {
     e.preventDefault();
     const textToCopy = textRef.current.innerText;
     navigator.clipboard.writeText(textToCopy);
-    toast.success("Copied to clipboard");
-
+    //toast.success("Copied to clipboard");
+    sweetAlert.fire({
+      title: "แจ้งเตือน",
+      text: "Copied to clipboard",
+      icon: "success",
+      didClose: () => {
+        setIsModalOpen(false);
+      },
+    });
+    setTimeout(() => {
+      sweetAlert.close();
+    }, 1000);
     console.log("eee", textRef.current.innerText);
   };
 
@@ -93,10 +106,24 @@ const ListCaseUnResolve = () => {
   };
   const showModal2 = (id) => {
     setIsModalOpen2(true);
-    console.log(id);
+
+    setValues({ ...values, id: id });
   };
   const handleOk2 = () => {
     setIsModalOpen2(false);
+
+    const id = values.id;
+
+    changeDetail(id, { values })
+      .then((res) => {
+        swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
+        setValues("");
+        loadData();
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleCancel2 = () => {
     setIsModalOpen2(false);
@@ -153,10 +180,9 @@ const ListCaseUnResolve = () => {
   };
 
   const handleChangeDetail = (event) => {
-    setDetailContent(event.target.value);
-    console.log("การแก้ไขdetail", event.target.value);
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
-
+  console.log("w,j,", values);
   return (
     <div>
       <InputGroup className="mb-3">
@@ -291,7 +317,7 @@ const ListCaseUnResolve = () => {
                             "<strong> เคส:</strong> {selectedCase.caseId}
                           </p>
                           <p className="d-block m-0">
-                            <strong>ผู้แจ้งปัญหา: </strong>
+                            <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
                             {selectedCase.reporter}
                           </p>
                           <p className="d-block m-0">
@@ -334,7 +360,6 @@ const ListCaseUnResolve = () => {
                     onOk={handleOk2}
                     onCancel={handleCancel2}
                   >
-                   
                     <InputGroup>
                       <InputGroup.Text>รายละเอียด</InputGroup.Text>
                     </InputGroup>
@@ -344,7 +369,6 @@ const ListCaseUnResolve = () => {
                       type="text"
                       name="detail"
                       onChange={handleChangeDetail}
-                      value={detailContent}
                     />
                   </Modal>
                 </td>

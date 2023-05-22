@@ -310,7 +310,7 @@ const FormComponent = () => {
             /> */}
           </InputGroup>
         </div>
-
+        {selectedOption !== "ขอ API" && selectedOption !== "เรื่องทั่วไป" && (
         <div className="mt-3">
           <InputGroup className="mt-3" style={navDropdownItemStyle}>
             <InputGroup.Text
@@ -439,6 +439,7 @@ const FormComponent = () => {
             </FormControl>
           </InputGroup>
         </div>
+        )}
         <div className="mt-3">
           <InputGroup className="mt-3" style={navDropdownItemStyle}>
             <InputGroup.Text

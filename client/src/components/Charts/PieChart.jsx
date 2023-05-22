@@ -5,6 +5,7 @@ import DataLoader from "../../contexts/DataLoader";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 const PieChart = () => {
   const renderChart = (value) => {
+    // console.log('มีมั้ยปะ',value);
     // const bioCount = value.filter(
     //   (item) => item.problem === "หลังบ้าน bio"
     // ).length;
@@ -34,7 +35,7 @@ const PieChart = () => {
       return acc;
     }, {});
 
-    console.log("ได้ชื่อมาหรือไม่", groupedData);
+    // console.log("ได้ชื่อมาหรือไม่", groupedData);
 
     const options = {
       plugins: {

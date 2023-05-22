@@ -21,7 +21,7 @@ const Pies = () => {
     const adminCount = value.filter((item) => item.role === "admin").length;
     const UserEnabled = value.filter((item) => item.enabled === true).length;
     const UserEnabled1 = value.filter((item) => item.enabled === false).length;
-    console.log(UserEnabled);
+    // console.log(UserEnabled);
     const options = {
       tooltips: {
         callbacks: {

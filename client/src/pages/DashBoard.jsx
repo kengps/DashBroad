@@ -20,6 +20,9 @@ import Charts from "../components/Charts/Chart";
 import Bars from "../components/Charts/Bar";
 import Doughnuts from "../components/Charts/Doughnut";
 import PieChart from "../components/Charts/PieChart";
+import BarChart from "../components/Charts/BarChart";
+
+
 
 const DashBorad = () => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -53,7 +56,7 @@ const DashBorad = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <Item>
-              <Pies />
+              <Charts />
             </Item>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -80,6 +83,11 @@ const DashBorad = () => {
           <Grid item xs={12} md={6} lg={4}>
             <Item>
               <Doughnuts />
+            </Item>
+          </Grid>
+          <Grid item xs={12} md={6} lg={12}>
+            <Item>
+              <BarChart />
             </Item>
           </Grid>
         </Grid>

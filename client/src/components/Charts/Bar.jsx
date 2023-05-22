@@ -4,6 +4,8 @@ import "chart.js/auto";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { SiMicrosoftexcel } from "react-icons/all";
 import { listUser } from "../../api/user";
+import { listCases2 } from "../../api/case";
+import moment from "moment";
 
 const Bars = () => {
   const [value, setValue] = useState([]);
@@ -13,9 +15,8 @@ const Bars = () => {
   }, []);
 
   const loadData = () => {
-    listUser()
+    listCases2()
       .then((res) => {
-        console.log(res);
         setValue(res.data);
       })
       .catch((err) => {
@@ -23,104 +24,182 @@ const Bars = () => {
       });
   };
 
-  // Get data for Line Chart
+  const getMonthName = (month) => {
+    return moment()
+      .month(month - 1)
+      .format("MMMM");
+  };
+
   const getChartData = () => {
-    const data = {
-      labels: [],
+    const problemsByMonth = value.reduce((acc, curr) => {
+      const date = moment(curr.createdAt).locale('th');
+      const month = date.month() + 1;
+      const problem = curr.problem;
+      if (!acc[month]) {
+        acc[month] = {};
+      }
+      if (!acc[month][problem]) {
+        acc[month][problem] = 0;
+      }
+      acc[month][problem]++;
+      return acc;
+    }, {});
+
+    const labels = [];
+    const bioData = [];
+    const lsmData = [];
+    const apiData = [];
+    const otherData = [];
+    for (let i = 1; i <= 12; i++) {
+      const monthData = problemsByMonth[i] || {};
+      const bioCount = monthData["หลังบ้าน bio"] || 0;
+      const lsmCount = monthData["กลุ่ม lsm-Pretty Gaming"] || 0;
+      const apiCount = monthData["ขอ API"] || 0;
+      const otherCount = monthData["เรื่องทั่วไป"] || 0;
+      const monthLabel = getMonthName(i);
+      labels.push(monthLabel);
+      bioData.push(bioCount);
+      lsmData.push(lsmCount);
+      apiData.push(apiCount);
+      otherData.push(otherCount);
+    }
+
+    return {
+      labels,
       datasets: [
         {
-          label: "User Registrations",
-          data: [],
-          fill: false,
+          label: "หลังบ้าน bio",
+          data: bioData,
           backgroundColor: "rgba(75,192,192,0.4)",
           borderColor: "rgba(75,192,192,1)",
           borderWidth: 1,
         },
         {
-          label: "Admin Registrations",
-          data: [],
-          fill: false,
+          label: "กลุ่ม lsm-Pretty Gamings",
+          data: lsmData,
           backgroundColor: "rgba(255,99,132,0.4)",
           borderColor: "rgba(255,99,132,1)",
           borderWidth: 1,
         },
         {
-          label: "Member Registrations",
-          data: [],
-          fill: false,
+          label: "ขอ API",
+          data: apiData,
           backgroundColor: "rgba(54, 162, 235, 0.4)",
           borderColor: "rgba(54, 162, 235, 1)",
           borderWidth: 1,
         },
+        {
+          label: "เรื่องทั่วไป",
+          data: otherData,
+          backgroundColor: "rgba(153, 102, 255, 0.4)",
+          borderColor: "rgba(153, 102, 255, 1)",
+          borderWidth: 1,
+        },
       ],
     };
-
-    const dateArr = [];
-    const countArr = [];
-    const adminArr = [];
-    const memberArr = [];
-
-    // Calculate data for each role
-    value.forEach((item) => {
-      const itemDate = new Date(item.createdAt).toLocaleDateString("en-US", {
-        month: "long",
-      });
-      const index = dateArr.findIndex((date) => date === itemDate);
-      if (index >= 0) {
-        countArr[index]++;
-        if (item.role === "admin") {
-          adminArr[index]++;
-        } else if (item.role === "member") {
-          memberArr[index]++;
-        }
-      } else {
-        dateArr.push(itemDate);
-        countArr.push(1);
-        adminArr.push(item.role === "admin" ? 1 : 0);
-        memberArr.push(item.role === "member" ? 1 : 0);
-      }
-    });
-
-    data.labels = dateArr;
-    data.datasets[0].data = countArr;
-    data.datasets[1].data = adminArr;
-    data.datasets[2].data = memberArr;
-
-    return data;
   };
 
   return (
     <div>
-      <table id="line-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>User Count</th>
-            <th>Admin Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getChartData().labels.map((label, index) => (
-            <tr key={index}>
-              <td>{label}</td>
-              <td>{getChartData().datasets[0].data[index]}</td>
-              <td>{getChartData().datasets[1].data[index]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="btn-excel">
-        <ReactHTMLTableToExcel
-          className="btn btn-info"
-          table="line-table"
-          filename="line_chart"
-          sheet="Sheet"
-          buttonText={<SiMicrosoftexcel />}
-        />
-      </div>
       <Line data={getChartData()} />
     </div>
   );
 };
 
 export default Bars;
+
+// const Bars = () => {
+//   const [value, setValue] = useState([]);
+
+//   useEffect(() => {
+//     loadData();
+//   }, []);
+
+//   const loadData = () => {
+//     listCases2()
+//       .then((res) => {
+//         setValue(res.data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   };
+
+//   const getChartData = () => {
+//     // reduce array of cases to an object of problems by month
+//     const problemsByMonth = value.reduce((acc, curr) => {
+//       const date = new Date(curr.createdAt);
+//       const month = date.getMonth() + 1;
+//       const problem = curr.problem;
+//       if (!acc[month]) {
+//         acc[month] = {};
+//       }
+//       if (!acc[month][problem]) {
+//         acc[month][problem] = 0;
+//       }
+//       acc[month][problem]++;
+//       return acc;
+//     }, {});
+
+//     // generate labels and data for each problem category
+//     const labels = [];
+//     const bioData = [];
+//     const lsmData = [];
+//     const apiData = [];
+//     const otherData = [];
+//     for (let i = 1; i <= 12; i++) {
+//       const monthData = problemsByMonth[i] || {};
+//       const bioCount = monthData["หลังบ้าน bio"] || 0;
+//       const lsmCount = monthData["กลุ่ม lsm-Pretty Gaming"] || 0;
+//       const apiCount = monthData["ขอ API"] || 0;
+//       const otherCount = monthData["เรื่องทั่วไป"] || 0;
+//       labels.push(`${i}`);
+//       bioData.push(bioCount);
+//       lsmData.push(lsmCount);
+//       apiData.push(apiCount);
+//       otherData.push(otherCount);
+//     }
+
+//     return {
+//       labels,
+//       datasets: [
+//         {
+//           label: "หลังบ้าน bio",
+//           data: bioData,
+//           backgroundColor: "rgba(75,192,192,0.4)",
+//           borderColor: "rgba(75,192,192,1)",
+//           borderWidth: 1,
+//         },
+//         {
+//           label: "กลุ่ม lsm-Pretty Gamings",
+//           data: lsmData,
+//           backgroundColor: "rgba(255,99,132,0.4)",
+//           borderColor: "rgba(255,99,132,1)",
+//           borderWidth: 1,
+//         },
+//         {
+//           label: "ขอ API",
+//           data: apiData,
+//           backgroundColor: "rgba(54, 162, 235, 0.4)",
+//           borderColor: "rgba(54, 162, 235, 1)",
+//           borderWidth: 1,
+//         },
+//         {
+//           label: "เรื่องทั่วไป",
+//           data: otherData,
+//           backgroundColor: "rgba(153, 102, 255, 0.4)",
+//           borderColor: "rgba(153, 102, 255, 1)",
+//           borderWidth: 1,
+//         },
+//       ],
+//     };
+//   };
+
+//   return (
+//     <div>
+//       <Line data={getChartData()} />
+//     </div>
+//   );
+// };
+
+// export default Bars;
