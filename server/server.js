@@ -30,19 +30,19 @@ mongoose.connect(process.env.DATABASE, {
 .catch((err) => console.log('เกิดข้อผิดพลาด'+err))
 
 
-//  เชื่อมต่อ socket
-io.on('connection', (socket) => {
-    console.log('A user connected');
+// //  เชื่อมต่อ socket
+// io.on('connection', (socket) => {
+//     console.log('A user connected');
   
-    socket.on('chat message', (message) => {
-      console.log('Received message:', message);
-      io.emit('chat message', message); // ส่งข้อมูล message ให้กับทุกคนที่เชื่อมต่อ
-    });
+//     socket.on('chat message', (message) => {
+//       console.log('Received message:', message);
+//       io.emit('chat message', message); // ส่งข้อมูล message ให้กับทุกคนที่เชื่อมต่อ
+//     });
   
-    socket.on('disconnect', () => {
-      console.log('A user disconnected');
-    });
-  });
+//     socket.on('disconnect', () => {
+//       console.log('A user disconnected');
+//     });
+//   });
   
 
 //app.use(bodyParser.json({limit: "20mb"}))
