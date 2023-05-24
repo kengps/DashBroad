@@ -18,9 +18,9 @@ import {
 import { listCases } from "../../api/case";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
-import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
-import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import DynamicFormIcon from '@mui/icons-material/DynamicForm';
+import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 const SideMenu = () => {
   const navigate = useNavigate();
 
@@ -145,17 +145,12 @@ const SideMenu = () => {
             children: [
               {
                 label: "ตารางวันทำงาน",
-                key: "/dashboard/reset-password",
+                key: "/dashboard/work",
                 icon: <TableOutlined />,
               },
               {
                 label: "สมาชิกทั้งหมด",
                 key: "/dashboard/listuser",
-                icon: <TeamOutlined />,
-              },
-              {
-                label: "สมาชิกทั้งหมด",
-                key: "/dashboard/work",
                 icon: <TeamOutlined />,
               },
             ],

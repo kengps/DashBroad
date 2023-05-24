@@ -16,6 +16,7 @@ import swal from "sweetalert2";
 const { TextArea } = Input;
 
 import ReactQuill from "react-quill";
+import { Helmet } from "react-helmet-async";
 
 const ListCaseUnResolve = () => {
   //state สำหรับการแก้ไข
@@ -117,8 +118,8 @@ const ListCaseUnResolve = () => {
     changeDetail(id, { values })
       .then((res) => {
         swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
-        setValues("");
         loadData();
+        setValues({detail: ""});
         console.log(res);
       })
       .catch((err) => {
@@ -185,6 +186,9 @@ const ListCaseUnResolve = () => {
   console.log("w,j,", values);
   return (
     <div>
+      <Helmet>
+          <title> Dashboard | CaseUnResolve </title>
+        </Helmet>
       <InputGroup className="mb-3">
         <Form.Control
           placeholder="ค้นหาCodeCase"
@@ -332,7 +336,7 @@ const ListCaseUnResolve = () => {
                             {selectedCase.detail}
                           </p>
                           <p className="d-block m-0 font-weight-bold">
-                            <strong>ค่ายเกม:</strong> {selectedCase.campgame}
+                            <strong>ค่ายเกม:</strong> {selectedCase}
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้ลงเคส: </strong>

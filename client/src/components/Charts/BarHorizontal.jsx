@@ -1,32 +1,37 @@
 import React, { useContext, useEffect } from "react";
-import { Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+import DataLoader from "../../contexts/DataLoader";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { SiMicrosoftexcel } from "react-icons/all";
-
-import DataLoader from "../../contexts/DataLoader";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-const PieChart = () => {
+const BarHorizontal = () => {
   const renderChart = (value) => {
     const groupedData = value.reduce((acc, cur) => {
-      acc[cur.problem] = acc[cur.problem] ? acc[cur.problem] + 1 : 1;
+      acc[cur.recorder] = acc[cur.recorder] ? acc[cur.recorder] + 1 : 1;
       return acc;
     }, {});
 
-    console.log("Pie ได้ชื่อมาหรือไม่", groupedData);
-    const PieKeys = Object.keys(groupedData);
-    const PieValue = Object.values(groupedData);
-    console.log("PieKeys", PieKeys);
-    console.log("", PieValue);
+    const labelArr1 = Object.keys(groupedData);
+    const selectedData = groupedData[labelArr1[0]]; // เลือกข้อมูลตัวที่ 3
+    const selectedValue = labelArr1[2];
+  
 
-    //   let sumTotal = valueArr2.reduce(function (prev, curr) {
-    //     return prev + curr;
-    // }, 0);
 
     const options = {
+      indexAxis: "y",
+      elements: {
+        bar: {
+          borderWidth: 2,
+        },
+      },
+      responsive: true,
       plugins: {
+        legend: {
+          position: "right",
+        },
         title: {
           display: true,
-          text: "ประเภทของปัญหาทั้งหมด",
+          text: "จำนวนผู้ลงเคสทั้งหมด",
         },
         datalabels: {
           formatter: (value, ctx) => {
@@ -63,15 +68,10 @@ const PieChart = () => {
             "rgba(75, 192, 192, 1)",
             "rgba(153, 102, 255, 1)",
             "rgba(255, 159, 64, 1)",
-            "rgba(255, 99, 227, 1)",
-
-            "rgba(99, 165, 255, 1)",
-            "rgba(101, 99, 255, 1)",
-            "rgba(88, 214, 141 , 1)",
-            "rgba(229, 152, 102, 1)",
+            "rgba(255, 0, 255, 1)",
           ],
           hoverBorderColor: "#666666",
-          label: "# จำนวน",
+
           data: Object.values(groupedData),
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
@@ -81,10 +81,6 @@ const PieChart = () => {
             "rgba(153, 102, 255, 0.2)",
             "rgba(255, 159, 64, 0.2)",
             "rgba(255, 0, 255, 0.2)",
-            "rgba(99, 165, 255, 0.2)",
-            "rgba(101, 99, 255, 0.2)",
-            "rgba(88, 214, 141 , 0.2)",
-            "rgba(229, 152, 102, 0.2)",
           ],
           borderColor: [
             "rgba(255, 99, 132, 1)",
@@ -93,19 +89,14 @@ const PieChart = () => {
             "rgba(75, 192, 192, 1)",
             "rgba(153, 102, 255, 1)",
             "rgba(255, 159, 64, 1)",
-            "rgba(255, 99, 255, 1)",
-            
-            "rgba(99, 165, 255, 1)",
-            "rgba(101, 99, 255, 1)",
-            "rgba(88, 214, 141 , 1)",
-            "rgba(229, 152, 102, 1)",
+            "rgba(255, 0, 255, 1)",
           ],
           borderWidth: 1,
         },
       ],
     };
 
-    return <Pie data={data} options={options} plugins={[ChartDataLabels]} />;
+    return <Bar data={data} options={options} plugins={[ChartDataLabels]} />;
   };
 
   return (
@@ -144,4 +135,4 @@ const PieChart = () => {
   );
 };
 
-export default PieChart;
+export default BarHorizontal;

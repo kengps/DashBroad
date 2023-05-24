@@ -45,8 +45,9 @@ const Bars = () => {
       return acc;
     }, {});
 
+
     const labels = [];
-    const bioData = [];
+    const bioData = []; 
     const lsmData = [];
     const apiData = [];
     const otherData = [];
@@ -98,10 +99,21 @@ const Bars = () => {
       ],
     };
   };
-
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
+      },
+      title: {
+        display: true,
+        text: "จำนวนผู้ลงเคสทั้งหมด",
+      },
+    },
+  };
   return (
     <div>
-      <Line data={getChartData()} />
+      <Line data={getChartData()}  options={options}/>
     </div>
   );
 };

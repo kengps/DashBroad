@@ -32,7 +32,7 @@ const Lines = () => {
 
   const getChartData = () => {
     const problemsByDate = value.reduce((acc, curr) => {
-      const date = moment(curr.createdAt).locale('th').format('YYYY-MM-DD');
+      const date = moment(curr.createdAt).locale("th").format("YYYY-MM-DD");
       const problem = curr.problem;
       if (!acc[date]) {
         acc[date] = {};
@@ -43,28 +43,27 @@ const Lines = () => {
       acc[date][problem]++;
       return acc;
     }, {});
-  
+
     const labels = [];
     const bioData = [];
     const lsmData = [];
     const apiData = [];
     const otherData = [];
-    const currentDate = moment().locale('th').startOf('month');
+    const currentDate = moment().locale("th").startOf("month");
     for (let i = 0; i < 30; i++) {
-      const date = currentDate.clone().add(i, 'days').format('YYYY-MM-DD');
+      const date = currentDate.clone().add(i, "days").format("YYYY-MM-DD");
       const dateData = problemsByDate[date] || {};
       const bioCount = dateData["หลังบ้าน bio"] || 0;
       const lsmCount = dateData["กลุ่ม lsm-Pretty Gaming"] || 0;
       const apiCount = dateData["ขอ API"] || 0;
       const otherCount = dateData["เรื่องทั่วไป"] || 0;
-      const dateLabel = currentDate.clone().add(i, 'days').format("D MMMM");
+      const dateLabel = currentDate.clone().add(i, "days").format("D MMMM");
       labels.push(dateLabel);
       bioData.push(bioCount);
       lsmData.push(lsmCount);
       apiData.push(apiCount);
       otherData.push(otherCount);
     }
-  
 
     return {
       labels,
@@ -101,9 +100,21 @@ const Lines = () => {
     };
   };
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
+      },
+      title: {
+        display: true,
+        text: "จำนวนผู้ลงเคสทั้งหมด",
+      },
+    },
+  };
   return (
     <div>
-      <Line data={getChartData()} />
+      <Line data={getChartData()} options={options} />
     </div>
   );
 };

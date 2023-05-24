@@ -21,8 +21,9 @@ import Bars from "../components/Charts/Bar";
 import Doughnuts from "../components/Charts/Doughnut";
 import PieChart from "../components/Charts/PieChart";
 import BarChart from "../components/Charts/BarChart";
-
-
+import Polar from "../components/Charts/Polar";
+import BarHorizontal from "../components/Charts/BarHorizontal";
+import LineRecorder from "../components/Charts/LineRecorder";
 
 const DashBorad = () => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -43,48 +44,53 @@ const DashBorad = () => {
           DashBoard
         </Typography>
 
+        {/* Pie Chart แสดงข้อมูลประเภท */}
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <Item>
               <PieChart />
             </Item>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* Doughnuts Chart แสดงข้อมูลรายละเอียด */}
+          <Grid item xs={12} md={6} lg={4}>
             <Item>
               <Doughnuts />
             </Item>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* Polar Chart แสดงข้อมูลจำนวนเคสทั้งหมด */}
+          <Grid item xs={12} md={6} lg={4}>
             <Item>
-              <Charts />
-            </Item>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <Item>
-              <Pies />
+              <Polar />
             </Item>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* Lines Chart แสดงข้อมูลจำนวนเคสทั้งหมด */}
+          <Grid item xs={12} md={6} lg={6}>
             <Item>
               <Lines />
             </Item>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Item>
-              <Pies />
-            </Item>
-          </Grid>
-          <Grid item xs={12} md={6} lg={8}>
+
+          {/* Bars Chart แสดงข้อมูลรายละเอียดแบบรายเดือน */}
+          <Grid item xs={12} md={6} lg={6}>
             <Item>
               <Bars />
             </Item>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+
+          <Grid item xs={12} md={6} lg={6}>
             <Item>
-              <Doughnuts />
+              <BarHorizontal />
             </Item>
           </Grid>
+
+          <Grid item xs={12} md={6} lg={6}>
+            <Item>
+              <LineRecorder />
+            </Item>
+          </Grid>
+
+          {/* BarChart  แสดงข้อมูลจำนวนค่ายเกมทั้งหมด */}
           <Grid item xs={12} md={6} lg={12}>
             <Item>
               <BarChart />

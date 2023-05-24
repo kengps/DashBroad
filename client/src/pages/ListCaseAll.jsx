@@ -6,6 +6,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Paginate from "react-paginate";
 import moment from "moment/min/moment-with-locales";
+import { Helmet } from "react-helmet-async";
 
 const ListCaseAll = () => {
   // Paginate
@@ -48,6 +49,9 @@ const ListCaseAll = () => {
   };
   return (
     <div>
+       <Helmet>
+          <title> Dashboard | CaseAll </title>
+        </Helmet>
       <table className="table table-striped">
         <thead>
           <tr className="table-secondary">
@@ -74,7 +78,7 @@ const ListCaseAll = () => {
               <tr key={index}>
                 <th scope="row">{data.caseId}</th>
                 <td>{data.reporter}</td>
-                <td>{data.typeproblem}</td>
+                <td>{data.problemDetail}</td>
                 <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
                   {data.detail}
                 </td>
@@ -99,7 +103,7 @@ const ListCaseAll = () => {
                       </p>
                       <p className="d-block m-0">
                         <strong>ประเภทปัญหา: </strong>
-                        {data.typeproblem}
+                        {data.problemDetail}
                       </p>
                       <p
                         className="d-block m-0"

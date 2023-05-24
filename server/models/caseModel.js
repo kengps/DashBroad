@@ -24,7 +24,6 @@ const schemaCase = mongoose.Schema(
     },
     campgame: {
       type: String,
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
     wallet: {
       type: String,

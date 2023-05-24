@@ -60,12 +60,7 @@ const ChangPassword = () => {
           </InputGroup>
         </Modal>
       </>
-      <iframe
-        src="https://docs.google.com/spreadsheets/d/1frcXivrOiUAqPI_pp7wDz_jar_4DOwb8W09aljFYfZc/edit#gid=2077893942"
-        title="Google Sheets Embed"
-        width="400%"
-        height="700"
-      ></iframe>
+     
     </div>
   );
 };

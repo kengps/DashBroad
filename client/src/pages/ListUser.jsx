@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { listUser } from "../api/user";
 import moment from "moment/min/moment-with-locales";
+import { Helmet } from "react-helmet-async";
 
 const ListUser = () => {
   const [value, setValue] = useState([]);
@@ -21,6 +22,9 @@ const ListUser = () => {
 
   return (
     <div>
+      <Helmet>
+          <title> Dashboard | User </title>
+        </Helmet>
       <Typography.Title level={2}>สมาชิกทั้งหมด</Typography.Title>
 
       <table className="table">

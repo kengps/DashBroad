@@ -33,6 +33,12 @@ const Doughnuts = () => {
   const labelArr1 = Object.keys(data1);
   const valueArr1 = Object.values(data1);
 
+  //   const labelArr2 = Object.keys(groupedData);
+  //   const valueArr2 = Object.values(groupedData);
+
+  // console.log('labelArr2',Object.keys(groupedData));
+  // console.log('valueArr2',valueArr2);
+
   const userCount = value.filter((item) => item.role === "user").length;
   const adminCount = value.filter((item) => item.role === "admin").length;
   const UserEnabled = value.filter((item) => item.enabled === true).length;
@@ -48,7 +54,25 @@ const Doughnuts = () => {
     return acc;
   }, {});
   //
-  // console.log("problemDetail", groupedData);
+  const labelArr2 = Object.keys(groupedData);
+  const valueArr2 = Object.values(groupedData);
+
+  let sumTotal = valueArr2.reduce(function (prev, curr) {
+    return prev + curr;
+  }, 0);
+  console.log("labelArr2", labelArr2);
+
+  console.log("valueArr2", valueArr2);
+  console.log("sumTotal", sumTotal);
+
+  function calculateTotal() {
+    let sum = 0;
+    for (let i = 0; i < valueArr2.length; i++) {
+      sum += valueArr2[i];
+      console.log("ผลรวม", sum);
+    }
+    return sum;
+  }
 
   //กำหนดสี
   const colorBg = [
@@ -73,8 +97,10 @@ const Doughnuts = () => {
     labels: Object.keys(groupedData),
     datasets: [
       {
+        hoverBackgroundColor: colorBg,
         label: "# จำนวน",
         data: Object.values(groupedData),
+
         backgroundColor: colorBg2,
         borderColor: colorBg,
         borderWidth: 1,
@@ -85,7 +111,7 @@ const Doughnuts = () => {
     plugins: {
       title: {
         display: true,
-        text: "รายละเอียด",
+        text: "รายละเอียดของปัญหาทั้งหมด",
       },
       datalabels: {
         formatter: (value, ctx) => {
@@ -95,9 +121,9 @@ const Doughnuts = () => {
             sum += data;
           });
           let percentage = ((value * 100) / sum).toFixed(2) + "%";
-          return percentage;
+          return `${percentage} (${value})`;
         },
-        color: colorBg,
+        color: "#000", // กำหนดสีตัวอักษรเป็นสีขาว
         labels: {
           title: {
             font: {
@@ -109,30 +135,38 @@ const Doughnuts = () => {
       },
     },
   };
-  console.log(options);
+
   return (
     <div>
       <table id="pie-table">
         <thead>
           <tr>
-            <th>Label</th>
-            <th>Value</th>
+            <th>รายละเอียด</th>
+            <th>จำนวน</th>
           </tr>
         </thead>
         <tbody>
-          {labelArr1.map((label, index) => (
+          {labelArr2.map((label, index) => (
             <tr key={index}>
               <td>{label}</td>
-              <td>{valueArr1[index]}</td>
+              <td>{valueArr2[index]}</td>
             </tr>
           ))}
+          <tr>
+            <td>
+              <strong>รวมทั้งหมด</strong>
+            </td>
+            <td>
+              <strong>{sumTotal}</strong>
+            </td>
+          </tr>
         </tbody>
       </table>
       <div className="btn-excel">
         <ReactHTMLTableToExcel
           className="btn btn-info"
           table="pie-table"
-          filename="pie_chart"
+          filename="doughnut_chart"
           sheet="Sheet"
           buttonText={<SiMicrosoftexcel />}
         />
