@@ -30,7 +30,7 @@ const MainPage = () => {
       path: "/dashboard/*",
       element: (
         <div className="App">
-          <AppHeader />
+          {/* <AppHeader /> */}
           <Space className="SideMenuAndPageContent">
             <SideMenu />
             <PageContent />

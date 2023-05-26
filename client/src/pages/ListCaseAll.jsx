@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import MyForm from "../components/NavbarFormcase/ProblemType";
 import { listCases } from "../api/case";
-import { Button, Card, Tag, message } from "antd";
+import { Button, Card, Tag, Typography, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Paginate from "react-paginate";
@@ -48,7 +48,8 @@ const ListCaseAll = () => {
     setCurrentPage(selected);
   };
   return (
-    <div>
+    <div className="mt-5">
+      <Typography className="" >f</Typography>
        <Helmet>
           <title> Dashboard | CaseAll </title>
         </Helmet>

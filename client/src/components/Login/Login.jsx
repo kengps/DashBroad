@@ -28,7 +28,7 @@ const Login = () => {
 
   // การตรวจสอบ
   const levelRole = (role) => {
-    if (role === "user") {
+    if (role === "user" || role === "dev" || role === "user") {
       redirect("/dashboard");
     } else {
       redirect("/login");

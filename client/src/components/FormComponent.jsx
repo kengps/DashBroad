@@ -15,7 +15,7 @@ import CampGameAndEditor from "./NavbarFormcase/CampGameAndEditor";
 import Details from "./NavbarFormcase/Details";
 import ProblemType from "./NavbarFormcase/ProblemType";
 
-import { Input, Select } from "antd";
+import { Input, Select, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
@@ -196,6 +196,7 @@ const FormComponent = () => {
 
   return (
     <div>
+      <Typography>ฟอร์มบันทึกเคส</Typography>
       <Form onSubmit={submitForm}>
         <div className="mt-3">
           <InputGroup className="mt-3">
