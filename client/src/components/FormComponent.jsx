@@ -201,10 +201,8 @@ const FormComponent = () => {
           <InputGroup className="mt-3">
             <InputGroup.Text
               style={{
-                color: "blue",
-                fontSize: "25px",
+                fontSize: "18px",
                 fontFamily: "Times New Roman",
-                backgroundColor: "lightblue",
               }}
             >
               ผู้แจ้งปัญหา
@@ -223,10 +221,9 @@ const FormComponent = () => {
             <InputGroup.Text
               className=""
               style={{
-                color: "blue",
-                fontSize: "25px",
+                fontSize: "18px",
                 fontFamily: "Times New Roman",
-                backgroundColor: "lightblue",
+                height: "2.35rem",
               }}
             >
               ประเภทปัญหา
@@ -263,8 +260,7 @@ const FormComponent = () => {
                 ))}
               </Form.Select>
             )}
-            {selectedOption ===
-              "กลุ่ม lsm-Pretty Gaming" && (
+            {selectedOption === "กลุ่ม lsm-Pretty Gaming" && (
               <Form.Select
                 aria-label="test"
                 value={values.problemDetail}
@@ -288,10 +284,8 @@ const FormComponent = () => {
           <InputGroup className="mt-3">
             <InputGroup.Text
               style={{
-                color: "blue",
-                fontSize: "25px",
+                fontSize: "18px",
                 fontFamily: "Times New Roman",
-                backgroundColor: "lightblue",
               }}
             >
               รายละเอียด
@@ -311,148 +305,147 @@ const FormComponent = () => {
           </InputGroup>
         </div>
         {selectedOption !== "ขอ API" && selectedOption !== "เรื่องทั่วไป" && (
-        <div className="mt-3">
-          <InputGroup className="mt-3" style={navDropdownItemStyle}>
-            <InputGroup.Text
-              style={{
-                color: "blue",
-                fontSize: "25px",
-                fontFamily: "Times New Roman",
-                backgroundColor: "lightblue",
-              }}
-            >
-              ค่ายเกม
-            </InputGroup.Text>
-
-            <FormControl
-              //variant="standard"
-              size="small"
-              sx={{ m: 1, minWidth: 400 }}
-            >
-              <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
-              <Select1
-                defaultValue=""
-                id="grouped-select"
-                label="Grouping"
-                value={values.campgame}
-                onChange={inputValue("campgame")}
+          <div className="mt-3">
+            <InputGroup className="mt-3" style={navDropdownItemStyle}>
+              <InputGroup.Text
+                style={{
+                  fontSize: "18px",
+                  fontFamily: "Times New Roman",
+                  height: "2.5rem",
+                }}
               >
-                <MenuItem value="">
-                  <em>--กรุณาเลือกค่ายเกม--</em>
-                </MenuItem>
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
+                ค่ายเกม
+              </InputGroup.Text>
+
+              <FormControl
+                //variant="standard"
+                size="small"
+                sx={{ m: 1, minWidth: 400 }}
+              >
+                <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+                <Select1
+                  defaultValue=""
+                  id="grouped-select"
+                  label="Grouping"
+                  value={values.campgame}
+                  onChange={inputValue("campgame")}
                 >
-                  Sport
-                </ListSubheader>
-                {selectCampGames.map((items, index) =>
-                  items.name === "Sport" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Baccarat
-                </ListSubheader>
-                {selectCampGames.map((items, index) =>
-                  items.name === "Sexy Baccarat" ||
-                  items.name === "SA Gaming" ||
-                  items.name === "Pretty Gaming" ||
-                  items.name === "Dream Gaming" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Slot
-                </ListSubheader>
-                {selectCampGames.map((items, index) =>
-                  items.name === "PG Slot" ||
-                  items.name === "SpiniX" ||
-                  items.name === "Evoplay" ||
-                  items.name === "Slot XO" ||
-                  items.name === "Joker" ||
-                  items.name === "Live22" ||
-                  items.name === "DragoonSoft" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Biogame & AMB
-                </ListSubheader>
-                {selectCampGames.map((items, index) =>
-                  items.name === "Biogame & AMB" ||
-                  items.name === "BioFishing" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Lotto
-                </ListSubheader>
-                {selectCampGames.map((items, index) =>
-                  items.name === "VwinLotto" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-              </Select1>
-            </FormControl>
-          </InputGroup>
-        </div>
+                  <MenuItem value="">
+                    <em>--กรุณาเลือกค่ายเกม--</em>
+                  </MenuItem>
+                  <ListSubheader
+                    style={{
+                      fontWeight: "bold",
+                      color: "gray",
+                      fontSize: "15px",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Sport
+                  </ListSubheader>
+                  {selectCampGames.map((items, index) =>
+                    items.name === "Sport" ? (
+                      <MenuItem key={index} value={items.name}>
+                        {items.name}
+                      </MenuItem>
+                    ) : null
+                  )}
+                  <ListSubheader
+                    style={{
+                      fontWeight: "bold",
+                      color: "gray",
+                      fontSize: "15px",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Baccarat
+                  </ListSubheader>
+                  {selectCampGames.map((items, index) =>
+                    items.name === "Sexy Baccarat" ||
+                    items.name === "SA Gaming" ||
+                    items.name === "Pretty Gaming" ||
+                    items.name === "Dream Gaming" ? (
+                      <MenuItem key={index} value={items.name}>
+                        {items.name}
+                      </MenuItem>
+                    ) : null
+                  )}
+                  <ListSubheader
+                    style={{
+                      fontWeight: "bold",
+                      color: "gray",
+                      fontSize: "15px",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Slot
+                  </ListSubheader>
+                  {selectCampGames.map((items, index) =>
+                    items.name === "PG Slot" ||
+                    items.name === "SpiniX" ||
+                    items.name === "Evoplay" ||
+                    items.name === "Slot XO" ||
+                    items.name === "Joker" ||
+                    items.name === "Live22" ||
+                    items.name === "DragoonSoft" ? (
+                      <MenuItem key={index} value={items.name}>
+                        {items.name}
+                      </MenuItem>
+                    ) : null
+                  )}
+                  <ListSubheader
+                    style={{
+                      fontWeight: "bold",
+                      color: "gray",
+                      fontSize: "15px",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Biogame & AMB
+                  </ListSubheader>
+                  {selectCampGames.map((items, index) =>
+                    items.name === "Biogame & AMB" ||
+                    items.name === "BioFishing" ? (
+                      <MenuItem key={index} value={items.name}>
+                        {items.name}
+                      </MenuItem>
+                    ) : null
+                  )}
+                  <ListSubheader
+                    style={{
+                      fontWeight: "bold",
+                      color: "gray",
+                      fontSize: "15px",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Lotto
+                  </ListSubheader>
+                  {selectCampGames.map((items, index) =>
+                    items.name === "VwinLotto" ? (
+                      <MenuItem key={index} value={items.name}>
+                        {items.name}
+                      </MenuItem>
+                    ) : null
+                  )}
+                </Select1>
+              </FormControl>
+            </InputGroup>
+          </div>
         )}
         <div className="mt-3">
           <InputGroup className="mt-3" style={navDropdownItemStyle}>
             <InputGroup.Text
               className=""
               style={{
-                color: "blue",
-                fontSize: "15px",
+                fontSize: "18px",
                 fontFamily: "Times New Roman",
+                height: "2.5rem",
               }}
             >
               แพลตฟอร์ม
             </InputGroup.Text>
-            <FormControl size="small" sx={{ m: 1, minWidth: 400 }}>
+            <FormControl size="small" sx={{ m: 1, minWidth: "75%" }}>
               <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
               <Select1
                 defaultValue=""

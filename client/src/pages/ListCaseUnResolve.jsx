@@ -251,14 +251,14 @@ const ListCaseUnResolve = () => {
               <tr key={index}>
                 <th scope="row">{data.caseId}</th>
                 <td>{data.reporter}</td>
-                <td>{data.problem}</td>
+                <td>{data.problem.slice(0,17)}</td>
                 <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
                   {data.detail}
                 </td>
                 <td>{data.campgame}</td>
                 <td>{data.recorder}</td>
                 <td>{data.editors}</td>
-                <td>{moment(data.createdAt).locale("th").format("lll")} น.</td>
+                <td>{moment(data.createdAt).locale("th").format("l LT")} น.</td>
                 <td>
                   <Select
                     style={{ width: "100%" }}
@@ -336,7 +336,7 @@ const ListCaseUnResolve = () => {
                             {selectedCase.detail}
                           </p>
                           <p className="d-block m-0 font-weight-bold">
-                            <strong>ค่ายเกม:</strong> {selectedCase}
+                            <strong>ค่ายเกม:</strong> {selectedCase.campgame}
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้ลงเคส: </strong>

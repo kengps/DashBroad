@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 exports.logged = async (req, res) => {
   try {
     const { username, password } = req.body;
-
+    console.log(req.body);
     // const user =  await Users.find
     const user = await User.findOneAndUpdate({ username }, { new: true });
 
@@ -15,7 +15,7 @@ exports.logged = async (req, res) => {
       //check password ระหว่าง password ปกติ และ password ที่มีการใส่รหัส
       const isMatch = await bcrypt.compare(password, user.password);
 
-      // console.log("pass", isMatch);
+      console.log("pass", isMatch);
       //   //const match = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(401).json({ message: "pass invalid" });

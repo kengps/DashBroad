@@ -23,6 +23,7 @@ import DashBorad from "../pages/DashBoard";
 import IndexRouter from "../components/LoadingAndRedirect";
 //import DashBoard from "../pages/DashBoard";
 //IndexRouter คือ component ที่จะแสดงเมื่อไม่มีการ login
+
 const MainPage = () => {
   const routes = useRoutes([
     {
@@ -45,6 +46,10 @@ const MainPage = () => {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/registeruser",
+      element: <Register />,
     },
     {
       path: "*",
