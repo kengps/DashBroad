@@ -114,3 +114,14 @@ res.json(user);
     res.status(400).json({ error: "Server isError" });
   }
 };
+
+exports.fetchData = async (url) =>{
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    // ดำเนินการกับข้อมูลที่ได้รับต่อไป
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}

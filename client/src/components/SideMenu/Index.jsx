@@ -28,7 +28,14 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { deepOrange, deepPurple } from "@mui/material/colors";
 
+import { BiUser, AiOutlineSetting,RiLockPasswordLine } from "react-icons/all";
+import { NavDropdown, InputGroup } from "react-bootstrap";
+
+import { useDispatch, useSelector } from "react-redux";
+import swal  from 'sweetalert2'
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   BugOutlined,
   SyncOutlined,
@@ -42,17 +49,24 @@ import {
   TeamOutlined,
   TableOutlined,
   AreaChartOutlined,
+  BellFilled,
+  MailOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
+
 import AppHeader from "../AppHeader/Index";
 import { useState, useEffect } from "react";
-import { Badge } from "antd";
+import { Badge, Modal, Input, Space } from "antd";
 import { listCases } from "../../api/case";
+import { resetPassword } from "../../api/user";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
-  backgroundColor:'#F2F4F4',
- 
+  backgroundColor: "#F2F4F4",
+
   width: drawerWidth,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -62,7 +76,7 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
-  backgroundColor:'#F2F4F4',
+  backgroundColor: "#F2F4F4",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -75,12 +89,12 @@ const closedMixin = (theme) => ({
 });
 
 const DrawerHeader = styled("div")(({ theme }) => ({
-  backgroundColor:'#F2F4F4',
+  backgroundColor: "#F2F4F4",
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  
+
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -94,7 +108,6 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
@@ -107,14 +120,12 @@ const AppBar = styled(MuiAppBar, {
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
- 
+
   ...(open && {
-    
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
   }),
@@ -125,7 +136,12 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+  const { user } = useSelector((state) => ({ ...state }));
+
+  // console.log(user.username);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
 
@@ -156,22 +172,8 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -180,11 +182,57 @@ export default function MiniDrawer() {
     setSelectedMenu(menuKey);
   };
 
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  //modal changePassword
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [values, setValues] = useState({
+    id: "",
+    password: "",
+  });
+  const showModal = (id) => {
+    setIsModalOpen(true);
+    console.log("id", id);
+    setValues({ ...values, id: id });
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    //
+    console.log(values);
+    resetPassword(user.token, values.id, { values })
+      .then((res) => {
+        swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
+        setValues("");
+        console.log("ง/ง", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleChangePassword = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  //style
+  const navDropdownItemStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  };
+  const handleLogout = () => {
+    dispatch({
+      type: "LOGOUT",
+      payload: null,
+    });
+    navigate("/login");
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: '' }}>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box sx={{ flexGrow: 1 }}>
             <IconButton
@@ -210,43 +258,53 @@ export default function MiniDrawer() {
           >
             {selectedMenu ? selectedMenu : "Support Case Biogaming"}
           </Typography>
+          {/* โปรไฟล์ */}
           <Box>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {user && (
+              <NavDropdown
+                title={
+                  <Tooltip title={user.username}>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      {/*                 
+                <Avatar alt={user.username.slice(0,1).toUpperCase()} src="a" /> */}
+                      <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                        {user.username.slice(0, 1).toUpperCase()}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item
+                  style={navDropdownItemStyle}
+                  onClick={() => showModal(user?.id)}
+                >
+                  <RiLockPasswordLine />
+                  เปลี่ยนรหัสผ่าน
+                </NavDropdown.Item>
+
+                <NavDropdown.Divider />
+                <NavDropdown.Item
+                  onClick={handleLogout}
+                  style={navDropdownItemStyle}
+                >
+                  {" "}
+                  <LogoutOutlined /> ออกจากระบบ
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="permanent" open={open} >
-        <DrawerHeader >
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
           {/* //! ทำโปรไฟล์ */}
-                
-          <IconButton onClick={handleDrawerClose} style={{backgroundColor: 'white'}}>
+
+          <IconButton
+            onClick={handleDrawerClose}
+            style={{ backgroundColor: "white" }}
+          >
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
@@ -256,7 +314,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
 
         <Divider />
-        <List sx={{ backgroundColor: 'greeblackn' }}>
+        <List>
           {[
             {
               label: "แดชบอร์ด",
@@ -371,6 +429,27 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
+      <Modal
+        title="เปลี่ยนรหัสผ่าน"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <InputGroup>
+          {/* <Input
+            type="text"
+            name="password"
+            onChange={handleChangePassword}
+            className="form-control"
+          /> */}
+          <Input.Password
+            addonBefore="รหัสผ่านใหม่"
+            placeholder="new password"
+            name="password"
+            onChange={handleChangePassword}
+          />
+        </InputGroup>
+      </Modal>
     </Box>
   );
 }

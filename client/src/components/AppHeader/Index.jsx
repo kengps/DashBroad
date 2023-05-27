@@ -17,6 +17,7 @@ import swal  from 'sweetalert2'
 const AppHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const { user } = useSelector((state) => ({ ...state }));
   //ดึง user มาเพื่อทำการเปลี่ยนข้อมูล
 //  const {userId} = user.id

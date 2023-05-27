@@ -1,16 +1,36 @@
 import React, { useState } from "react";
 import { Stack, TextField, FormControl } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Form } from "react-bootstrap";
 import { login } from "../../api/auth";
 import SweetAl from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
   //redux
   const dispatch = useDispatch();
   const redirect = useNavigate();
+
+  const { user } = useSelector((state) => ({ ...state }));
+
+  useEffect(() => {
+    // ตรวจสอบว่ามีการเข้าสู่ระบบแล้วหรือไม่ โดยตรวจสอบ token ใน localStorage
+    if (localStorage.getItem("token")) {
+      SweetAl.fire("แจ้งเตือน", "ท่านได้ทำการเข้าระบบอยู่แล้ว", "info");
+      setTimeout(() => {
+        redirect("/dashboard");
+      }, 2000);
+    }
+  }, [redirect]);
 
   const [value, setValue] = useState({
     username: "",
@@ -28,7 +48,7 @@ const Login = () => {
 
   // การตรวจสอบ
   const levelRole = (role) => {
-    if (role === "user" || role === "dev" || role === "user") {
+    if (role === "admin" || role === "dev" || role === "user") {
       redirect("/dashboard");
     } else {
       redirect("/login");
@@ -58,7 +78,6 @@ const Login = () => {
               username: res.data.payLoad.user.username,
               role: res.data.payLoad.user.role,
               id: res.data.payLoad.user.id,
-      
             },
           });
           localStorage.setItem("token", res.data.token);
@@ -88,18 +107,50 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="container mt-3">
       <Form onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField name="username" label="Username" onChange={handleChange} />
 
-          <TextField
+          {/* <TextField
             type="password"
             name="password"
             label="Password"
             onChange={handleChange}
-          />
+          /> */}
+          <FormControl sx={{ m: 1}} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
         </Stack>
         <hr />
         <LoadingButton fullWidth size="large" type="submit" variant="contained">

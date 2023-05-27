@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import IndexRouter from "../LoadingAndRedirect";
 import Password from "antd/es/input/Password";
 import Work from "../../pages/Work";
+import WebScraping from "../../pages/WebScraping";
 
 
 const AppRoutes = () => {
@@ -54,6 +55,7 @@ const AppRoutes = () => {
       <Route path="/listuser" element={<ListUser />} />
       <Route path="/reset-password" element={<ChangPassword />} />
       <Route path="/work" element={<Work />} />
+      <Route path="/outstanding" element={<WebScraping />} />
     </Routes>
   </IndexRouter>
   );

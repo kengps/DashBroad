@@ -26,6 +26,7 @@
   align-items: center;
   padding: 4px 20px 4px 12px;
   border-top: 1px solid lightgray;
+ 
 }
 .SideMenu {
   padding-left: 12px;
@@ -143,4 +144,5 @@
     font-size: 2rem;
   }
 }
+
 
