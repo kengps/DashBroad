@@ -9,9 +9,9 @@ const FormCase = () => {
         <Helmet>
           <title> Dashboard | FormCase </title>
         </Helmet>
-        <Typography.Title>ฟอร์มบันทึกเคส</Typography.Title>
+      
       </div>
-      <div className="FormCase">
+      <div className="FormCase mt-5">
         <FormComponent />
       </div>
     </div>

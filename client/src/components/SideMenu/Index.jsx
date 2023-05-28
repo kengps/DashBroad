@@ -182,7 +182,7 @@ export default function MiniDrawer() {
     setSelectedMenu(menuKey);
   };
 
-  //modal changePassword
+  //* modal changePassword
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [values, setValues] = useState({
     id: "",
@@ -194,15 +194,17 @@ export default function MiniDrawer() {
     setValues({ ...values, id: id });
   };
 
+  //todo modal สำหรับการกด reset รหัสผ่าน หากมีการกด OK จะทำการเรียก API จาก func resetPassword
   const handleOk = () => {
     setIsModalOpen(false);
     //
-    console.log(values);
+    // 
+    //* โดยจะส่ง token และ id เข้าไป
     resetPassword(user.token, values.id, { values })
       .then((res) => {
-        swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
         setValues("");
-        console.log("ง/ง", res);
+        swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
+        // console.log("ง/ง", res);
       })
       .catch((err) => {
         console.log(err);
@@ -216,12 +218,14 @@ export default function MiniDrawer() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  //style
+  //* style
   const navDropdownItemStyle = {
     display: "flex",
     alignItems: "center",
     gap: "10px",
   };
+
+  //todo func สำหรับกดปุ่มออกจากระบบ
   const handleLogout = () => {
     dispatch({
       type: "LOGOUT",
@@ -428,7 +432,9 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
         </List>
+        
       </Drawer>
+    
       <Modal
         title="เปลี่ยนรหัสผ่าน"
         open={isModalOpen}

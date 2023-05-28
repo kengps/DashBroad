@@ -17,15 +17,15 @@ const { TextArea } = Input;
 
 import ReactQuill from "react-quill";
 import { Helmet } from "react-helmet-async";
-
+import { Box } from "@mui/material";
 const ListCaseUnResolve = () => {
-  //state สำหรับการแก้ไข
+  //*state สำหรับการแก้ไข
   const [values, setValues] = useState({
     id: "",
     detail: "",
   });
   const [data, setData] = useState([]);
-  // state สำหรับการค้นหาข้อมูล
+  //* state สำหรับการค้นหาข้อมูล
   const [search, setSearch] = useState("");
 
   const [currentPage, setCurrentPage] = useState([]);
@@ -90,7 +90,7 @@ const ListCaseUnResolve = () => {
     // toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
   };
 
-  // modal
+  //* modal
   const [selectedCase, setSelectedCase] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -119,7 +119,7 @@ const ListCaseUnResolve = () => {
       .then((res) => {
         swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
         loadData();
-        setValues({detail: ""});
+        setValues({ detail: "" });
         console.log(res);
       })
       .catch((err) => {
@@ -159,9 +159,9 @@ const ListCaseUnResolve = () => {
       });
   };
 
-  // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
+  //* function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
   const handleClick = async (id) => {
-    // หากกดปุ่ม จะให้ปุ่มยืนยันการลบขึ้นมา
+    //todo หากกดปุ่มลบ จะให้ปุ่มยืนยันการลบขึ้นมา
     try {
       const result = await sweetAlert.fire({
         title: "คุณต้องการลบบทความหรือไม่",
@@ -169,11 +169,10 @@ const ListCaseUnResolve = () => {
         showCancelButton: true,
       });
       console.log("ยืนยันการลบ", result);
-      //ถ้ากดปุ่ม OK หรือ ตกลง
+      //todo ถ้ากดปุ่ม OK หรือ ตกลง จะส่ง request ไปที่  api เพื่อลบข้อมูล
       if (result.isConfirmed) {
-        //ส่ง request ไปที่  api เพื่อลบข้อมูล
-
-        confirmDelete(id); //หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
+        //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
+        confirmDelete(id);
       }
     } catch (error) {
       console.log(err);
@@ -185,221 +184,228 @@ const ListCaseUnResolve = () => {
   };
   console.log("w,j,", values);
   return (
-    <div>
-      <Helmet>
+    <div className="mt-5">
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Helmet>
           <title> Dashboard | CaseUnResolve </title>
         </Helmet>
-      <InputGroup className="mb-3">
-        <Form.Control
-          placeholder="ค้นหาCodeCase"
-          value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
-          }}
-        />
-        <Button
-          variant="danger"
-          value="Submit"
-          onClick={onClickButton}
-          className="btn-1"
-        >
-          <RxCross2 />
-        </Button>
-      </InputGroup>
+        <InputGroup className="mb-3">
+          <Form.Control
+            placeholder="ค้นหาCodeCase"
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+            }}
+          />
+          <Button
+            variant="danger"
+            value="Submit"
+            onClick={onClickButton}
+            className="btn-1"
+          >
+            <RxCross2 />
+          </Button>
+        </InputGroup>
 
-      <table className="table table-striped ">
-        <thead>
-          <tr className="table-secondary" style={{ fontSize: "16px" }}>
-            <th scope="col">CodeCase</th>
-            <th scope="col">ผู้แจ้งปัญหา</th>
-            <th scope="col">ประเภท</th>
-            <th scope="col">รายละเอียด</th>
-            <th scope="col">ค่ายเกม</th>
-            <th scope="col" className="text-center">
-              ผู้ลงเคส
-            </th>
-            <th scope="col" className="text-center">
-              ผู้แก้ไข
-            </th>
-            <th scope="col" className="text-center">
-              เวลาสร้างเคส
-            </th>
-            <th scope="col" className="text-center">
-              สถานะ
-            </th>
-            <th scope="col" className="text-center">
-              การจัดการ
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data
-            .filter((item) =>
-              item.caseId.toLowerCase().includes(search.toLowerCase())
-            )
-            .filter(
-              (item) =>
-                item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
-            )
-            .reverse((a, b) => b.id - a.id)
-            .slice(
-              currentPage * ITEM_PER_PAGE,
-              (currentPage + 1) * ITEM_PER_PAGE
-            )
-            .reverse((a, b) => b.id - a.id)
-            .map((data, index) => (
-              <tr key={index}>
-                <th scope="row">{data.caseId}</th>
-                <td>{data.reporter}</td>
-                <td>{data.problem.slice(0,17)}</td>
-                <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
-                  {data.detail}
-                </td>
-                <td>{data.campgame}</td>
-                <td>{data.recorder}</td>
-                <td>{data.editors}</td>
-                <td>{moment(data.createdAt).locale("th").format("l LT")} น.</td>
-                <td>
-                  <Select
-                    style={{ width: "100%" }}
-                    value={data.status}
-                    onChange={(e) => handleOnchange(e, data._id)}
-                  >
-                    {statusCase.map((item, index) => (
-                      <Select.Option key={index} value={item}>
-                        {item === "รอการแก้ไข" ? (
-                          <Tag color={"red"}>{item}</Tag>
-                        ) : (
-                          <Tag color={"green"}>{item}</Tag>
-                        )}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </td>
-                <td>
-                  <Button
-                    className="mt-1 me-1"
-                    type="primary"
-                    onClick={() => {
-                      setSelectedCase(data);
-                      showModal();
-                    }}
-                  >
-                    คัดลอก
-                  </Button>
-                  <Button
-                    className="me-1 btn-change"
-                    onClick={() => showModal2(data._id)}
-                  >
-                    แก้ไข
-                  </Button>
-                  <Button
-                    type="primary"
-                    danger
-                    className="me-1 mt-1"
-                    onClick={() => handleClick(data._id)}
-                  >
-                    ลบ
-                  </Button>
+        <table className="table table-striped ">
+          <thead>
+            <tr className="table-secondary" style={{ fontSize: "16px" }}>
+              <th scope="col">CodeCase</th>
+              <th scope="col">ผู้แจ้งปัญหา</th>
+              <th scope="col">ประเภท</th>
+              <th scope="col">รายละเอียด</th>
+              <th scope="col">ค่ายเกม</th>
+              <th scope="col" className="text-center">
+                ผู้ลงเคส
+              </th>
+              <th scope="col" className="text-center">
+                ผู้แก้ไข
+              </th>
+              <th scope="col" className="text-center">
+                เวลาสร้างเคส
+              </th>
+              <th scope="col" className="text-center">
+                สถานะ
+              </th>
+              <th scope="col" className="text-center">
+                การจัดการ
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data
+              .filter((item) =>
+                item.caseId.toLowerCase().includes(search.toLowerCase())
+              )
+              .filter(
+                (item) =>
+                  item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
+              )
+              .reverse((a, b) => b.id - a.id)
+              .slice(
+                currentPage * ITEM_PER_PAGE,
+                (currentPage + 1) * ITEM_PER_PAGE
+              )
+              .reverse((a, b) => b.id - a.id)
+              .map((data, index) => (
+                <tr key={index}>
+                  <th scope="row">{data.caseId}</th>
+                  <td>{data.reporter}</td>
+                  <td>{data.problem.slice(0, 17)}</td>
+                  <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
+                    {data.detail}
+                  </td>
+                  <td>{data.campgame}</td>
+                  <td>{data.recorder}</td>
+                  <td>{data.editors}</td>
+                  <td>
+                    {moment(data.createdAt).locale("th").format("l LT")} น.
+                  </td>
+                  <td>
+                    <Select
+                      style={{ width: "100%" }}
+                      value={data.status}
+                      onChange={(e) => handleOnchange(e, data._id)}
+                    >
+                      {statusCase.map((item, index) => (
+                        <Select.Option key={index} value={item}>
+                          {item === "รอการแก้ไข" ? (
+                            <Tag color={"red"}>{item}</Tag>
+                          ) : (
+                            <Tag color={"green"}>{item}</Tag>
+                          )}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </td>
+                  <td>
+                    <Button
+                      className="mt-1 me-1"
+                      type="primary"
+                      onClick={() => {
+                        setSelectedCase(data);
+                        showModal();
+                      }}
+                    >
+                      คัดลอก
+                    </Button>
+                    <Button
+                      className="me-1 btn-change"
+                      onClick={() => showModal2(data._id)}
+                    >
+                      แก้ไข
+                    </Button>
+                    <Button
+                      type="primary"
+                      danger
+                      className="me-1 mt-1"
+                      onClick={() => handleClick(data._id)}
+                    >
+                      ลบ
+                    </Button>
 
-                  <Modal
-                    title="Copy Case"
-                    open={isModalOpen}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                  >
-                    {selectedCase && (
-                      <Card
-                        ref={textRef}
-                        style={{
-                          background: "#f0f0f0",
-                          border: "1px solid gray",
-                        }}
-                      >
-                        <div>
-                          <p className="d-block m-0">
-                            "<strong> เคส:</strong> {selectedCase.caseId}
-                          </p>
-                          <p className="d-block m-0">
-                            <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
-                            {selectedCase.reporter}
-                          </p>
-                          <p className="d-block m-0">
-                            <strong>ประเภทปัญหา: </strong>
-                            {selectedCase.problemDetail}
-                          </p>
-                          <p
-                            className="d-block m-0"
-                            style={{ wordWrap: "break-word", maxWidth: "30ch" }}
-                          >
-                            <strong>รายละเอียด: </strong>
-                            {selectedCase.detail}
-                          </p>
-                          <p className="d-block m-0 font-weight-bold">
-                            <strong>ค่ายเกม:</strong> {selectedCase.campgame}
-                          </p>
-                          <p className="d-block m-0">
-                            <strong> ผู้ลงเคส: </strong>
-                            {selectedCase.recorder}
-                          </p>
-                          <p className="d-block m-0">
-                            <strong> ผู้แก้ไข: </strong>
-                            {selectedCase.editors} "
-                          </p>
-                        </div>
-
-                        <Button
-                          onClick={handleCopy}
-                          className="btn-primary float-end"
+                    <Modal
+                      title="Copy Case"
+                      open={isModalOpen}
+                      onOk={handleOk}
+                      onCancel={handleCancel}
+                    >
+                      {selectedCase && (
+                        <Card
+                          ref={textRef}
+                          style={{
+                            background: "#f0f0f0",
+                            border: "1px solid gray",
+                          }}
                         >
-                          <CopyOutlined />
-                        </Button>
-                      </Card>
-                    )}
-                  </Modal>
+                          <div>
+                            <p className="d-block m-0">
+                              "<strong> เคส:</strong> {selectedCase.caseId}
+                            </p>
+                            <p className="d-block m-0">
+                              <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
+                              {selectedCase.reporter}
+                            </p>
+                            <p className="d-block m-0">
+                              <strong>ประเภทปัญหา: </strong>
+                              {selectedCase.problemDetail}
+                            </p>
+                            <p
+                              className="d-block m-0"
+                              style={{
+                                wordWrap: "break-word",
+                                maxWidth: "30ch",
+                              }}
+                            >
+                              <strong>รายละเอียด: </strong>
+                              {selectedCase.detail}
+                            </p>
+                            <p className="d-block m-0 font-weight-bold">
+                              <strong>ค่ายเกม:</strong> {selectedCase.campgame}
+                            </p>
+                            <p className="d-block m-0">
+                              <strong> ผู้ลงเคส: </strong>
+                              {selectedCase.recorder}
+                            </p>
+                            <p className="d-block m-0">
+                              <strong> ผู้แก้ไข: </strong>
+                              {selectedCase.editors} "
+                            </p>
+                          </div>
 
-                  <Modal
-                    title="Basic Modal2"
-                    open={isModalOpen2}
-                    onOk={handleOk2}
-                    onCancel={handleCancel2}
-                  >
-                    <InputGroup>
-                      <InputGroup.Text>รายละเอียด</InputGroup.Text>
-                    </InputGroup>
+                          <Button
+                            onClick={handleCopy}
+                            className="btn-primary float-end"
+                          >
+                            <CopyOutlined />
+                          </Button>
+                        </Card>
+                      )}
+                    </Modal>
 
-                    <TextArea
-                      rows={5}
-                      type="text"
-                      name="detail"
-                      onChange={handleChangeDetail}
-                    />
-                  </Modal>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                    <Modal
+                      title="Basic Modal2"
+                      open={isModalOpen2}
+                      onOk={handleOk2}
+                      onCancel={handleCancel2}
+                    >
+                      <InputGroup>
+                        <InputGroup.Text>รายละเอียด</InputGroup.Text>
+                      </InputGroup>
 
-      <Pagination
-        previousLabel="< ก่อนหน้า"
-        nextLabel="ถัดไป >"
-        breakLabel="..."
-        pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
-        marginPagesDisplayed={3}
-        pageRangeDisplayed={5}
-        containerClassName={"pagination justify-content-center"}
-        pageClassName={"page-item"}
-        pageLinkClassName={"page-link"}
-        previousClassName={"page-item"}
-        previousLinkClassName={"page-link"}
-        nextClassName={"page-item"}
-        nextLinkClassName={"page-link"}
-        breakClassName={"page-item"}
-        breakLinkClassName={"page-link"}
-        activeClassName={"active"}
-        onPageChange={handlePageClick}
-      />
+                      <TextArea
+                        rows={5}
+                        type="text"
+                        name="detail"
+                        onChange={handleChangeDetail}
+                      />
+                    </Modal>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+
+        <Pagination
+          previousLabel="< ก่อนหน้า"
+          nextLabel="ถัดไป >"
+          breakLabel="..."
+          pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={5}
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+          onPageChange={handlePageClick}
+        />
+      </Box>
     </div>
   );
 };

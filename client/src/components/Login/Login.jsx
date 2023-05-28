@@ -23,7 +23,9 @@ const Login = () => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    // ตรวจสอบว่ามีการเข้าสู่ระบบแล้วหรือไม่ โดยตรวจสอบ token ใน localStorage
+    
+    //TODO: ตรวจสอบว่ามีการเข้าสู่ระบบแล้วหรือไม่ โดยตรวจสอบ token ใน localStorage
+
     if (localStorage.getItem("token")) {
       SweetAl.fire("แจ้งเตือน", "ท่านได้ทำการเข้าระบบอยู่แล้ว", "info");
       setTimeout(() => {
@@ -46,7 +48,7 @@ const Login = () => {
     }
   };
 
-  // การตรวจสอบ
+  //todo: การตรวจสอบ Role
   const levelRole = (role) => {
     if (role === "admin" || role === "dev" || role === "user") {
       redirect("/dashboard");
@@ -70,7 +72,7 @@ const Login = () => {
           );
 
           const idUser = res.data.payLoad.user.id;
-          // payload มาจาก userReducer จากการ return action.payload
+          //todo payload มาจาก userReducer จากการ return action.payload
           dispatch({
             type: "LOGIN",
             payload: {
@@ -96,7 +98,7 @@ const Login = () => {
           SweetAl.fire("แจ้งเตือน", errorMessage, "error");
         });
 
-      // ถ้าlogin สำเร็จ
+      //* ถ้าlogin สำเร็จ
 
       // authenticate(response, () => history("/create"));
     } catch (error) {
@@ -120,7 +122,7 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField name="username" label="Username" onChange={handleChange} />
-
+      
           {/* <TextField
             type="password"
             name="password"

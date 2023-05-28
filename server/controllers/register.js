@@ -46,3 +46,22 @@ exports.register2 = async (req, res) => {
     res.status(500).send('server is error!!!!')
   }
 };
+
+
+
+
+exports.removeUser = async (req, res) => {
+  try {
+    console.log('มีอะไรไหม',req.body);
+    const id = req.params.id;
+
+    // { new: true } คือ การให้แสดงค่าใหม่
+    await registers.findOneAndRemove({ _id: id }).exec();
+    res.json({ message: "ทำการลบข้อมูลสำเร็จ" });
+  } catch (error) {
+    // console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
+  }
+};
+
+

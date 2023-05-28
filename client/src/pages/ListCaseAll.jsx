@@ -7,9 +7,10 @@ import axios from "axios";
 import Paginate from "react-paginate";
 import moment from "moment/min/moment-with-locales";
 import { Helmet } from "react-helmet-async";
+import { Box } from "@mui/material";
 
 const ListCaseAll = () => {
-  // Paginate
+  //* Paginate
   const [currentPage, setCurrentPage] = useState([]);
   const ITEM_PER_PAGE = 10;
 
@@ -49,13 +50,15 @@ const ListCaseAll = () => {
   };
   return (
     <div className="mt-5">
-      <Typography className="" >f</Typography>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+
+    
        <Helmet>
           <title> Dashboard | CaseAll </title>
         </Helmet>
-      <table className="table table-striped">
-        <thead>
-          <tr className="table-secondary">
+      <table className="table table-striped ">
+        <thead className="">
+          <tr className="table-secondary ">
             <th scope="col">CodeCase</th>
             <th scope="col">ผู้แจ้งปัญหา</th>
             <th scope="col">ประเภทปัญหา</th>
@@ -151,6 +154,7 @@ const ListCaseAll = () => {
         activeClassName={"active"}
         onPageChange={handlePageClick}
       />
+        </Box>
     </div>
   );
 };

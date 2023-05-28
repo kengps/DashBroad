@@ -22,8 +22,7 @@ const MyRouter = () => {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<DashBorad />} />
-        <Route path="/3" element={<CampGameAndEditor />} />
-        <Route path="/" element={<PageContent />} />
+       
         <Route path="/formcontrol" element={<FormCase />} />
         <Route path="/listunresolve" element={<ListCaseUnResolve />} />
         <Route path="/listcase" element={<ListCaseAll />} />

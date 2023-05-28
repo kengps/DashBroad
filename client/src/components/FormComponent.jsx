@@ -31,6 +31,7 @@ import {
   ListSubheader,
   FormControl,
   FormHelperText,
+  Box,
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -71,8 +72,8 @@ const FormComponent = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-    console.log("อิอิ", values);
-    console.log("url", `${import.meta.env.VITE_REACT_APP_API}/createcase`);
+    // console.log("อิอิ", values);
+    // console.log("url", `${import.meta.env.VITE_REACT_APP_API}/createcase`);
 
     sendCase(values)
       .then((res) => {
@@ -122,26 +123,26 @@ const FormComponent = () => {
   const handleFacultyChange = (e) => {
     setFaculty(e.target.value); // Reset major when faculty changes
   };
-  // state ของการเลือก ประเภทของปัญหา
+  //* state ของการเลือก ประเภทของปัญหา
   const [selectedOption, setSelectedOption] = useState("");
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
     console.log(event.target.value);
   };
-  // state ของการเลือก รายละเอียดของปัญหา
+  //* state ของการเลือก รายละเอียดของปัญหา
   const [selectedDetail, setSelectedDetail] = useState("");
   const handleChangeDetail = (event) => {
     setSelectedDetail(event.target.value);
     console.log(event.target.value);
   };
-  // state ของการเลือกค่ายเกม
+  //* state ของการเลือกค่ายเกม
   const [campGames, setCampGames] = useState("");
 
   const handleChangeCampGame = (event) => {
     setCampGames(event.target.value);
     console.log(event.target.value);
   };
-  //ประเภทของปัญหา
+  //* ประเภทของปัญหา
   const typeProblem = [
     { id: "1", name: "หลังบ้าน bio" },
     { id: "2", name: "กลุ่ม lsm-Pretty Gaming" },
@@ -195,8 +196,9 @@ const FormComponent = () => {
   };
 
   return (
-    <div>
-      <Typography>ฟอร์มบันทึกเคส</Typography>
+    <div className="mt-2">
+      
+       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Form onSubmit={submitForm}>
         <div className="mt-3">
           <InputGroup className="mt-3">
@@ -567,7 +569,9 @@ const FormComponent = () => {
           บันทึก
         </Button>
       </Form>
+      </Box>
       {/* //test 5555555555555555555555555555555555 */}
+      
     </div>
   );
 };
