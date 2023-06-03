@@ -15,6 +15,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+
 const Login = () => {
   //redux
   const dispatch = useDispatch();
@@ -23,17 +24,31 @@ const Login = () => {
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
-    
-    //TODO: ตรวจสอบว่ามีการเข้าสู่ระบบแล้วหรือไม่ โดยตรวจสอบ token ใน localStorage
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem("token");
+      const expirationDate = localStorage.getItem("expirationDate");
+  
+      if (token && expirationDate) {
+        const currentTime = new Date().getTime();
 
-    if (localStorage.getItem("token")) {
-      SweetAl.fire("แจ้งเตือน", "ท่านได้ทำการเข้าระบบอยู่แล้ว", "info");
-      setTimeout(() => {
-        redirect("/dashboard");
-      }, 2000);
-    }
+       
+        console.log('เวลาปัจจุบัน',currentTime);
+        if (currentTime > expirationDate) {
+          // JWT หมดอายุแล้ว ลบ localStorage
+          localStorage.removeItem("token");
+          localStorage.removeItem("expirationDate");
+          // SweetAl.fire("แจ้งเตือน", "session หมดอายุแล้วกรุณา Login ใหม่อีกครั้ง", "info");
+        } else {
+          SweetAl.fire("แจ้งเตือน", "ท่านได้ทำการเข้าระบบอยู่แล้ว", "info");
+          setTimeout(() => {
+            redirect("/dashboard");
+          }, 2000);
+        }
+      }
+    };
+  
+    checkAuthStatus();
   }, [redirect]);
-
   const [value, setValue] = useState({
     username: "",
     password: "",
@@ -82,11 +97,17 @@ const Login = () => {
               id: res.data.payLoad.user.id,
             },
           });
+          //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
+          // ตั้งค่า timeout เพื่อลบ localStorage เมื่อ JWT หมดอายุ
+          const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+          //const expirationTime = 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+          const expirationDate = new Date().getTime() + expirationTime;
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("expirationDate", expirationDate);
+
           levelRole(res.data.payLoad.user.role);
         })
         .catch((error) => {
-          console.log(error);
           let errorMessage = "";
           if (error.message === "Request failed with status code 400") {
             errorMessage = "Username ไม่ถูกต้อง";
@@ -122,14 +143,14 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField name="username" label="Username" onChange={handleChange} />
-      
+
           {/* <TextField
             type="password"
             name="password"
             label="Password"
             onChange={handleChange}
           /> */}
-          <FormControl sx={{ m: 1}} variant="outlined">
+          <FormControl sx={{ m: 1 }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>

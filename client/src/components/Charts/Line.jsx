@@ -31,6 +31,39 @@ const Lines = () => {
   };
 
   const getChartData = () => {
+    // const problemsByDate = value.reduce((acc, curr) => {
+    //   const date = moment(curr.createdAt).locale("th").format("YYYY-MM-DD");
+    //   const problem = curr.problem;
+    //   if (!acc[date]) {
+    //     acc[date] = {};
+    //   }
+    //   if (!acc[date][problem]) {
+    //     acc[date][problem] = 0;
+    //   }
+    //   acc[date][problem]++;
+    //   return acc;
+    // }, {});
+
+    // const labels = [];
+    // const bioData = [];
+    // const lsmData = [];
+    // const apiData = [];
+    // const otherData = [];
+    // const currentDate = moment().locale("th").startOf("month");
+    // for (let i = 0; i < 31; i++) {
+    //   const date = currentDate.clone().add(i, "days").format("YYYY-MM-DD");
+    //   const dateData = problemsByDate[date] || {};
+    //   const bioCount = dateData["หลังบ้าน bio"] || 0;
+    //   const lsmCount = dateData["กลุ่ม lsm-Pretty Gaming"] || 0;
+    //   const apiCount = dateData["ขอ API"] || 0;
+    //   const otherCount = dateData["เรื่องทั่วไป"] || 0;
+    //   const dateLabel = currentDate.clone().add(i, "days").format("D MMMM");
+    //   labels.push(dateLabel);
+    //   bioData.push(bioCount);
+    //   lsmData.push(lsmCount);
+    //   apiData.push(apiCount);
+    //   otherData.push(otherCount);
+    // }
     const problemsByDate = value.reduce((acc, curr) => {
       const date = moment(curr.createdAt).locale("th").format("YYYY-MM-DD");
       const problem = curr.problem;
@@ -49,15 +82,20 @@ const Lines = () => {
     const lsmData = [];
     const apiData = [];
     const otherData = [];
-    const currentDate = moment().locale("th").startOf("month");
-    for (let i = 0; i < 30; i++) {
-      const date = currentDate.clone().add(i, "days").format("YYYY-MM-DD");
-      const dateData = problemsByDate[date] || {};
+    //Todo เป็นวันที่แรกของเดือนนี้
+    const currentDate = moment().locale("th").startOf("month"); 
+    //todo เป็นการกำหนดวันสุดท้ายของเดือนปัจจุบัน clone() ใช้คัลลอก currentDate มา แต่หากมีการเปลี่ยนแปลง currentDateจะไม่โดนเปลี่ยนไปด้วย
+    const lastDayOfMonth = currentDate.clone().endOf("month"); 
+    const daysInMonth = lastDayOfMonth.date(); // จำนวนวันของเดือนปัจจุบัน
+
+    for (let i = 0; i < daysInMonth; i++) {
+      const date = currentDate.clone().add(i, "days");
+      const dateData = problemsByDate[date.format("YYYY-MM-DD")] || {};
       const bioCount = dateData["หลังบ้าน bio"] || 0;
       const lsmCount = dateData["กลุ่ม lsm-Pretty Gaming"] || 0;
       const apiCount = dateData["ขอ API"] || 0;
       const otherCount = dateData["เรื่องทั่วไป"] || 0;
-      const dateLabel = currentDate.clone().add(i, "days").format("D MMMM");
+      const dateLabel = date.format("D MMMM");
       labels.push(dateLabel);
       bioData.push(bioCount);
       lsmData.push(lsmCount);
@@ -76,7 +114,7 @@ const Lines = () => {
           borderWidth: 1,
         },
         {
-          label: "กลุ่ม lsm-Pretty Gamings",
+          label: "lsm-Pretty",
           data: lsmData,
           backgroundColor: "rgba(255,99,132,0.4)",
           borderColor: "rgba(255,99,132,1)",

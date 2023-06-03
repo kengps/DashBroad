@@ -29,7 +29,7 @@ exports.logged = async (req, res) => {
         },
       };
       // // Token
-      const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "1d" });
+      const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "12h" });
 
       return res.json({ token, payLoad });
       // res.send('hello')

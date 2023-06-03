@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import MyForm from "../components/NavbarFormcase/ProblemType";
 import { changeStatus, listCases, deleteCase, changeDetail } from "../api/case";
-import { Button, Card, Tag, message, Select, Modal, Input } from "antd";
+import { Button, Card, Tag, message, Select, Modal, Input, Drawer } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
 import { toast } from "react-toastify";
@@ -14,6 +14,7 @@ import moment from "moment/min/moment-with-locales";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import swal from "sweetalert2";
 const { TextArea } = Input;
+import Button1 from "react-bootstrap/Button";
 
 import ReactQuill from "react-quill";
 import { Helmet } from "react-helmet-async";
@@ -27,7 +28,7 @@ const ListCaseUnResolve = () => {
   const [data, setData] = useState([]);
   //* state สำหรับการค้นหาข้อมูล
   const [search, setSearch] = useState("");
-
+  //* state สำหรับ Pagination
   const [currentPage, setCurrentPage] = useState([]);
   const ITEM_PER_PAGE = 20;
 
@@ -35,6 +36,7 @@ const ListCaseUnResolve = () => {
     loadData();
   }, [currentPage]);
 
+  //function axios ดึงข้อมูล
   const loadData = () => {
     listCases(currentPage, ITEM_PER_PAGE)
       .then((res) => {
@@ -50,6 +52,7 @@ const ListCaseUnResolve = () => {
   const cardRef = useRef(null);
   const textRef = useRef([]);
 
+  //function  handleCopy สำหรับการ copy โดยหลังผ่านไป 3 วิ จะให้ทำการปิด sweetAlert
   const handleCopy = (e) => {
     e.preventDefault();
     const textToCopy = textRef.current.innerText;
@@ -66,11 +69,10 @@ const ListCaseUnResolve = () => {
     setTimeout(() => {
       sweetAlert.close();
     }, 1000);
-    console.log("eee", textRef.current.innerText);
   };
 
+  //func สำหรับการแก้ไข สถานะ โดยมีการกำหนดตัวแปร  statusCase เพื่อทำการนำไปลูป
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
-
   const handleOnchange = (e, id) => {
     let values = {
       id: id,
@@ -94,7 +96,6 @@ const ListCaseUnResolve = () => {
   const [selectedCase, setSelectedCase] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -105,11 +106,15 @@ const ListCaseUnResolve = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  // modal สำหรับการแก้ไขรายละเอียด case
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const showModal2 = (id) => {
     setIsModalOpen2(true);
 
     setValues({ ...values, id: id });
   };
+
   const handleOk2 = () => {
     setIsModalOpen2(false);
 
@@ -134,23 +139,24 @@ const ListCaseUnResolve = () => {
     e.preventDefault();
     // handle search logic here
   };
+
+  //func Pagination
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
 
+  //func สำหรับปุ่มลบการค้นหา
   const onClickButton = (e) => {
     e.preventDefault();
     setSearch("");
-    console.log("ลบข้อมูลเรียบร้อยแล้ว");
   };
 
-  // ปุ่มคลิก
-
+  //func ปุ่มลบเคสโดยจะเริ่มทำจาก handleClick ก่อน หากมีการกด OK ก็จะแรกใช้ confirmDelete
   const confirmDelete = (id) => {
     deleteCase(id)
       .then((res) => {
         sweetAlert.fire("แจ้งเตือน", res.data.message, "success");
-        console.log("การลบ", res);
+        // console.log("การลบ", res);
         loadData();
         // loadUser(user.token);
       })
@@ -159,7 +165,7 @@ const ListCaseUnResolve = () => {
       });
   };
 
-  //* function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
+  // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
   const handleClick = async (id) => {
     //todo หากกดปุ่มลบ จะให้ปุ่มยืนยันการลบขึ้นมา
     try {
@@ -179,33 +185,101 @@ const ListCaseUnResolve = () => {
     }
   };
 
+  // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  console.log("w,j,", values);
+
+  //modal สรุปเคส
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const showModal3 = () => {
+    setIsModalOpen3(true);
+  };
+  const handleOk3 = () => {
+    setIsModalOpen3(false);
+  };
+  const handleCancel3 = () => {
+    setIsModalOpen3(false);
+  };
+
+  // ตัวแปรสำหรับหาจำนวนของเคสที่รอการแก้ไข
+  const pendingCases = data.filter((item) => item.status === "รอการแก้ไข");
+  const pendingCasesCount = pendingCases.length;
+
+  // func สำหรับ copy สรุปเคส
+  const handleCopy2 = (e) => {
+    e.preventDefault();
+    const textToCopy = textRef.current.innerText;
+
+    // วิธีที่ 1: ใช้ API navigator.clipboard.writeText()
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        //toast.success("Copied to clipboard");
+        sweetAlert.fire({
+          title: "แจ้งเตือน",
+          text: "Copied to clipboard",
+          icon: "success",
+          didClose: () => {
+            setIsModalOpen(false);
+          },
+        });
+        setTimeout(() => {
+          sweetAlert.close();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log("Error copying to clipboard:", error);
+        //toast.error("Failed to copy to clipboard");
+        sweetAlert.fire({
+          title: "แจ้งเตือน",
+          text: "Failed to copy to clipboard",
+          icon: "error",
+        });
+      });
+  };
+
+  // Drawer สำหรับ copy สรุปเคสประจำวัน
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="mt-5">
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Helmet>
           <title> Dashboard | CaseUnResolve </title>
         </Helmet>
-        <InputGroup className="mb-3">
-          <Form.Control
-            placeholder="ค้นหาCodeCase"
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-          />
-          <Button
-            variant="danger"
-            value="Submit"
-            onClick={onClickButton}
-            className="btn-1"
-          >
-            <RxCross2 />
-          </Button>
-        </InputGroup>
+        <Box>
+          <InputGroup className="mb-3">
+            <Form.Control
+              placeholder="ค้นหาCodeCase"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+            />
+            <Button
+              variant="danger"
+              value="Submit"
+              onClick={onClickButton}
+              className="btn-1"
+            >
+              <RxCross2 />
+            </Button>
+            <Button1
+              variant="success"
+              onClick={showDrawer}
+              style={{ marginLeft: "20px" }}
+            >
+              สรุปเคสประจำวัน
+            </Button1>
+          </InputGroup>
+        </Box>
 
         <table className="table table-striped ">
           <thead>
@@ -234,15 +308,21 @@ const ListCaseUnResolve = () => {
           </thead>
           <tbody>
             {data
-              .filter((item) =>
-                item.caseId.toLowerCase().includes(search.toLowerCase())
+              .filter(
+                (item) =>
+                  //  filter แรกสำหรับการค้นหา id และ รายละเอียด
+                  item.caseId.toLowerCase().includes(search.toLowerCase()) ||
+                  item.detail.toLowerCase().includes(search.toLowerCase())
               )
               .filter(
+                // filter สำหรับแสดงเคสที่ รอการแก้ไข
                 (item) =>
                   item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
               )
+              // reverse ข้อมูลจากใหม่ไปเก่า
               .reverse((a, b) => b.id - a.id)
               .slice(
+                // slice สำหรับ pagination
                 currentPage * ITEM_PER_PAGE,
                 (currentPage + 1) * ITEM_PER_PAGE
               )
@@ -383,6 +463,58 @@ const ListCaseUnResolve = () => {
                   </td>
                 </tr>
               ))}
+
+            <Modal
+              title="Basic Modal"
+              open={isModalOpen3}
+              onOk={handleOk3}
+              onCancel={handleCancel3}
+            >
+              <Card ref={textRef}>
+                <p>******************************************</p>
+                <p>
+                  สรุปเคสค้างระหว่างกะ
+                  <p>
+                    จำนวน {pendingCasesCount} รายการ
+                    <p>
+                      {pendingCases.map((item, index) => (
+                        <span key={index}>{item.caseId}, </span>
+                      ))}
+                    </p>
+                  </p>
+                </p>
+                <p>******************************************</p>
+                <Button onClick={handleCopy2} className="btn-primary float-end">
+                  <CopyOutlined />
+                </Button>
+              </Card>
+            </Modal>
+
+            <Drawer
+              title="Basic Drawer"
+              placement="right"
+              onClose={onClose}
+              open={open}
+            >
+              <Card ref={textRef}>
+                <p>******************************************</p>
+                <p>
+                  สรุปเคสค้างระหว่างกะ
+                  <p>
+                    จำนวน {pendingCasesCount} รายการ
+                    <p>
+                      {pendingCases.map((item, index) => (
+                        <span key={index}>{item.caseId}, </span>
+                      ))}
+                    </p>
+                  </p>
+                </p>
+                <p>******************************************</p>
+                <Button onClick={handleCopy2} className="btn-primary float-end">
+                  <CopyOutlined />
+                </Button>
+              </Card>
+            </Drawer>
           </tbody>
         </table>
 

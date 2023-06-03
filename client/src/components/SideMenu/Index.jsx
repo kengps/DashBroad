@@ -162,7 +162,9 @@ export default function MiniDrawer() {
   };
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState('');
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -174,6 +176,7 @@ export default function MiniDrawer() {
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+   
   };
 
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -190,7 +193,7 @@ export default function MiniDrawer() {
   });
   const showModal = (id) => {
     setIsModalOpen(true);
-    console.log("id", id);
+   
     setValues({ ...values, id: id });
   };
 
@@ -267,7 +270,7 @@ export default function MiniDrawer() {
             {user && (
               <NavDropdown
                 title={
-                  <Tooltip title={user.username}>
+                  <Tooltip title={user.username} placement="left" arrow>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       {/*                 
                 <Avatar alt={user.username.slice(0,1).toUpperCase()} src="a" /> */}

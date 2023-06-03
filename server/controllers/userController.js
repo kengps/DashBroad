@@ -29,6 +29,7 @@ exports.readUser = async (req, res) => {
 
 // ค้นหา user 1 user และทำการ update
 exports.updatePassword = async (req, res) => {
+ 
   try {
     const {id , password} = req.body.values
     // 1 gen salt
@@ -67,6 +68,7 @@ exports.deleteUser = async (req, res) => {
 // ค้นหา user 1 user และทำการ update
 exports.changStatus = async (req, res) => {
   try {
+    console.log(req.body);
     const user = await Users.findOneAndUpdate(
       { _id: req.body.id },// ตัวที่ค้นหา
       { enabled: req.body.enabled } // ตัวที่ต้องการให้ update
@@ -79,6 +81,7 @@ exports.changStatus = async (req, res) => {
 };
 // ค้นหา user 1 user และทำการ update
 exports.changeRole = async (req, res) => {
+  console.log(req.body);
   try {
     const user = await Users.findOneAndUpdate(
       { _id: req.body.id },// ตัวที่ค้นหา
@@ -115,13 +118,18 @@ res.json(user);
   }
 };
 
-exports.fetchData = async (url) =>{
+
+
+exports.changeUser = async (req, res) => {
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data);
-    // ดำเนินการกับข้อมูลที่ได้รับต่อไป
+    console.log(req.body);
+    const user = await Users.findOneAndUpdate(
+      { _id: req.body.id },// ตัวที่ค้นหา
+      { enabled: req.body.enabled } // ตัวที่ต้องการให้ update
+    ).exec();
+    res.json(user);
   } catch (error) {
-    console.error('Error:', error);
+    // console.log("เกิดข้อผิดพลาด", error);
+    res.status(400).json({ error: "Server isError" });
   }
-}
+};

@@ -86,10 +86,10 @@ const Register = () => {
 
   return (
     <div className="container">
-      {JSON.stringify(state)}
-      <Typography.Title level={1} className={'text-center'}>Register / สมัครสมาชิก</Typography.Title>
+     
+      {/* <Typography.Title level={4} className={'text-center'}>Register / สมัครสมาชิก</Typography.Title>
       {/* <h1>ResgisterComponent</h1>
-       */}
+       */} 
      
       <div className="from-control">
         <Form onSubmit={submitForm}>

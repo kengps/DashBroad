@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const {listUser ,readUser ,deleteUser,updatePassword,resetPassword}= require('../controllers/userController')
+const {changeUser,listUser ,readUser ,deleteUser,updatePassword,resetPassword ,changStatus,changeRole}= require('../controllers/userController')
 
 router.get('/list-user' , listUser)
 router.get('/list-user/:id' , readUser)
@@ -14,6 +14,9 @@ router.put('/user/:id' , updatePassword)
 
 router.put('/users/:id' , resetPassword)
 
+// router.post("/change-status", authMiddleware ,checkAdmin, changStatus);
 
+ router.post("/change-user", changeUser);
+ router.post("/change-role-user", changeRole);
 
 module.exports = router;

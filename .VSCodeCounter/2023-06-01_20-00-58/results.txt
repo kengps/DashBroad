@@ -1,0 +1,140 @@
+Date : 2023-06-01 20:00:58
+Directory : d:\1-LearningPrograming\11_Dashboard
+Total : 78 files,  24510 codes, 1245 comments, 785 blanks, all 26540 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          8 |     19,258 |          0 |          9 |     19,267 |
+| JavaScript |         64 |      5,025 |      1,241 |        750 |      7,016 |
+| PostCSS    |          2 |        208 |          2 |         25 |        235 |
+| HTML       |          1 |         16 |          0 |          1 |         17 |
+| XML        |          2 |          2 |          0 |          0 |          2 |
+| Properties |          1 |          1 |          2 |          0 |          3 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                              | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                 |         78 |     24,510 |      1,245 |        785 |     26,540 |
+| . (Files)                                                                                         |          2 |        564 |          0 |          2 |        566 |
+| client                                                                                            |         59 |     17,385 |      1,129 |        622 |     19,136 |
+| client (Files)                                                                                    |          5 |     12,583 |          3 |          5 |     12,591 |
+| client\public                                                                                     |          1 |          1 |          0 |          0 |          1 |
+| client\src                                                                                        |         53 |      4,801 |      1,126 |        617 |      6,544 |
+| client\src (Files)                                                                                |          6 |        471 |         12 |         47 |        530 |
+| client\src\api                                                                                    |          3 |        118 |         13 |         28 |        159 |
+| client\src\assets                                                                                 |          1 |          1 |          0 |          0 |          1 |
+| client\src\components                                                                             |         29 |      2,923 |        940 |        383 |      4,246 |
+| client\src\components (Files)                                                                     |          1 |        455 |         90 |         35 |        580 |
+| client\src\components\AppFooter                                                                   |          1 |         12 |          0 |          3 |         15 |
+| client\src\components\AppHeader                                                                   |          1 |        136 |         31 |         16 |        183 |
+| client\src\components\AppRoutes                                                                   |          1 |         52 |         16 |         11 |         79 |
+| client\src\components\Charts                                                                      |         11 |      1,049 |        567 |        150 |      1,766 |
+| client\src\components\LoadingAndRedirect                                                          |          2 |         27 |          0 |          7 |         34 |
+| client\src\components\Login                                                                       |          2 |        216 |         15 |         37 |        268 |
+| client\src\components\NavbarFormcase                                                              |          5 |        408 |         38 |         32 |        478 |
+| client\src\components\PageContent                                                                 |          1 |         11 |          0 |          3 |         14 |
+| client\src\components\Register                                                                    |          1 |        129 |         14 |         29 |        172 |
+| client\src\components\Services                                                                    |          1 |          4 |          0 |          2 |          6 |
+| client\src\components\SideMenu                                                                    |          1 |        409 |        169 |         55 |        633 |
+| client\src\components\theme                                                                       |          1 |         15 |          0 |          3 |         18 |
+| client\src\contexts                                                                               |          2 |         47 |          1 |         15 |         63 |
+| client\src\hooks                                                                                  |          1 |         29 |          4 |         16 |         49 |
+| client\src\layouts                                                                                |          1 |         49 |         18 |         12 |         79 |
+| client\src\pages                                                                                  |          8 |      1,146 |        138 |        110 |      1,394 |
+| client\src\reducers                                                                               |          2 |         17 |          0 |          6 |         23 |
+| server                                                                                            |         17 |      6,561 |        116 |        161 |      6,838 |
+| server (Files)                                                                                    |          5 |      6,161 |         14 |         40 |      6,215 |
+| server\controllers                                                                                |          4 |        282 |         60 |         63 |        405 |
+| server\middleware                                                                                 |          1 |         12 |          4 |          6 |         22 |
+| server\models                                                                                     |          2 |         70 |         28 |         13 |        111 |
+| server\routers                                                                                    |          5 |         36 |         10 |         39 |         85 |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                          | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\1-LearningPrograming\11_Dashboard\client\.env                                                  | Properties |          1 |          2 |          0 |          3 |
+| d:\1-LearningPrograming\11_Dashboard\client\index.html                                            | HTML       |         16 |          0 |          1 |         17 |
+| d:\1-LearningPrograming\11_Dashboard\client\package-lock.json                                     | JSON       |     12,497 |          0 |          1 |     12,498 |
+| d:\1-LearningPrograming\11_Dashboard\client\package.json                                          | JSON       |         64 |          0 |          1 |         65 |
+| d:\1-LearningPrograming\11_Dashboard\client\public\vite.svg                                       | XML        |          1 |          0 |          0 |          1 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\App.css                                           | PostCSS    |        159 |          2 |         18 |        179 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\App.jsx                                           | JavaScript |         11 |          0 |          4 |         15 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\MyRouter.jsx                                      | JavaScript |         26 |          3 |          7 |         36 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\api\auth.jsx                                      | JavaScript |         15 |          0 |          4 |         19 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\api\case.jsx                                      | JavaScript |         57 |         13 |         16 |         86 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\api\user.jsx                                      | JavaScript |         46 |          0 |          8 |         54 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\assets\react.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\AppFooter\Index.jsx                    | JavaScript |         12 |          0 |          3 |         15 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\AppHeader\Index.jsx                    | JavaScript |        136 |         31 |         16 |        183 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\AppRoutes\Index.jsx                    | JavaScript |         52 |         16 |         11 |         79 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Bar.jsx                         | JavaScript |        112 |         88 |         18 |        218 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\BarChart.jsx                    | JavaScript |        142 |        193 |         36 |        371 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\BarHorizontal.jsx               | JavaScript |        120 |          8 |         11 |        139 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Chart.jsx                       | JavaScript |         10 |          0 |          3 |         13 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Doughnut.jsx                    | JavaScript |        155 |          9 |         16 |        180 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Line.jsx                        | JavaScript |        115 |        122 |         20 |        257 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\LineRecorder.jsx                | JavaScript |        101 |        135 |         21 |        257 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Pie.jsx                         | JavaScript |         86 |          1 |          5 |         92 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\PieChart.jsx                    | JavaScript |        125 |         11 |         12 |        148 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Polar.jsx                       | JavaScript |         83 |          0 |          7 |         90 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Charts\Radar.jsx                       | JavaScript |          0 |          0 |          1 |          1 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\FormComponent.jsx                      | JavaScript |        455 |         90 |         35 |        580 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\LoadingAndRedirect\Index.jsx           | JavaScript |          8 |          0 |          3 |         11 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\LoadingAndRedirect\LoadingNotLogin.jsx | JavaScript |         19 |          0 |          4 |         23 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Login\Login.jsx                        | JavaScript |        149 |         15 |         24 |        188 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Login\LoginForm.jsx                    | JavaScript |         67 |          0 |         13 |         80 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\NavbarFormcase\AgentName.jsx           | JavaScript |         53 |          0 |          3 |         56 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\NavbarFormcase\CampGameAndEditor.jsx   | JavaScript |         15 |          0 |          3 |         18 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\NavbarFormcase\Details.jsx             | JavaScript |          7 |          0 |          2 |          9 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\NavbarFormcase\MyForm.jsx              | JavaScript |        302 |         38 |         18 |        358 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\NavbarFormcase\ProblemType.jsx         | JavaScript |         31 |          0 |          6 |         37 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\PageContent\Index.jsx                  | JavaScript |         11 |          0 |          3 |         14 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Register\Register.jsx                  | JavaScript |        129 |         14 |         29 |        172 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\Services\authorize.jsx                 | JavaScript |          4 |          0 |          2 |          6 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\SideMenu\Index.jsx                     | JavaScript |        409 |        169 |         55 |        633 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\components\theme\themeChange.jsx                  | JavaScript |         15 |          0 |          3 |         18 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\contexts\DataLoader.jsx                           | JavaScript |         20 |          1 |          7 |         28 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\contexts\api.jsx                                  | JavaScript |         27 |          0 |          8 |         35 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\hooks\UseResponsive.jsx                           | JavaScript |         29 |          4 |         16 |         49 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\index.css                                         | PostCSS    |         49 |          0 |          7 |         56 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\layouts\MainPage.jsx                              | JavaScript |         49 |         18 |         12 |         79 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\main.jsx                                          | JavaScript |         23 |          2 |          4 |         29 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\ChangPassword.jsx                           | JavaScript |         60 |          3 |          6 |         69 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\DashBoard.jsx                               | JavaScript |        105 |         46 |         14 |        165 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\FormCase.jsx                                | JavaScript |         19 |          0 |          3 |         22 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\ListCaseAll.jsx                             | JavaScript |        141 |          8 |         14 |        163 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\ListCaseUnResolve.jsx                       | JavaScript |        478 |         63 |         42 |        583 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\ListUser.jsx                                | JavaScript |        306 |         16 |         24 |        346 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\WebScraping.jsx                             | JavaScript |         19 |          2 |          4 |         25 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\pages\Work.jsx                                    | JavaScript |         18 |          0 |          3 |         21 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\reducers\index.jsx                                | JavaScript |          6 |          0 |          4 |         10 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\reducers\useReducer.jsx                           | JavaScript |         11 |          0 |          2 |         13 |
+| d:\1-LearningPrograming\11_Dashboard\client\src\theme.jsx                                         | JavaScript |        203 |          5 |          7 |        215 |
+| d:\1-LearningPrograming\11_Dashboard\client\vite.config.js                                        | JavaScript |          5 |          1 |          2 |          8 |
+| d:\1-LearningPrograming\11_Dashboard\package-lock.json                                            | JSON       |        538 |          0 |          1 |        539 |
+| d:\1-LearningPrograming\11_Dashboard\package.json                                                 | JSON       |         26 |          0 |          1 |         27 |
+| d:\1-LearningPrograming\11_Dashboard\server\controllers\authController.js                         | JavaScript |         41 |          5 |          9 |         55 |
+| d:\1-LearningPrograming\11_Dashboard\server\controllers\caseController.js                         | JavaScript |         97 |         31 |         19 |        147 |
+| d:\1-LearningPrograming\11_Dashboard\server\controllers\register.js                               | JavaScript |         48 |          6 |         14 |         68 |
+| d:\1-LearningPrograming\11_Dashboard\server\controllers\userController.js                         | JavaScript |         96 |         18 |         21 |        135 |
+| d:\1-LearningPrograming\11_Dashboard\server\firebase.json                                         | JSON       |         14 |          0 |          1 |         15 |
+| d:\1-LearningPrograming\11_Dashboard\server\middleware\auth.js                                    | JavaScript |         12 |          4 |          6 |         22 |
+| d:\1-LearningPrograming\11_Dashboard\server\models\caseModel.js                                   | JavaScript |         47 |         28 |         11 |         86 |
+| d:\1-LearningPrograming\11_Dashboard\server\models\register.js                                    | JavaScript |         23 |          0 |          2 |         25 |
+| d:\1-LearningPrograming\11_Dashboard\server\package-lock.json                                     | JSON       |      6,076 |          0 |          1 |      6,077 |
+| d:\1-LearningPrograming\11_Dashboard\server\package.json                                          | JSON       |         28 |          0 |          1 |         29 |
+| d:\1-LearningPrograming\11_Dashboard\server\routers\LoginAndRegister.js                           | JavaScript |          6 |          0 |          5 |         11 |
+| d:\1-LearningPrograming\11_Dashboard\server\routers\caseRoute.js                                  | JavaScript |         12 |          6 |         11 |         29 |
+| d:\1-LearningPrograming\11_Dashboard\server\routers\login.js                                      | JavaScript |          7 |          3 |         12 |         22 |
+| d:\1-LearningPrograming\11_Dashboard\server\routers\socket.js                                     | JavaScript |          0 |          0 |          1 |          1 |
+| d:\1-LearningPrograming\11_Dashboard\server\routers\userRouter.js                                 | JavaScript |         11 |          1 |         10 |         22 |
+| d:\1-LearningPrograming\11_Dashboard\server\server.js                                             | JavaScript |         28 |         14 |         35 |         77 |
+| d:\1-LearningPrograming\11_Dashboard\server\vercel.json                                           | JSON       |         15 |          0 |          2 |         17 |
+| Total                                                                                             |            |     24,510 |      1,245 |        785 |     26,540 |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
