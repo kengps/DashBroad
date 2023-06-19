@@ -20,6 +20,8 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { Link, useNavigate } from "react-router-dom";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import GridOnIcon from '@mui/icons-material/GridOn';
+import GroupsIcon from '@mui/icons-material/Groups';
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
@@ -402,12 +404,12 @@ export default function MiniDrawer() {
             {
               label: "ตารางวันทำงาน",
               key: "/dashboard/work",
-              icon: <QueryStatsIcon />,
+              icon: <GridOnIcon />,
             },
             {
               label: "สมาชิกทั้งหมด",
               key: "/dashboard/listuser",
-              icon: <WidgetsOutlinedIcon />,
+              icon: <GroupsIcon />,
             },
           ].map(({ label, key, icon }) => (
             <ListItem key={key} disablePadding sx={{ display: "block" }}>

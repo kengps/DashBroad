@@ -307,7 +307,7 @@ const FormComponent = () => {
             /> */}
           </InputGroup>
         </div>
-        {selectedOption !== "ขอ API" && selectedOption !== "เรื่องทั่วไป" && (
+        {selectedOption !== "ขอ API" && selectedOption !== "เรื่องทั่วไป" && selectedOption !== 'กลุ่ม lsm-Pretty Gaming' &&(
           <div className="mt-3">
             <InputGroup className="mt-3" style={navDropdownItemStyle}>
               <InputGroup.Text
@@ -344,7 +344,7 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    Sport
+                    สปอร์ต
                   </ListSubheader>
                   {selectCampGames.map((items, index) =>
                     items.name === "Sport" ? (
@@ -361,7 +361,7 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    Baccarat
+                    บาคาร่า
                   </ListSubheader>
                   {selectCampGames.map((items, index) =>
                     items.name === "Sexy Baccarat" ||
@@ -381,7 +381,7 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    Slot
+                    สล็อต
                   </ListSubheader>
                   {selectCampGames.map((items, index) =>
                     items.name === "PG Slot" ||
@@ -404,7 +404,7 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    Biogame & AMB
+                   เกมการ์ด
                   </ListSubheader>
                   {selectCampGames.map((items, index) =>
                     items.name === "Biogame & AMB" ||
@@ -422,7 +422,7 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    Lotto
+                    ล็อตโต้
                   </ListSubheader>
                   {selectCampGames.map((items, index) =>
                     items.name === "VwinLotto" ? (

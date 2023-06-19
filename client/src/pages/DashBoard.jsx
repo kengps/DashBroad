@@ -91,9 +91,14 @@ const DashBorad = () => {
           </Grid>
 
           {/* BarChart  แสดงข้อมูลจำนวนค่ายเกมทั้งหมด */}
-          <Grid item xs={12} md={6} lg={12}>
+          <Grid item xs={12} md={6} lg={6}>
             <Item>
               <BarChart />
+            </Item>
+          </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+            <Item>
+              <Charts />
             </Item>
           </Grid>
         </Grid>

@@ -91,7 +91,7 @@ const LineRecorder = () => {
         },
         title: {
           display: true,
-          text: "จำนวนผู้ลงเคสแบบรายเดือน",
+          text: "แนวโน้มปริมาณผู้ลงเคส (รายเดือน)",
         },
         datalabels: {
           anchor: "end",

@@ -1,11 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { SiMicrosoftexcel } from "react-icons/all";
 
+
 import DataLoader from "../../contexts/DataLoader";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+
 const PieChart = () => {
+  const [PieKeys, setPieKeys] = useState([]);
+  const [PieValue, setPieValue] = useState([]);
+
+
+
+ 
   const renderChart = (value) => {
     const groupedData = value.reduce((acc, cur) => {
       acc[cur.problem] = acc[cur.problem] ? acc[cur.problem] + 1 : 1;
@@ -15,13 +23,18 @@ const PieChart = () => {
     console.log("Pie ได้ชื่อมาหรือไม่", groupedData);
     const PieKeys = Object.keys(groupedData);
     const PieValue = Object.values(groupedData);
-    console.log("PieKeys", PieKeys);
-    console.log("", PieValue);
 
+    
+    // console.log("PieKeys", PieKeys);
+    // console.log("", PieValue);
+
+//  setPieKeys(PieKeys);
+//     setPieValue(PieValue);
+   
     //   let sumTotal = valueArr2.reduce(function (prev, curr) {
     //     return prev + curr;
     // }, 0);
-
+   
     const options = {
       plugins: {
         title: {
@@ -94,7 +107,7 @@ const PieChart = () => {
             "rgba(153, 102, 255, 1)",
             "rgba(255, 159, 64, 1)",
             "rgba(255, 99, 255, 1)",
-            
+
             "rgba(99, 165, 255, 1)",
             "rgba(101, 99, 255, 1)",
             "rgba(88, 214, 141 , 1)",
@@ -107,6 +120,7 @@ const PieChart = () => {
 
     return <Pie data={data} options={options} plugins={[ChartDataLabels]} />;
   };
+  
 
   return (
     <div>
@@ -118,7 +132,7 @@ const PieChart = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {labelArr2.map((label, index) => (
+          {/* {groupedData.map((label, index) => (
             <tr key={index}>
               <td>{label}</td>
               <td>{valueArr2[index]}</td>
@@ -130,7 +144,7 @@ const PieChart = () => {
           </tr> */}
         </tbody>
       </table>
-      <div className="btn-excel">
+      {/* <div className="btn-excel">
         <ReactHTMLTableToExcel
           className="btn btn-info"
           table="pie-table"
@@ -138,7 +152,7 @@ const PieChart = () => {
           sheet="Sheet"
           buttonText={<SiMicrosoftexcel />}
         />
-      </div>
+      </div> */}
       <DataLoader children={renderChart} />
     </div>
   );

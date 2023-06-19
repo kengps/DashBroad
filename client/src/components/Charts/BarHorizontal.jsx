@@ -101,35 +101,7 @@ const BarHorizontal = () => {
 
   return (
     <div>
-      <table id="pie-table">
-        <thead>
-          <tr>
-            <th>ประเภท</th>
-            <th>จำนวน</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* {labelArr2.map((label, index) => (
-            <tr key={index}>
-              <td>{label}</td>
-              <td>{valueArr2[index]}</td>
-            </tr>
-          ))}
-          <tr>
-            <td><strong>รวมทั้งหมด</strong></td>
-            <td><strong>{sumTotal}</strong></td>
-          </tr> */}
-        </tbody>
-      </table>
-      <div className="btn-excel">
-        <ReactHTMLTableToExcel
-          className="btn btn-info"
-          table="pie-table"
-          filename="pie_chart"
-          sheet="Sheet"
-          buttonText={<SiMicrosoftexcel />}
-        />
-      </div>
+     
       <DataLoader children={renderChart} />
     </div>
   );

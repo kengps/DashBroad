@@ -54,8 +54,8 @@ const LoginForm = () => {
       <StyledRoot>
         {mdUp && (
           <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+            <Typography variant="h4" sx={{ px: 5, mt: 10, mb: 5 }}>
+              Hi Bro, Welcome Back
             </Typography>
             <img src="/img/logo1.jpg" alt="login" />
           </StyledSection>

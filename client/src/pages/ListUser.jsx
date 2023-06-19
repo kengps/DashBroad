@@ -30,6 +30,7 @@ import { Box } from "@mui/material";
 
 import sweetAlert from "sweetalert2";
 import Register from "../components/Register/Register";
+import { toast } from "react-toastify";
 
 const ListUser = () => {
   const [value, setValue] = useState([]);
@@ -128,7 +129,13 @@ const ListUser = () => {
     console.log("ได้อะไรมาไหมนะ", value);
     changStatus(user.token, value)
       .then((res) => {
-        console.log("ได้อะไรคืนมา", res);
+        const notify =
+          res.data.enabled === true
+            ? "ทำการปิดการใช้งานสำเร็จ"
+            : "ทำการเปิดการใช้งานสำเร็จ";
+
+        toast.success(notify);
+
         loadData(user.token);
       })
       .catch((err) => {
@@ -151,6 +158,8 @@ const ListUser = () => {
     //changRole คือ function การยิง API
     changRole(user.token, value)
       .then((res) => {
+        toast.success("ทำการแก้ไขระดับสำเร็จ");
+
         loadData(user.token);
       })
       .catch((err) => {
@@ -167,7 +176,7 @@ const ListUser = () => {
         <div>
           <Typography.Title level={2}>
             สมาชิกทั้งหมด
-            {role === "dev" && (
+            {role !== "user" && (
               <Tooltip title="เพิ่มสมาชิก" placement="right" arrow>
                 <Button1
                   onClick={showModal}
@@ -269,7 +278,6 @@ const ListUser = () => {
                       >
                         ลบ
                       </Button>
-                      <Button type="primary">แก้ไข</Button>
                     </Space>
                   </td>
                 </tr>

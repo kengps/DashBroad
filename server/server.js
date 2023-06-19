@@ -7,12 +7,13 @@ const mongoose = require('mongoose');
 const app = express();
 
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+
 //router
 const caseRouter = require('./routers/caseRoute')
 const ReAndLogRouter = require('./routers/LoginAndRegister')
 const userRouter = require('./routers/userRouter')
 const LoginAuth = require('./routers/login')
+const currentTime = require('./routers/time')
 
 
 
@@ -57,6 +58,7 @@ app.use('/api' , caseRouter)
 app.use('/api' , ReAndLogRouter)
 app.use('/api' , userRouter)
 app.use('/api' , LoginAuth)
+
 
 
 

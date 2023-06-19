@@ -248,6 +248,11 @@ const ListCaseUnResolve = () => {
     setOpen(false);
   };
 
+  let currentTime = moment().utcOffset('+07:00').format('LT');  
+  let eveningTime = moment("8:30 PM", "h:mm A");
+
+
+  console.log(currentTime);
   return (
     <div className="mt-5">
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -464,7 +469,7 @@ const ListCaseUnResolve = () => {
                 </tr>
               ))}
 
-            <Modal
+            {/* <Modal
               title="Basic Modal"
               open={isModalOpen3}
               onOk={handleOk3}
@@ -473,9 +478,11 @@ const ListCaseUnResolve = () => {
               <Card ref={textRef}>
                 <p>******************************************</p>
                 <p>
-                  สรุปเคสค้างระหว่างกะ
+                  สรุปเคสประจำวันระหว่างกะ
                   <p>
-                    จำนวน {pendingCasesCount} รายการ
+                    {pendingCasesCount === "0"
+                      ? "ไม่มีรายการค้าง"
+                      : ` เคสค้างจำนวน ${pendingCasesCount} รายการ`}
                     <p>
                       {pendingCases.map((item, index) => (
                         <span key={index}>{item.caseId}, </span>
@@ -488,7 +495,7 @@ const ListCaseUnResolve = () => {
                   <CopyOutlined />
                 </Button>
               </Card>
-            </Modal>
+            </Modal> */}
 
             <Drawer
               title="Basic Drawer"
@@ -497,11 +504,21 @@ const ListCaseUnResolve = () => {
               open={open}
             >
               <Card ref={textRef}>
-                <p>******************************************</p>
+                {/* <p>══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p> */}
+              
                 <p>
-                  สรุปเคสค้างระหว่างกะ
+                  {" "}
+                  {moment(currentTime, "h:mm A").isAfter(eveningTime) ? (
+                    <p> ══════════ สรุปเคสประจำวันกะดึก ════════════</p>
+                  ) : (
+                    <p>══════════ สรุปเคสประจำวันกะเช้า ════════════</p>
+                  )}
+                </p>
+                <p>
                   <p>
-                    จำนวน {pendingCasesCount} รายการ
+                    {pendingCasesCount === 0
+                      ? "ไม่มีรายการค้าง"
+                      : ` เคสค้างจำนวน ${pendingCasesCount} รายการ`}
                     <p>
                       {pendingCases.map((item, index) => (
                         <span key={index}>{item.caseId}, </span>
@@ -509,7 +526,7 @@ const ListCaseUnResolve = () => {
                     </p>
                   </p>
                 </p>
-                <p>******************************************</p>
+                <p>═══════════════ (▰˘◡˘▰)════════════════</p>
                 <Button onClick={handleCopy2} className="btn-primary float-end">
                   <CopyOutlined />
                 </Button>

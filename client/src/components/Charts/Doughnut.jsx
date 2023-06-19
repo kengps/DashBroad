@@ -162,7 +162,7 @@ const Doughnuts = () => {
           </tr>
         </tbody>
       </table>
-      <div className="btn-excel">
+      {/* <div className="btn-excel">
         <ReactHTMLTableToExcel
           className="btn btn-info"
           table="pie-table"
@@ -170,7 +170,7 @@ const Doughnuts = () => {
           sheet="Sheet"
           buttonText={<SiMicrosoftexcel />}
         />
-      </div>
+      </div> */}
       <Doughnut data={data} options={options} plugins={[ChartDataLabels]} />
     </div>
   );
