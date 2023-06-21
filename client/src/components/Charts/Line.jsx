@@ -10,6 +10,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 
 import moment from "moment";
+import MenuExport from "./MenuExport";
 
 const Lines = () => {
   const [value, setValue] = useState([]);
@@ -35,39 +36,6 @@ const Lines = () => {
   };
 
   const getChartData = () => {
-    // const problemsByDate = value.reduce((acc, curr) => {
-    //   const date = moment(curr.createdAt).locale("th").format("YYYY-MM-DD");
-    //   const problem = curr.problem;
-    //   if (!acc[date]) {
-    //     acc[date] = {};
-    //   }
-    //   if (!acc[date][problem]) {
-    //     acc[date][problem] = 0;
-    //   }
-    //   acc[date][problem]++;
-    //   return acc;
-    // }, {});
-
-    // const labels = [];
-    // const bioData = [];
-    // const lsmData = [];
-    // const apiData = [];
-    // const otherData = [];
-    // const currentDate = moment().locale("th").startOf("month");
-    // for (let i = 0; i < 31; i++) {
-    //   const date = currentDate.clone().add(i, "days").format("YYYY-MM-DD");
-    //   const dateData = problemsByDate[date] || {};
-    //   const bioCount = dateData["หลังบ้าน bio"] || 0;
-    //   const lsmCount = dateData["กลุ่ม lsm-Pretty Gaming"] || 0;
-    //   const apiCount = dateData["ขอ API"] || 0;
-    //   const otherCount = dateData["เรื่องทั่วไป"] || 0;
-    //   const dateLabel = currentDate.clone().add(i, "days").format("D MMMM");
-    //   labels.push(dateLabel);
-    //   bioData.push(bioCount);
-    //   lsmData.push(lsmCount);
-    //   apiData.push(apiCount);
-    //   otherData.push(otherCount);
-    // }
     const colorBg = [
       "rgba(255, 99, 132, 0.2)",
       "rgba(54, 162, 235, 0.2)",
@@ -86,7 +54,7 @@ const Lines = () => {
       "rgba(255, 159, 64, 1)",
       "rgba(255, 0, 255, 1)",
     ];
-  
+
     const problemsByDay = value.reduce((acc, curr) => {
       const date = moment(curr.createdAt).locale("th");
       const day = date.format("YYYY-MM-DD");
@@ -100,53 +68,53 @@ const Lines = () => {
       acc[day][problem]++;
       return acc;
     }, {});
-  
+
     const problemDetails = Array.from(
       new Set(value.map((item) => item.problem))
     );
-  
+
     const labels = [];
     const datasets = [];
-  
+
     problemDetails.forEach((problemDetail) => {
       if (!problemDetail) return;
       const dataValues = [];
       const startDate = moment().startOf("month");
       const endDate = moment().endOf("month");
       const currentDate = startDate.clone();
-  
+
       while (currentDate.isSameOrBefore(endDate, "day")) {
         const dayData = problemsByDay[currentDate.format("YYYY-MM-DD")] || {};
         const value = dayData[problemDetail] || 0;
         dataValues.push(value);
         currentDate.add(1, "day");
       }
-  
+
       const backgroundColor = colorBg.shift();
       const borderColor = colorBg2.shift();
-  
+
       const dataset = {
         label: problemDetail,
         data: dataValues,
         backgroundColor,
         borderColor,
-        
+
         borderWidth: 1,
       };
-  
+
       datasets.push(dataset);
     });
-  
+
     const startDate = moment().startOf("month");
     const endDate = moment().endOf("month");
     const currentDate = startDate.clone();
-  
+
     while (currentDate.isSameOrBefore(endDate, "day")) {
       const dayLabel = currentDate.format("D MMM");
       labels.push(dayLabel);
       currentDate.add(1, "day");
     }
-  
+
     return {
       labels,
       datasets,
@@ -208,13 +176,14 @@ const Lines = () => {
     });
   };
 
-
-
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <button onClick={exportToExcel} style={{backgroundColor: '#A9CCE3'}}>
+        {/* <button onClick={exportToExcel} style={{ backgroundColor: "#A9CCE3" }}>
           <SiMicrosoftexcel />
+        </button> */}
+        <button>
+          <MenuExport onClick={exportToExcel} />
         </button>
       </div>
       <Line data={getChartData()} options={options} />

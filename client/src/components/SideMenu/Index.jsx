@@ -327,7 +327,7 @@ export default function MiniDrawer() {
           {[
             {
               label: "แดชบอร์ด",
-              key: "/dashboard/app",
+              key: `/dashboard/app`,
               icon: <QueryStatsIcon />,
             },
             {

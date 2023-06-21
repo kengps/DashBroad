@@ -11,7 +11,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Login from "./Login";
 import useResponsive from "../../hooks/UseResponsive";
-
+import logo1 from '/img/logo1.jpg';
 
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -57,7 +57,12 @@ const LoginForm = () => {
             <Typography variant="h4" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi Bro, Welcome Back
             </Typography>
-            <img src="/img/logo1.jpg" alt="login" />
+            {/* <img src={logo1} alt="login" /> */}
+            <img src={`${import.meta.env.BASE_URL}logo1.jpg`} alt="login" />
+
+
+           
+
           </StyledSection>
         )}
         <Container maxWidth="sm">

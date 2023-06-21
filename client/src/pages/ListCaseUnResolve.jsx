@@ -536,8 +536,8 @@ const ListCaseUnResolve = () => {
         </table>
 
         <Pagination
-          previousLabel="< ก่อนหน้า"
-          nextLabel="ถัดไป >"
+           previousLabel={currentPage > 0 ? '< ก่อนหน้า' : 'หน้าแรก'}
+           nextLabel={currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1 ? 'สุดท้าย' : 'ถัดไป >'}
           breakLabel="..."
           pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
           marginPagesDisplayed={3}
