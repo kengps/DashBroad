@@ -19,6 +19,7 @@ import Button1 from "react-bootstrap/Button";
 import ReactQuill from "react-quill";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/material";
+import { notiAll } from "../common/utils/Notification";
 const ListCaseUnResolve = () => {
   //*state สำหรับการแก้ไข
   const [values, setValues] = useState({
@@ -80,6 +81,7 @@ const ListCaseUnResolve = () => {
     };
     changeStatus(values)
       .then((res) => {
+        notiAll();
         console.log(res);
         loadData();
       })
@@ -248,9 +250,8 @@ const ListCaseUnResolve = () => {
     setOpen(false);
   };
 
-  let currentTime = moment().utcOffset('+07:00').format('LT');  
+  let currentTime = moment().utcOffset("+07:00").format("LT");
   let eveningTime = moment("8:30 PM", "h:mm A");
-
 
   console.log(currentTime);
   return (
@@ -505,7 +506,7 @@ const ListCaseUnResolve = () => {
             >
               <Card ref={textRef}>
                 {/* <p>══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p> */}
-              
+
                 <p>
                   {" "}
                   {moment(currentTime, "h:mm A").isAfter(eveningTime) ? (
@@ -536,8 +537,12 @@ const ListCaseUnResolve = () => {
         </table>
 
         <Pagination
-           previousLabel={currentPage > 0 ? '< ก่อนหน้า' : 'หน้าแรก'}
-           nextLabel={currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1 ? 'สุดท้าย' : 'ถัดไป >'}
+          previousLabel={currentPage > 0 ? "< ก่อนหน้า" : "หน้าแรก"}
+          nextLabel={
+            currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1
+              ? "สุดท้าย"
+              : "ถัดไป >"
+          }
           breakLabel="..."
           pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
           marginPagesDisplayed={3}

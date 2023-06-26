@@ -24,6 +24,7 @@ const { TextArea } = Input;
 // import ListSubheader from '@mui/material/ListSubheader';
 // import FormControl from '@mui/material/FormControl';
 import Select1 from "@mui/material/Select";
+import moment from "moment/min/moment-with-locales";
 
 import {
   InputLabel,
@@ -35,6 +36,7 @@ import {
 } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
+import { notiAll, notiAllCaseCount, notiWaitCaseCount } from "../common/utils/Notification";
 
 const navDropdownItemStyle = {
   display: "flex",
@@ -55,12 +57,22 @@ const FormComponent = () => {
     detail: "",
     campgame: "",
     wallet: "",
-
     recorder: getUser,
   });
 
-  const { reporter, problemDetail, problem, detail, campgame, wallet } = values;
+  const { reporter, problemDetail, problem, detail, campgame, wallet ,recorder} = values;
+  const timestamps = moment().format('LLL');  // June 26, 2023 4:36 PM
 
+  const caseData = {
+    reporter,
+    problemDetail,
+    problem,
+    detail,
+    campgame,
+    wallet,
+    recorder,
+    timestamps
+  };
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
     setCampGames(e.target.value);
@@ -71,12 +83,16 @@ const FormComponent = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-
+  
     // console.log("อิอิ", values);
     // console.log("url", `${import.meta.env.VITE_REACT_APP_API}/createcase`);
-
+    axios.post('https://sheet.best/api/sheets/490e1f2e-21aa-4b61-9d12-a52da3780268',caseData).then((res) => {
+      console.log('Sheet',res);
+    })
     sendCase(values)
       .then((res) => {
+        notiAll();
+        
         console.log("ได้อะไร", res);
         // toast.success(res.data.message);
         setValues({
@@ -90,7 +106,7 @@ const FormComponent = () => {
         SweetAlert.fire("แจ้งเตือน", res.data.message, "success");
 
         setTimeout(() => {
-          navigate("/dashboard/listunresolve");
+          navigate("/dashboard/listunresolve"); 
         }, 2000);
       })
 
@@ -197,145 +213,274 @@ const FormComponent = () => {
 
   return (
     <div className="mt-2">
-      
-       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Form onSubmit={submitForm}>
-        <div className="mt-3">
-          <InputGroup className="mt-3">
-            <InputGroup.Text
-              style={{
-                fontSize: "18px",
-                fontFamily: "Times New Roman",
-              }}
-            >
-              ผู้แจ้งปัญหา
-            </InputGroup.Text>
-            <Form.Control
-              className="form-control input-lg"
-              name="reporter"
-              onChange={inputValue("reporter")}
-              value={reporter}
-            />
-          </InputGroup>
-        </div>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Form onSubmit={submitForm}>
+          <div className="mt-3">
+            <InputGroup className="mt-3">
+              <InputGroup.Text
+                style={{
+                  fontSize: "18px",
+                  fontFamily: "Times New Roman",
+                }}
+              >
+                ผู้แจ้งปัญหา
+              </InputGroup.Text>
+              <Form.Control
+                className="form-control input-lg"
+                name="reporter"
+                onChange={inputValue("reporter")}
+                value={reporter}
+              />
+            </InputGroup>
+          </div>
 
-        <div className="mt-3">
-          <InputGroup className="mt-3" style={navDropdownItemStyle}>
-            <InputGroup.Text
-              className=""
-              style={{
-                fontSize: "18px",
-                fontFamily: "Times New Roman",
-                height: "2.35rem",
-              }}
-            >
-              ประเภทปัญหา
-            </InputGroup.Text>
-            <Form.Select
-              aria-label="test"
-              value={selectedOption}
-              //onChange={handleChange}
-              onChange={(e) => {
-                handleChange(e);
-                inputValue("problem")(e);
-              }}
-            >
-              <option key={9999} value="">
-                --กรุณาเลือกประเภทปัญหา--
-              </option>
-              {typeProblem.map((items, index) => (
-                <option key={index}>{items.name}</option>
-              ))}
-            </Form.Select>
-
-            {selectedOption === "หลังบ้าน bio" && (
+          <div className="mt-3">
+            <InputGroup className="mt-3" style={navDropdownItemStyle}>
+              <InputGroup.Text
+                className=""
+                style={{
+                  fontSize: "18px",
+                  fontFamily: "Times New Roman",
+                  height: "2.35rem",
+                }}
+              >
+                ประเภทปัญหา
+              </InputGroup.Text>
               <Form.Select
                 aria-label="test"
-                value={values.problemDetail}
-                //onChange={handleChangeDetail}
-                onChange={inputValue("problemDetail")}
+                value={selectedOption}
+                //onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                  inputValue("problem")(e);
+                }}
               >
                 <option key={9999} value="">
-                  --กรุณาเลือกรายละเอียดปัญหา--
+                  --กรุณาเลือกประเภทปัญหา--
                 </option>
-                {detailProblem.map((items, index) => (
+                {typeProblem.map((items, index) => (
                   <option key={index}>{items.name}</option>
                 ))}
               </Form.Select>
-            )}
-            {selectedOption === "กลุ่ม lsm-Pretty Gaming" && (
-              <Form.Select
-                aria-label="test"
-                value={values.problemDetail}
-                //onChange={handleChangeDetail}
-                onChange={inputValue("problemDetail")}
-              >
-                <option key={9999} value="">
-                  --กรุณาเลือกรายละเอียดปัญหา--
-                </option>
-                {detailProblemTwo.map((items, index) => (
-                  <option value={items.name} key={index}>
-                    {items.name}
-                  </option>
-                ))}
-              </Form.Select>
-            )}
-          </InputGroup>
-        </div>
 
-        <div className="mt-3">
-          <InputGroup className="mt-3">
-            <InputGroup.Text
-              style={{
-                fontSize: "18px",
-                fontFamily: "Times New Roman",
-              }}
-            >
-              รายละเอียด
-            </InputGroup.Text>
-            <TextArea
-              rows={5}
-              name="detail"
-              onChange={inputValue("detail")}
-              value={detail}
-            />
-            {/* <Form.Control
+              {selectedOption === "หลังบ้าน bio" && (
+                <Form.Select
+                  aria-label="test"
+                  value={values.problemDetail}
+                  //onChange={handleChangeDetail}
+                  onChange={inputValue("problemDetail")}
+                >
+                  <option key={9999} value="">
+                    --กรุณาเลือกรายละเอียดปัญหา--
+                  </option>
+                  {detailProblem.map((items, index) => (
+                    <option key={index}>{items.name}</option>
+                  ))}
+                </Form.Select>
+              )}
+              {selectedOption === "กลุ่ม lsm-Pretty Gaming" && (
+                <Form.Select
+                  aria-label="test"
+                  value={values.problemDetail}
+                  //onChange={handleChangeDetail}
+                  onChange={inputValue("problemDetail")}
+                >
+                  <option key={9999} value="">
+                    --กรุณาเลือกรายละเอียดปัญหา--
+                  </option>
+                  {detailProblemTwo.map((items, index) => (
+                    <option value={items.name} key={index}>
+                      {items.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              )}
+            </InputGroup>
+          </div>
+
+          <div className="mt-3">
+            <InputGroup className="mt-3">
+              <InputGroup.Text
+                style={{
+                  fontSize: "18px",
+                  fontFamily: "Times New Roman",
+                }}
+              >
+                รายละเอียด
+              </InputGroup.Text>
+              <TextArea
+                rows={5}
+                name="detail"
+                onChange={inputValue("detail")}
+                value={detail}
+              />
+              {/* <Form.Control
               className="form-control input-lg"
               name="detail"
               onChange={inputValue("detail")}
               value={detail}
             /> */}
-          </InputGroup>
-        </div>
-        {selectedOption !== "ขอ API" && selectedOption !== "เรื่องทั่วไป" && selectedOption !== 'กลุ่ม lsm-Pretty Gaming' &&(
+            </InputGroup>
+          </div>
+          {selectedOption !== "ขอ API" &&
+            selectedOption !== "เรื่องทั่วไป" &&
+            selectedOption !== "กลุ่ม lsm-Pretty Gaming" && (
+              <div className="mt-3">
+                <InputGroup className="mt-3" style={navDropdownItemStyle}>
+                  <InputGroup.Text
+                    style={{
+                      fontSize: "18px",
+                      fontFamily: "Times New Roman",
+                      height: "2.5rem",
+                    }}
+                  >
+                    ค่ายเกม
+                  </InputGroup.Text>
+
+                  <FormControl
+                    //variant="standard"
+                    size="small"
+                    sx={{ m: 1, minWidth: 400 }}
+                  >
+                    <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+                    <Select1
+                      defaultValue=""
+                      id="grouped-select"
+                      label="Grouping"
+                      value={values.campgame}
+                      onChange={inputValue("campgame")}
+                    >
+                      <MenuItem value="">
+                        <em>--กรุณาเลือกค่ายเกม--</em>
+                      </MenuItem>
+                      <ListSubheader
+                        style={{
+                          fontWeight: "bold",
+                          color: "gray",
+                          fontSize: "15px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        สปอร์ต
+                      </ListSubheader>
+                      {selectCampGames.map((items, index) =>
+                        items.name === "Sport" ? (
+                          <MenuItem key={index} value={items.name}>
+                            {items.name}
+                          </MenuItem>
+                        ) : null
+                      )}
+                      <ListSubheader
+                        style={{
+                          fontWeight: "bold",
+                          color: "gray",
+                          fontSize: "15px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        บาคาร่า
+                      </ListSubheader>
+                      {selectCampGames.map((items, index) =>
+                        items.name === "Sexy Baccarat" ||
+                        items.name === "SA Gaming" ||
+                        items.name === "Pretty Gaming" ||
+                        items.name === "Dream Gaming" ? (
+                          <MenuItem key={index} value={items.name}>
+                            {items.name}
+                          </MenuItem>
+                        ) : null
+                      )}
+                      <ListSubheader
+                        style={{
+                          fontWeight: "bold",
+                          color: "gray",
+                          fontSize: "15px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        สล็อต
+                      </ListSubheader>
+                      {selectCampGames.map((items, index) =>
+                        items.name === "PG Slot" ||
+                        items.name === "SpiniX" ||
+                        items.name === "Evoplay" ||
+                        items.name === "Slot XO" ||
+                        items.name === "Joker" ||
+                        items.name === "Live22" ||
+                        items.name === "DragoonSoft" ? (
+                          <MenuItem key={index} value={items.name}>
+                            {items.name}
+                          </MenuItem>
+                        ) : null
+                      )}
+                      <ListSubheader
+                        style={{
+                          fontWeight: "bold",
+                          color: "gray",
+                          fontSize: "15px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        เกมการ์ด
+                      </ListSubheader>
+                      {selectCampGames.map((items, index) =>
+                        items.name === "Biogame & AMB" ||
+                        items.name === "BioFishing" ? (
+                          <MenuItem key={index} value={items.name}>
+                            {items.name}
+                          </MenuItem>
+                        ) : null
+                      )}
+                      <ListSubheader
+                        style={{
+                          fontWeight: "bold",
+                          color: "gray",
+                          fontSize: "15px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        ล็อตโต้
+                      </ListSubheader>
+                      {selectCampGames.map((items, index) =>
+                        items.name === "VwinLotto" ? (
+                          <MenuItem key={index} value={items.name}>
+                            {items.name}
+                          </MenuItem>
+                        ) : null
+                      )}
+                    </Select1>
+                  </FormControl>
+                </InputGroup>
+              </div>
+            )}
           <div className="mt-3">
             <InputGroup className="mt-3" style={navDropdownItemStyle}>
               <InputGroup.Text
+                className=""
                 style={{
                   fontSize: "18px",
                   fontFamily: "Times New Roman",
                   height: "2.5rem",
                 }}
               >
-                ค่ายเกม
+                แพลตฟอร์ม
               </InputGroup.Text>
-
-              <FormControl
-                //variant="standard"
-                size="small"
-                sx={{ m: 1, minWidth: 400 }}
-              >
-                <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+              <FormControl size="small" sx={{ m: 1, minWidth: "75%" }}>
+                <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
                 <Select1
                   defaultValue=""
                   id="grouped-select"
                   label="Grouping"
-                  value={values.campgame}
-                  onChange={inputValue("campgame")}
+                  onChange={inputValue("wallet")}
+                  value={wallet}
                 >
                   <MenuItem value="">
-                    <em>--กรุณาเลือกค่ายเกม--</em>
+                    <em>--กรุณาเลือกแพลตฟอร์ม--</em>
                   </MenuItem>
+                  {/* <option>Open this select menu</option>
+              <option value="bioclub">bioclub</option>
+              <option value="bioone">bioone</option>
+              <option value="biok">biok</option> */}
                   <ListSubheader
                     style={{
                       fontWeight: "bold",
@@ -344,10 +489,10 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    สปอร์ต
+                    Biogaming
                   </ListSubheader>
-                  {selectCampGames.map((items, index) =>
-                    items.name === "Sport" ? (
+                  {selectPlatform.map((items, index) =>
+                    items.name === "Biogaming" ? (
                       <MenuItem key={index} value={items.name}>
                         {items.name}
                       </MenuItem>
@@ -361,71 +506,13 @@ const FormComponent = () => {
                       textDecoration: "underline",
                     }}
                   >
-                    บาคาร่า
+                    Wallet
                   </ListSubheader>
-                  {selectCampGames.map((items, index) =>
-                    items.name === "Sexy Baccarat" ||
-                    items.name === "SA Gaming" ||
-                    items.name === "Pretty Gaming" ||
-                    items.name === "Dream Gaming" ? (
-                      <MenuItem key={index} value={items.name}>
-                        {items.name}
-                      </MenuItem>
-                    ) : null
-                  )}
-                  <ListSubheader
-                    style={{
-                      fontWeight: "bold",
-                      color: "gray",
-                      fontSize: "15px",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    สล็อต
-                  </ListSubheader>
-                  {selectCampGames.map((items, index) =>
-                    items.name === "PG Slot" ||
-                    items.name === "SpiniX" ||
-                    items.name === "Evoplay" ||
-                    items.name === "Slot XO" ||
-                    items.name === "Joker" ||
-                    items.name === "Live22" ||
-                    items.name === "DragoonSoft" ? (
-                      <MenuItem key={index} value={items.name}>
-                        {items.name}
-                      </MenuItem>
-                    ) : null
-                  )}
-                  <ListSubheader
-                    style={{
-                      fontWeight: "bold",
-                      color: "gray",
-                      fontSize: "15px",
-                      textDecoration: "underline",
-                    }}
-                  >
-                   เกมการ์ด
-                  </ListSubheader>
-                  {selectCampGames.map((items, index) =>
-                    items.name === "Biogame & AMB" ||
-                    items.name === "BioFishing" ? (
-                      <MenuItem key={index} value={items.name}>
-                        {items.name}
-                      </MenuItem>
-                    ) : null
-                  )}
-                  <ListSubheader
-                    style={{
-                      fontWeight: "bold",
-                      color: "gray",
-                      fontSize: "15px",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    ล็อตโต้
-                  </ListSubheader>
-                  {selectCampGames.map((items, index) =>
-                    items.name === "VwinLotto" ? (
+                  {selectPlatform.map((items, index) =>
+                    items.name === "BioClub" ||
+                    items.name === "PrettyGaming168" ||
+                    //items.name === "Pretty Gaming" ||
+                    items.name === "BioBet789" ? (
                       <MenuItem key={index} value={items.name}>
                         {items.name}
                       </MenuItem>
@@ -435,79 +522,9 @@ const FormComponent = () => {
               </FormControl>
             </InputGroup>
           </div>
-        )}
-        <div className="mt-3">
-          <InputGroup className="mt-3" style={navDropdownItemStyle}>
-            <InputGroup.Text
-              className=""
-              style={{
-                fontSize: "18px",
-                fontFamily: "Times New Roman",
-                height: "2.5rem",
-              }}
-            >
-              แพลตฟอร์ม
-            </InputGroup.Text>
-            <FormControl size="small" sx={{ m: 1, minWidth: "75%" }}>
-              <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
-              <Select1
-                defaultValue=""
-                id="grouped-select"
-                label="Grouping"
-                onChange={inputValue("wallet")}
-                value={wallet}
-              >
-                <MenuItem value="">
-                  <em>--กรุณาเลือกแพลตฟอร์ม--</em>
-                </MenuItem>
-                {/* <option>Open this select menu</option>
-              <option value="bioclub">bioclub</option>
-              <option value="bioone">bioone</option>
-              <option value="biok">biok</option> */}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Biogaming
-                </ListSubheader>
-                {selectPlatform.map((items, index) =>
-                  items.name === "Biogaming" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-                <ListSubheader
-                  style={{
-                    fontWeight: "bold",
-                    color: "gray",
-                    fontSize: "15px",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Wallet
-                </ListSubheader>
-                {selectPlatform.map((items, index) =>
-                  items.name === "BioClub" ||
-                  items.name === "PrettyGaming168" ||
-                  //items.name === "Pretty Gaming" ||
-                  items.name === "BioBet789" ? (
-                    <MenuItem key={index} value={items.name}>
-                      {items.name}
-                    </MenuItem>
-                  ) : null
-                )}
-              </Select1>
-            </FormControl>
-          </InputGroup>
-        </div>
 
-        <div>
-          {/* <div>
+          <div>
+            {/* <div>
             <InputGroup className="mt-2 pt-2">
               <div>
                 <Form.Check
@@ -534,7 +551,7 @@ const FormComponent = () => {
               </div>
             </InputGroup>
           </div> */}
-          {/* {faculty === "biogaming" && (
+            {/* {faculty === "biogaming" && (
             <div>
               <Form.Select value={editors} onChange={inputValue("editors")}>
                 <option value="">-- Select Biogaming --</option>
@@ -558,20 +575,19 @@ const FormComponent = () => {
               </Form.Select>
             </div>
           )} */}
-        </div>
-        <hr />
-        <Button
-          type="submit"
-          className="btn btn-primary"
-          value="Submit"
-          style={{ marginLeft: 320 }}
-        >
-          บันทึก
-        </Button>
-      </Form>
+          </div>
+          <hr />
+          <Button
+            type="submit"
+            className="btn btn-primary"
+            value="Submit"
+            style={{ marginLeft: 320 }}
+          >
+            บันทึก
+          </Button>
+        </Form>
       </Box>
       {/* //test 5555555555555555555555555555555555 */}
-      
     </div>
   );
 };

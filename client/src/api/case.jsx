@@ -7,6 +7,7 @@ export const sendCase = async (value) => {
     value
   );
 };
+
 export const listCases2 = async (value) => {
   console.log("ข้อมูลที่ส่งมา1", value);
   return await axios.get(
@@ -17,7 +18,7 @@ export const listCases2 = async (value) => {
 
 
 export const listCases = async (value,currentPage,ITEM_PER_PAGE) => {
-  console.log("ข้อมูลที่ส่งมา2", ITEM_PER_PAGE);
+  console.log("ข้อมูลที่ส่งมา2");
   return await axios.get(
     `${import.meta.env.VITE_REACT_APP_API}/listcase`,
     {

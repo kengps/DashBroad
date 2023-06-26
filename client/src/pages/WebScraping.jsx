@@ -1,25 +1,63 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
+import DataLoader from "../contexts/DataLoader";
+import { ListCaseContext } from "../contexts/api";
+import Table from "react-bootstrap/Table";
 
-function WebScraping() {
-  const [usercode, setUsercode] = useState('');
+const WebScraping = () => {
+  const getChartData = (value) => {
+    const onSubmit = () => {
+      alert("Click is success");
+      console.log("Click", value);
+    };
+    const datas = value;
+    const statusFix = value.filter(
+      (item) => item.status === "รอการแก้ไข"
+    ).length;
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // นำ usercode ไปใช้ในการทำ web scraping
-    const url = `https://css.biosupport.cc/be/v1/bet_search/index/XikLwoBA18lynKejOHK8sxMPhF5DJbSemNvRDmn.w4pm1rLYaVIm1O4tG00t?is_outstanding=1&is_outstanding__usercode=${usercode}`;
-    // ทำการดึงข้อมูลโดยใช้ URL ที่สร้างขึ้น
-    fetchData(url);
+    console.log("statusFix", datas);
+    return (
+      <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <button onClick={onSubmit}>55555</button>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Username</th>
+              <th>Username</th>
+              <th>Username</th>
+              <th>Username2</th>
+            </tr>
+          </thead>
+          <tbody>
+            {datas.map((item, index) => (
+              <tr>
+                <th>{item.caseId}</th>
+                <th>{item.status}</th>
+                <th>{item.editors}</th>
+                <th>{item.problem}</th>
+                <th>{item.detail}</th>
+                <th>{item.recorder}</th>
+                <th>{item.wallet}</th>
+              
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Usercode:
-        <input type="text" value={usercode} onChange={(event) => setUsercode(event.target.value)} />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <DataLoader children={getChartData} />
+    </div>
   );
-}
+};
 
 export default WebScraping;

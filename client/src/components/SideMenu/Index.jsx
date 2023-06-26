@@ -20,8 +20,8 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { Link, useNavigate } from "react-router-dom";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import GridOnIcon from '@mui/icons-material/GridOn';
-import GroupsIcon from '@mui/icons-material/Groups';
+import GridOnIcon from "@mui/icons-material/GridOn";
+import GroupsIcon from "@mui/icons-material/Groups";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
 import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
@@ -32,11 +32,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { deepOrange, deepPurple } from "@mui/material/colors";
 
-import { BiUser, AiOutlineSetting,RiLockPasswordLine } from "react-icons/all";
+import { BiUser, AiOutlineSetting, RiLockPasswordLine } from "react-icons/all";
 import { NavDropdown, InputGroup } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import swal  from 'sweetalert2'
+import swal from "sweetalert2";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
   BugOutlined,
@@ -63,6 +63,8 @@ import { useState, useEffect } from "react";
 import { Badge, Modal, Input, Space } from "antd";
 import { listCases } from "../../api/case";
 import { resetPassword } from "../../api/user";
+import md5 from "md5";
+import { notiDetail, notiMD5 } from "../../common/utils/Notification";
 
 const drawerWidth = 240;
 
@@ -146,9 +148,18 @@ export default function MiniDrawer() {
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
+  // const [dataChange, setDataChange] = useState("");
+  const [noti, setNoti] = useState({});
 
   useEffect(() => {
-    loadData();
+    setNoti(notiDetail());
+    setInterval(() => {
+      let nmd5 = notiMD5();
+      if (localStorage.noti !== nmd5) {
+        localStorage.noti = nmd5;
+        setNoti(notiDetail());
+      }
+    }, 1000);
   }, []);
 
   const loadData = () => {
@@ -165,8 +176,7 @@ export default function MiniDrawer() {
 
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [anchorElUser, setAnchorElUser] = useState('');
-
+  const [anchorElUser, setAnchorElUser] = useState("");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -178,7 +188,6 @@ export default function MiniDrawer() {
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-   
   };
 
   const [selectedMenu, setSelectedMenu] = useState(null);
@@ -195,7 +204,7 @@ export default function MiniDrawer() {
   });
   const showModal = (id) => {
     setIsModalOpen(true);
-   
+
     setValues({ ...values, id: id });
   };
 
@@ -203,7 +212,7 @@ export default function MiniDrawer() {
   const handleOk = () => {
     setIsModalOpen(false);
     //
-    // 
+    //
     //* โดยจะส่ง token และ id เข้าไป
     resetPassword(user.token, values.id, { values })
       .then((res) => {
@@ -340,7 +349,7 @@ export default function MiniDrawer() {
                 <span>
                   รายการเคสทั้งหมด{" "}
                   <Badge
-                    count={data.filter((data) => data._id).length}
+                    count={noti.notiAllCaseCount}
                     style={{
                       backgroundColor: "#52BE80",
                       fontWeight: "bold",
@@ -357,9 +366,7 @@ export default function MiniDrawer() {
                 <span>
                   รายการเคสรอแก้ไข{" "}
                   <Badge
-                    count={
-                      data.filter((data) => data.status === "รอการแก้ไข").length
-                    }
+                    count={noti.notiWaitCaseCount}
                     style={{
                       backgroundColor: "#E74C3C ",
                       fontWeight: "bold",
@@ -407,6 +414,11 @@ export default function MiniDrawer() {
               icon: <GridOnIcon />,
             },
             {
+              label: "ตารางวันทำงาน",
+              key: "/dashboard/outstanding",
+              icon: <GridOnIcon />,
+            },
+            {
               label: "สมาชิกทั้งหมด",
               key: "/dashboard/listuser",
               icon: <GroupsIcon />,
@@ -437,9 +449,8 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
         </List>
-        
       </Drawer>
-    
+
       <Modal
         title="เปลี่ยนรหัสผ่าน"
         open={isModalOpen}

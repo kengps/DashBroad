@@ -23,6 +23,7 @@ import Login from "../components/Login/LoginForm";
 
 import DashBorad from "../pages/DashBoard";
 import IndexRouter from "../components/LoadingAndRedirect";
+import WebScraping from "../pages/WebScraping";
 //import DashBoard from "../pages/DashBoard";
 //IndexRouter คือ component ที่จะแสดงเมื่อไม่มีการ login
 
@@ -48,6 +49,10 @@ const MainPage = () => {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/outstanding",
+      element: <WebScraping />,
     },
     {
       path: "/registeruser",
