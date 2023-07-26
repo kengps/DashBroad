@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Stack, TextField, FormControl } from "@mui/material";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, json, useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Form } from "react-bootstrap";
 import { login } from "../../api/auth";
@@ -14,6 +14,13 @@ import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
+import { EncryptStorage } from 'encrypt-storage';
+import UsernameInput from "../../views/login/UsernameInput";
+import RememberMeCheckbox from "../../views/login/RememberMeCheckbox";
+import PasswordInput from "../../views/login/PasswordInput";
 
 
 const Login = () => {
@@ -23,16 +30,24 @@ const Login = () => {
 
   const { user } = useSelector((state) => ({ ...state }));
 
+  const [rememberMe, setRememberMe] = useState(false);
+  const encryptStorage = new EncryptStorage('SECRET-KEY')
+
+  const handleRememberMeChange = (event) => {
+    setRememberMe(event.target.checked);
+
+  };
+
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem("token");
       const expirationDate = localStorage.getItem("expirationDate");
-  
+
       if (token && expirationDate) {
         const currentTime = new Date().getTime();
 
-       
-        console.log('เวลาปัจจุบัน',currentTime);
+
+        console.log('เวลาปัจจุบัน', currentTime);
         if (currentTime > expirationDate) {
           // JWT หมดอายุแล้ว ลบ localStorage
           localStorage.removeItem("token");
@@ -46,7 +61,7 @@ const Login = () => {
         }
       }
     };
-  
+
     checkAuthStatus();
   }, [redirect]);
   const [value, setValue] = useState({
@@ -55,6 +70,7 @@ const Login = () => {
   });
 
   const handleChange = (e) => {
+
     {
       setValue({
         ...value,
@@ -78,14 +94,22 @@ const Login = () => {
     try {
       login(value)
         .then((res) => {
-          console.log("มี user ไหม", res.data.payLoad.user.password);
+
+          if (rememberMe) {
+            encryptStorage.setItem("loginCredentials ", value.password);
+          } else {
+            encryptStorage.removeItem("loginCredentials ");
+          }
+          // console.log("มี user ไหม", res.data.payLoad.user.password);
           const user = res.data.payLoad.user.username;
           SweetAl.fire(
             "แจ้งเตือน",
             `ยินดีต้อนรับ ${user} เข้าทำงาน`,
             "success"
           );
-
+          setTimeout(() => {
+            SweetAl.close();
+          }, 2000)
           const idUser = res.data.payLoad.user.id;
           //todo payload มาจาก userReducer จากการ return action.payload
           dispatch({
@@ -102,8 +126,10 @@ const Login = () => {
           const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
           //const expirationTime = 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
           const expirationDate = new Date().getTime() + expirationTime;
+          const one = Number(1)
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("expirationDate", expirationDate);
+          localStorage.setItem('isOnline', one);
 
           levelRole(res.data.payLoad.user.role);
         })
@@ -128,52 +154,18 @@ const Login = () => {
     }
   };
 
-  const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
+ 
   return (
     <div className="container mt-3">
       <Form onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <TextField name="username" label="Username" onChange={handleChange} />
-
-          {/* <TextField
-            type="password"
-            name="password"
-            label="Password"
-            onChange={handleChange}
-          /> */}
-          <FormControl sx={{ m: 1 }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-            />
-          </FormControl>
+          <UsernameInput handleChange={handleChange} />
+          <PasswordInput handleChange={handleChange} />
+          <RememberMeCheckbox
+            rememberMe={rememberMe}
+            handleRememberMeChange={handleRememberMeChange}
+          />
         </Stack>
         <hr />
         <LoadingButton fullWidth size="large" type="submit" variant="contained">
@@ -185,3 +177,48 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+// const data = store.dataLogin
+
+// console.log('===================fs=================');
+// console.log(data);
+// console.log('====================================');
+// loginAuth(value);
+
+// if (rememberMe) {
+//   encryptStorage.setItem("loginCredentials", value.password);
+// } else {
+//   encryptStorage.removeItem("loginCredentials");
+// }
+
+// const user = data.payLoad.user.username;
+// SweetAl.fire(
+//   "แจ้งเตือน",
+//   `ยินดีต้อนรับ ${user} เข้าทำงาน`,
+//   "success"
+// );
+// setTimeout(() => {
+//   SweetAl.close();
+// }, 2000);
+
+// //const idUser = data.payLoad.user.id;
+// dispatch({
+//   type: "LOGIN",
+//   payload: {
+//     token: data.token,
+//     username: data.payLoad.user.username,
+//     role: data.payLoad.user.role,
+//     id: data.payLoad.user.id,
+//   },
+// });
+
+// const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+// const expirationDate = new Date().getTime() + expirationTime;
+// const one = Number(1);
+// localStorage.setItem("token", data.token);
+// localStorage.setItem("expirationDate", expirationDate);
+// localStorage.setItem("isOnline", one);
+
+// levelRole(data.payLoad.user.role);

@@ -4,7 +4,7 @@ import md5 from "md5";
 
 export const notiAllCaseCount = async () => {
   let lc = await listCases();
-  localStorage.notiAllCaseCount = lc.data.length;
+  localStorage.notiAllCaseCount = lc.data.length
 };
 
 export const notiWaitCaseCount = async () => {

@@ -6,14 +6,10 @@ import SweetAlert from "sweetalert2";
 
 import { BiHide, BiShow } from "react-icons/bi";
 //import { Spin } from "antd";
-import { toast} from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 import axios from "axios";
 import { Typography } from "antd";
-
-
-
 
 const Register = () => {
   const [state, setState] = useState({
@@ -28,7 +24,7 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState("");
   // state ของการกดปุ่มให้ โชว์หรือปิด password
   const [showPassword, setShowPassword] = useState("");
-  
+
   //การ destructuring ของ state
   const { username, password, confirmpass } = state;
   //console.log(register);
@@ -47,7 +43,6 @@ const Register = () => {
   const submitForm = async (e) => {
     e.preventDefault();
 
-  
     const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
 
     if (!regex.test(password)) {
@@ -69,11 +64,10 @@ const Register = () => {
           }
         );
         SweetAlert.fire("แจ้งเตือน", "สมัครสมาชิกสำเร็จ", "success");
-        setState({ ...state, username: "", password: "", confirmpass: "" }); 
+        setState({ ...state, username: "", password: "", confirmpass: "" });
         setConfirmPasswordNotMatch("");
       } catch (err) {
         alert(err.message);
-        
       }
     }
   };
@@ -86,11 +80,6 @@ const Register = () => {
 
   return (
     <div className="container">
-     
-      {/* <Typography.Title level={4} className={'text-center'}>Register / สมัครสมาชิก</Typography.Title>
-      {/* <h1>ResgisterComponent</h1>
-       */} 
-     
       <div className="from-control">
         <Form onSubmit={submitForm}>
           <div>
@@ -162,9 +151,6 @@ const Register = () => {
           </Button>
         </Form>
       </div>
-      {/* <Spin tip="Loading..." size="large">
-        <div className="content" />
-      </Spin> */}
     </div>
   );
 };

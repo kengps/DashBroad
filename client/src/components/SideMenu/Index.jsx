@@ -178,6 +178,15 @@ export default function MiniDrawer() {
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState("");
 
+  const [isDataFilled, setDataFilled] = useState(false);
+
+  const [password, setPassword] = useState("");
+  const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
+
+ 
+
+
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -210,13 +219,20 @@ export default function MiniDrawer() {
 
   //todo modal สำหรับการกด reset รหัสผ่าน หากมีการกด OK จะทำการเรียก API จาก func resetPassword
   const handleOk = () => {
-    setIsModalOpen(false);
-    //
-    //
+
+    if (values.password === '') {
+      setIsPasswordEmpty(true);
+      return;
+    }
+
+
+
+
+
     //* โดยจะส่ง token และ id เข้าไป
     resetPassword(user.token, values.id, { values })
       .then((res) => {
-        setValues("");
+        setValues({ password: "" });
         swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
         // console.log("ง/ง", res);
       })
@@ -230,6 +246,11 @@ export default function MiniDrawer() {
   };
   const handleChangePassword = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+    setPassword(e.target.value);
+
+    
+    setIsPasswordEmpty(false); 
+
   };
 
   //* style
@@ -468,9 +489,13 @@ export default function MiniDrawer() {
             addonBefore="รหัสผ่านใหม่"
             placeholder="new password"
             name="password"
+            value={values.password}
             onChange={handleChangePassword}
           />
         </InputGroup>
+        {isPasswordEmpty && (
+          <span style={{ color: "red" }}>กรุณากรอกรหัสผ่าน</span>
+        )}
       </Modal>
     </Box>
   );

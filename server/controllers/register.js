@@ -25,6 +25,9 @@ exports.register = (req, res) => {
 };
 
 exports.register2 = async (req, res) => {
+  console.log('====================================');
+  console.log(req.body);
+  console.log('====================================');
   try {
     const { username, password } = req.body;
     let user = await registers.findOne({ username });
@@ -40,8 +43,12 @@ exports.register2 = async (req, res) => {
     });
     user.password = await bcrypt.hash(password, salt);
 
+
+    console.log('================password====================',password);
+    console.log(user);
+    console.log('====================================');
     await user.save();
-    res.send("Register Success!!");
+    res.send({message: 'register success' , user});
   } catch (error) {
     res.status(500).send('server is error!!!!')
   }

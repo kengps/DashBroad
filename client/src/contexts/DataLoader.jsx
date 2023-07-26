@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { listUser } from "../api/user";
+
 import {listCases2 } from '../api/case'
 
 

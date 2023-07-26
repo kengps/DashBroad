@@ -64,6 +64,12 @@
   height: 35px;
   float: right;
 }
+.no-hover:hover {
+  cursor: default;
+}
+.no-outline:focus {
+  outline: none;
+}
 
 .btn-change {
   background-color: #ffc107;
@@ -176,4 +182,3 @@
     font-size: 2rem;
   }
 }
-

@@ -21,7 +21,7 @@ const ListCaseAll = () => {
       const response = await axios.get(
         `${
           import.meta.env.VITE_REACT_APP_API
-        }/listcase?page=${currentPage}&limit=${ITEM_PER_PAGE}`
+        }/listcase?page=${currentPage+1}&limit=${ITEM_PER_PAGE}`
       );
 
       setData(response.data);
@@ -66,7 +66,6 @@ const ListCaseAll = () => {
               <th scope="col">ผู้แก้ไข</th>
               <th scope="col">เวลาสร้างเคส</th>
               <th scope="col">สถานะ</th>
-              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -100,7 +99,7 @@ const ListCaseAll = () => {
                         border: "1px solid gray",
                       }}
                     >
-                      <div>
+                      <div style={{ fontSize: "8px" }}>
                         <p className="d-block m-0">
                           <strong>เคส:</strong> {data.caseId}
                         </p>
@@ -137,27 +136,59 @@ const ListCaseAll = () => {
               ))}
           </tbody>
         </table>
-      
-        <Paginate
-        
-          previousLabel={currentPage > 0 ? '< ก่อนหน้า' : 'หน้าแรก'}
-          nextLabel={currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1 ? 'สุดท้าย' : 'ถัดไป >'}
-          breakLabel="..."
-          pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
-          marginPagesDisplayed={3}
-          pageRangeDisplayed={5}
-          containerClassName={"pagination justify-content-center"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          activeClassName={"active"}
-          onPageChange={handlePageClick}
-        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p
+            style={{
+              paddingRight: "10px",
+              color: "silver",
+              fontWeight: "bold",
+            }}
+            disabled
+          >
+            PAGE {currentPage + 1} OF{" "}
+            {Math.ceil(data.length / ITEM_PER_PAGE) + " "}{" "}
+          </p>
+
+          <Paginate
+            previousLabel={currentPage > 0 ? "< ก่อนหน้า" : "หน้าแรก"}
+            nextLabel={
+              currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1
+                ? "สุดท้าย"
+                : "ถัดไป >"
+            }
+            breakLabel="..."
+            pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
+            marginPagesDisplayed={3}
+            pageRangeDisplayed={5}
+            containerClassName={"pagination justify-content-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+            onPageChange={handlePageClick}
+
+            // renderPage={({ page, onClick, isActive }) => (
+            //   <button
+            //     key={page}
+            //     onClick={onClick}
+            //     className={isActive ? "active" : ""}
+            //   >
+            //     {isActive ? `page ${page} of ${Math.ceil(data.length / ITEM_PER_PAGE)}` : page}
+            //   </button>
+            // )}
+          />
+        </div>
       </Box>
     </div>
   );

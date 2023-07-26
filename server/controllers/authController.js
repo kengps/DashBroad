@@ -15,7 +15,7 @@ exports.logged = async (req, res) => {
       //check password ระหว่าง password ปกติ และ password ที่มีการใส่รหัส
       const isMatch = await bcrypt.compare(password, user.password);
 
-      console.log("pass", isMatch);
+      console.log("pass",  user.password);
       //   //const match = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(401).json({ message: "pass invalid" });
@@ -29,7 +29,7 @@ exports.logged = async (req, res) => {
         },
       };
       // // Token
-      const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "12h" });
+      const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "8h" });
 
       return res.json({ token, payLoad });
       // res.send('hello')

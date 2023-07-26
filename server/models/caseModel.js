@@ -27,59 +27,29 @@ const schemaCase = mongoose.Schema(
     },
     wallet: {
       type: String,
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+      required: true, 
     },
     editors: {
       type: String,
       default: "@pr0jectsp",
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+      required: true, 
     },
     recorder: {
       type: String,
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+      required: true, 
     },
     status: {
       type: String,
       default: "รอการแก้ไข",
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+      required: true, 
     },
+    closeCaseBy: {
+      type: String,
+      default: "",
+    },
+
   },
   { timestamps: true }
 ); //ทำการจัดเก็บข้อมูลช่วงเวลาในการสร้างหรือแก้ไข
 
 module.exports = mongoose.model("cases", schemaCase);
-
-// reporter: {
-//   type: String,
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// typeproblem: {
-//   type: String,
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// casedetail: {
-//   type: {},
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// campgame: {
-//   type: String,
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// team: {
-//   type: String,
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// editor: {
-//   type: String,
-//   required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
-// },
-
-// status: {
-//   type: String,
-//   default: "active",
-// },

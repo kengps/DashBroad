@@ -13,7 +13,9 @@ import {
   CloseOutlined,
   UserAddOutlined,
   CloseCircleOutlined,
+  SettingOutlined,
   CheckCircleOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
@@ -31,7 +33,10 @@ import { Box } from "@mui/material";
 import sweetAlert from "sweetalert2";
 import Register from "../components/Register/Register";
 import { toast } from "react-toastify";
+import SettingProblem from "../components/SettingProblem";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
+import { AccordionUI } from "../components/Menu/Index";
 const ListUser = () => {
   const [value, setValue] = useState([]);
   const [data, setData] = useState([]);
@@ -57,6 +62,7 @@ const ListUser = () => {
 
   //* Modal สำหรับแก้ไขข้อมูล user
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -67,6 +73,16 @@ const ListUser = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
     loadData();
+  };
+
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+  };
+  const handleOk1 = () => {
+    setIsModalOpen1(false);
+  };
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
   };
 
   //TOdo Func สำหรับลบข้อมล โดยเรียก api จาก  deleteUser
@@ -167,8 +183,14 @@ const ListUser = () => {
       });
   };
 
+  //offcanvas
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+
+  const handleCloseOffcanvas = () => setShowOffcanvas(false);
+  const handleShowOffcanvas = () => setShowOffcanvas(true);
+
   return (
-    <div className="mt-5">
+    <div style={{ marginTop: "75px" }}>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Helmet>
           <title> Dashboard | User </title>
@@ -256,7 +278,7 @@ const ListUser = () => {
                   <td>
                     <Space>
                       {/* <Button type="primary" onClick={showModal}>
-                        แก้ไข
+                        ตั้งค้า
                       </Button> */}
 
                       <Switch
@@ -278,6 +300,20 @@ const ListUser = () => {
                       >
                         ลบ
                       </Button>
+
+                      <Button1
+                        onClick={showModal1}
+                        variant="warning"
+                        style={{
+                          alignItems: "center",
+                          gap: "10px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        <SettingOutlined
+                          style={{ display: "flex", justifyContent: "center" }}
+                        />
+                      </Button1>
                     </Space>
                   </td>
                 </tr>
@@ -336,6 +372,7 @@ const ListUser = () => {
           </Table>
         )}
       </Box>
+
       <Modal
         title="เพิ่มสมาชิก"
         open={isModalOpen}
@@ -345,6 +382,19 @@ const ListUser = () => {
         <Card>
           <Register />
         </Card>
+      </Modal>
+      <Modal
+        title={
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span style={{ marginRight: "8px" }}>เพิ่มประเภท</span>
+            <AccordionUI />
+          </div>
+        }
+        open={isModalOpen1}
+        onOk={handleOk1}
+        onCancel={handleCancel1}
+      >
+        <SettingProblem />
       </Modal>
     </div>
   );

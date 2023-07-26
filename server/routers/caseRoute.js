@@ -1,5 +1,6 @@
 const express = require('express');
 const { requestUser , allCase ,updateCase ,removeCase ,findCase ,changeStatus, updateDetail ,updateCaseDetail} = require('../controllers/caseController');
+const { createDetailCase, allDetailCase ,createDetailCase2,allDetailCase2} = require('../controllers/detailCaseForm');
 const router = express.Router();
 
 //สร้าง case 
@@ -25,5 +26,19 @@ router.delete('/delete/:id', removeCase)
 
 // router.put('/changdetail/:id' , updateDetail)
 router.put('/update-detail/:id', updateCaseDetail)
+
+
+
+router.post('/create-detailcase', createDetailCase2)
+
+
+router.post('/detail-case', createDetailCase2)
+
+
+
+router.get('/listdetail', allDetailCase)
+
+router.get('/listdetail2', allDetailCase2)
+
 
 module.exports = router;

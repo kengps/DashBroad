@@ -13,6 +13,8 @@ import Login from "./Login";
 import useResponsive from "../../hooks/UseResponsive";
 import logo1 from '/img/logo1.jpg';
 
+
+
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "flex",
@@ -61,18 +63,15 @@ const LoginForm = () => {
             <img src={`${import.meta.env.BASE_URL}logo1.jpg`} alt="login" />
 
 
-           
 
           </StyledSection>
         )}
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h3" gutterBottom >
-             LOGIN
+              LOGIN
             </Typography>
-
-            <Divider sx={{ my: 3 }}></Divider>
-
+            <Divider sx={{ my: 3 }} />
             <Login />
           </StyledContent>
         </Container>

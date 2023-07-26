@@ -3,9 +3,7 @@ import MyForm from "../components/NavbarFormcase/ProblemType";
 import { changeStatus, listCases, deleteCase, changeDetail } from "../api/case";
 import { Button, Card, Tag, message, Select, Modal, Input, Drawer } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
-
 import { toast } from "react-toastify";
-
 import sweetAlert from "sweetalert2";
 import { Form, InputGroup } from "react-bootstrap";
 import Pagination from "react-paginate";
@@ -20,7 +18,16 @@ import ReactQuill from "react-quill";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/material";
 import { notiAll } from "../common/utils/Notification";
+import { useSelector } from "react-redux";
+
+
+
+
 const ListCaseUnResolve = () => {
+
+const {user} = useSelector((state) => ({...state}))
+
+
   //*state สำหรับการแก้ไข
   const [values, setValues] = useState({
     id: "",
@@ -78,6 +85,7 @@ const ListCaseUnResolve = () => {
     let values = {
       id: id,
       status: e,
+      closeCaseBy: user.username
     };
     changeStatus(values)
       .then((res) => {

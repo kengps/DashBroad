@@ -20,6 +20,7 @@ import Work from "../../pages/Work";
 import WebScraping from "../../pages/WebScraping";
 
 
+
 const AppRoutes = () => {
   const idToken = localStorage.token; //token คือชื่อที่เราตั้ง
 
@@ -56,6 +57,7 @@ const AppRoutes = () => {
       <Route path="/reset-password" element={<ChangPassword />} />
       <Route path="/work" element={<Work />} />
       <Route path="/outstanding" element={<WebScraping />} />
+     
     </Routes>
   </IndexRouter>
   );
