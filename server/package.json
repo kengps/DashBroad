@@ -24,6 +24,8 @@
     "moment": "^2.29.4",
     "mongoose": "^7.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }

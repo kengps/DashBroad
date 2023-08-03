@@ -31,15 +31,34 @@ export const useStore = create((set) => ({
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/login`, data);
       set({ dataLogin: response.data });
-      console.log('====================================');
-      console.log(dataLogin);
-      console.log('====================================');
+     
     } catch (error) {
       console.error('Error while posting to API:', error);
       // Handle the error as needed
     }
 
   },
+  dataResetpassword: [],
+  resetPasswords: async (authtoken, id, values) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_REACT_APP_API}/user/${id}`,
+        values,
+    
+        {
+          headers: {
+            authtoken,
+          },
+        }
+      );
+     
+      console.log('================id====================',id);
+      
+      set({ dataResetpassword: response });
+    } catch (error) {
+      console.error('Error while posting to API:', error);
+    }
+  }
 
 }));
 

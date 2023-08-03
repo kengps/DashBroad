@@ -65,6 +65,7 @@ import { listCases } from "../../api/case";
 import { resetPassword } from "../../api/user";
 import md5 from "md5";
 import { notiDetail, notiMD5 } from "../../common/utils/Notification";
+import { useStore } from "../../service/zustand/storeCase";
 
 const drawerWidth = 240;
 
@@ -144,6 +145,12 @@ export default function MiniDrawer() {
 
   // console.log(user.username);
 
+  //zustand
+  const { resetPasswords, dataResetpassword } = useStore()
+
+  console.log(dataResetpassword);
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -183,7 +190,7 @@ export default function MiniDrawer() {
   const [password, setPassword] = useState("");
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
 
- 
+
 
 
 
@@ -218,7 +225,7 @@ export default function MiniDrawer() {
   };
 
   //todo modal สำหรับการกด reset รหัสผ่าน หากมีการกด OK จะทำการเรียก API จาก func resetPassword
-  const handleOk = () => {
+  const handleOk = async () => {
 
     if (values.password === '') {
       setIsPasswordEmpty(true);
@@ -226,19 +233,36 @@ export default function MiniDrawer() {
     }
 
 
+    await resetPasswords(user.token, values.id, { values })
+
+    setValues({ password: "" })
+
+    const result = await swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success")
+   
+
+    if (result.isConfirmed || result.dismiss) {
+      setIsModalOpen(false)
+    }
 
 
+
+    // setTimeout(() => {
+    //   setIsModalOpen(false)
+    // }, 2000);
 
     //* โดยจะส่ง token และ id เข้าไป
-    resetPassword(user.token, values.id, { values })
-      .then((res) => {
-        setValues({ password: "" });
-        swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
-        // console.log("ง/ง", res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+
+
+    // resetPassword(user.token, values.id, { values })
+    //   .then((res) => {
+    //     setValues({ password: "" });
+    //     swal.fire("แจ้งเตือน", "ทำการเปลี่ยนรหัสผ่านสำเร็จ", "success");
+    //     // console.log("ง/ง", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const handleCancel = () => {
@@ -248,8 +272,8 @@ export default function MiniDrawer() {
     setValues({ ...values, [e.target.name]: e.target.value });
     setPassword(e.target.value);
 
-    
-    setIsPasswordEmpty(false); 
+
+    setIsPasswordEmpty(false);
 
   };
 

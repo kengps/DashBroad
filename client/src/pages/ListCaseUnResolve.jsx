@@ -6,7 +6,6 @@ import { CopyOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import sweetAlert from "sweetalert2";
 import { Form, InputGroup } from "react-bootstrap";
-import Pagination from "react-paginate";
 import { RxCross2 } from "react-icons/rx";
 import moment from "moment/min/moment-with-locales";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
@@ -19,13 +18,17 @@ import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/material";
 import { notiAll } from "../common/utils/Notification";
 import { useSelector } from "react-redux";
+import Pagination from "../views/paginate/Pagination";
+import SearchCase from "../views/allCaseAndPendingCase/SearchCase";
+import CasePending from "../views/allCaseAndPendingCase/CasePending";
 
+// import Pagination from "react-paginate";
 
 
 
 const ListCaseUnResolve = () => {
 
-const {user} = useSelector((state) => ({...state}))
+  const { user } = useSelector((state) => ({ ...state }))
 
 
   //*state สำหรับการแก้ไข
@@ -57,7 +60,7 @@ const {user} = useSelector((state) => ({...state}))
       });
   };
 
-  const cardRef = useRef(null);
+
   const textRef = useRef([]);
 
   //function  handleCopy สำหรับการ copy โดยหลังผ่านไป 3 วิ จะให้ทำการปิด sweetAlert
@@ -113,6 +116,7 @@ const {user} = useSelector((state) => ({...state}))
   const handleOk = () => {
     setIsModalOpen(false);
   };
+  
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -145,10 +149,7 @@ const {user} = useSelector((state) => ({...state}))
     setIsModalOpen2(false);
   };
   // console.log(search);
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // handle search logic here
-  };
+
 
   //func Pagination
   const handlePageClick = ({ selected }) => {
@@ -200,17 +201,6 @@ const {user} = useSelector((state) => ({...state}))
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  //modal สรุปเคส
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const showModal3 = () => {
-    setIsModalOpen3(true);
-  };
-  const handleOk3 = () => {
-    setIsModalOpen3(false);
-  };
-  const handleCancel3 = () => {
-    setIsModalOpen3(false);
-  };
 
   // ตัวแปรสำหรับหาจำนวนของเคสที่รอการแก้ไข
   const pendingCases = data.filter((item) => item.status === "รอการแก้ไข");
@@ -268,304 +258,49 @@ const {user} = useSelector((state) => ({...state}))
         <Helmet>
           <title> Dashboard | CaseUnResolve </title>
         </Helmet>
-        <Box>
-          <InputGroup className="mb-3">
-            <Form.Control
-              placeholder="ค้นหาCodeCase"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
-            />
-            <Button
-              variant="danger"
-              value="Submit"
-              onClick={onClickButton}
-              className="btn-1"
-            >
-              <RxCross2 />
-            </Button>
-            <Button1
-              variant="success"
-              onClick={showDrawer}
-              style={{ marginLeft: "20px" }}
-            >
-              สรุปเคสประจำวัน
-            </Button1>
-          </InputGroup>
-        </Box>
 
-        <table className="table table-striped ">
-          <thead>
-            <tr className="table-secondary" style={{ fontSize: "16px" }}>
-              <th scope="col">CodeCase</th>
-              <th scope="col">ผู้แจ้งปัญหา</th>
-              <th scope="col">ประเภท</th>
-              <th scope="col">รายละเอียด</th>
-              <th scope="col">ค่ายเกม</th>
-              <th scope="col" className="text-center">
-                ผู้ลงเคส
-              </th>
-              <th scope="col" className="text-center">
-                ผู้แก้ไข
-              </th>
-              <th scope="col" className="text-center">
-                เวลาสร้างเคส
-              </th>
-              <th scope="col" className="text-center">
-                สถานะ
-              </th>
-              <th scope="col" className="text-center">
-                การจัดการ
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data
-              .filter(
-                (item) =>
-                  //  filter แรกสำหรับการค้นหา id และ รายละเอียด
-                  item.caseId.toLowerCase().includes(search.toLowerCase()) ||
-                  item.detail.toLowerCase().includes(search.toLowerCase())
-              )
-              .filter(
-                // filter สำหรับแสดงเคสที่ รอการแก้ไข
-                (item) =>
-                  item.status === "รอการแก้ไข" && item.caseId.startsWith("BGMC")
-              )
-              // reverse ข้อมูลจากใหม่ไปเก่า
-              .reverse((a, b) => b.id - a.id)
-              .slice(
-                // slice สำหรับ pagination
-                currentPage * ITEM_PER_PAGE,
-                (currentPage + 1) * ITEM_PER_PAGE
-              )
-              .reverse((a, b) => b.id - a.id)
-              .map((data, index) => (
-                <tr key={index}>
-                  <th scope="row">{data.caseId}</th>
-                  <td>{data.reporter}</td>
-                  <td>{data.problem.slice(0, 17)}</td>
-                  <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
-                    {data.detail}
-                  </td>
-                  <td>{data.campgame}</td>
-                  <td>{data.recorder}</td>
-                  <td>{data.editors}</td>
-                  <td>
-                    {moment(data.createdAt).locale("th").format("l LT")} น.
-                  </td>
-                  <td>
-                    <Select
-                      style={{ width: "100%" }}
-                      value={data.status}
-                      onChange={(e) => handleOnchange(e, data._id)}
-                    >
-                      {statusCase.map((item, index) => (
-                        <Select.Option key={index} value={item}>
-                          {item === "รอการแก้ไข" ? (
-                            <Tag color={"red"}>{item}</Tag>
-                          ) : (
-                            <Tag color={"green"}>{item}</Tag>
-                          )}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </td>
-                  <td>
-                    <Button
-                      className="mt-1 me-1"
-                      type="primary"
-                      onClick={() => {
-                        setSelectedCase(data);
-                        showModal();
-                      }}
-                    >
-                      คัดลอก
-                    </Button>
-                    <Button
-                      className="me-1 btn-change"
-                      onClick={() => showModal2(data._id)}
-                    >
-                      แก้ไข
-                    </Button>
-                    <Button
-                      type="primary"
-                      danger
-                      className="me-1 mt-1"
-                      onClick={() => handleClick(data._id)}
-                    >
-                      ลบ
-                    </Button>
+        <SearchCase
+          search={search}
+          setSearch={setSearch}
+          onClickButton={onClickButton}
+          showDrawer={showDrawer}
+        />
 
-                    <Modal
-                      title="Copy Case"
-                      open={isModalOpen}
-                      onOk={handleOk}
-                      onCancel={handleCancel}
-                    >
-                      {selectedCase && (
-                        <Card
-                          ref={textRef}
-                          style={{
-                            background: "#f0f0f0",
-                            border: "1px solid gray",
-                          }}
-                        >
-                          <div>
-                            <p className="d-block m-0">
-                              "<strong> เคส:</strong> {selectedCase.caseId}
-                            </p>
-                            <p className="d-block m-0">
-                              <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
-                              {selectedCase.reporter}
-                            </p>
-                            <p className="d-block m-0">
-                              <strong>ประเภทปัญหา: </strong>
-                              {selectedCase.problemDetail}
-                            </p>
-                            <p
-                              className="d-block m-0"
-                              style={{
-                                wordWrap: "break-word",
-                                maxWidth: "30ch",
-                              }}
-                            >
-                              <strong>รายละเอียด: </strong>
-                              {selectedCase.detail}
-                            </p>
-                            <p className="d-block m-0 font-weight-bold">
-                              <strong>ค่ายเกม:</strong> {selectedCase.campgame}
-                            </p>
-                            <p className="d-block m-0">
-                              <strong> ผู้ลงเคส: </strong>
-                              {selectedCase.recorder}
-                            </p>
-                            <p className="d-block m-0">
-                              <strong> ผู้แก้ไข: </strong>
-                              {selectedCase.editors} "
-                            </p>
-                          </div>
-
-                          <Button
-                            onClick={handleCopy}
-                            className="btn-primary float-end"
-                          >
-                            <CopyOutlined />
-                          </Button>
-                        </Card>
-                      )}
-                    </Modal>
-
-                    <Modal
-                      title="Basic Modal2"
-                      open={isModalOpen2}
-                      onOk={handleOk2}
-                      onCancel={handleCancel2}
-                    >
-                      <InputGroup>
-                        <InputGroup.Text>รายละเอียด</InputGroup.Text>
-                      </InputGroup>
-
-                      <TextArea
-                        rows={5}
-                        type="text"
-                        name="detail"
-                        onChange={handleChangeDetail}
-                      />
-                    </Modal>
-                  </td>
-                </tr>
-              ))}
-
-            {/* <Modal
-              title="Basic Modal"
-              open={isModalOpen3}
-              onOk={handleOk3}
-              onCancel={handleCancel3}
-            >
-              <Card ref={textRef}>
-                <p>******************************************</p>
-                <p>
-                  สรุปเคสประจำวันระหว่างกะ
-                  <p>
-                    {pendingCasesCount === "0"
-                      ? "ไม่มีรายการค้าง"
-                      : ` เคสค้างจำนวน ${pendingCasesCount} รายการ`}
-                    <p>
-                      {pendingCases.map((item, index) => (
-                        <span key={index}>{item.caseId}, </span>
-                      ))}
-                    </p>
-                  </p>
-                </p>
-                <p>******************************************</p>
-                <Button onClick={handleCopy2} className="btn-primary float-end">
-                  <CopyOutlined />
-                </Button>
-              </Card>
-            </Modal> */}
-
-            <Drawer
-              title="Basic Drawer"
-              placement="right"
-              onClose={onClose}
-              open={open}
-            >
-              <Card ref={textRef}>
-                {/* <p>══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p> */}
-
-                <p>
-                  {" "}
-                  {moment(currentTime, "h:mm A").isAfter(eveningTime) ? (
-                    <p> ══════════ สรุปเคสประจำวันกะดึก ════════════</p>
-                  ) : (
-                    <p>══════════ สรุปเคสประจำวันกะเช้า ════════════</p>
-                  )}
-                </p>
-                <p>
-                  <p>
-                    {pendingCasesCount === 0
-                      ? "ไม่มีรายการค้าง"
-                      : ` เคสค้างจำนวน ${pendingCasesCount} รายการ`}
-                    <p>
-                      {pendingCases.map((item, index) => (
-                        <span key={index}>{item.caseId}, </span>
-                      ))}
-                    </p>
-                  </p>
-                </p>
-                <p>═══════════════ (▰˘◡˘▰)════════════════</p>
-                <Button onClick={handleCopy2} className="btn-primary float-end">
-                  <CopyOutlined />
-                </Button>
-              </Card>
-            </Drawer>
-          </tbody>
-        </table>
+        <CasePending
+          data={data}
+          search={search}
+          currentPage={currentPage}
+          ITEM_PER_PAGE={ITEM_PER_PAGE}
+          statusCase={statusCase}
+          handleOnchange={handleOnchange}
+          handleCopy={handleCopy}
+          showModal={showModal}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          showModal2={showModal2}
+          handleOk2={handleOk2}
+          handleCancel2={handleCancel2}
+          handleChangeDetail={handleChangeDetail}
+          handleClick={handleClick}
+          selectedCase={selectedCase}
+          isModalOpen={isModalOpen}
+          isModalOpen2={isModalOpen2}
+          textRef={textRef}
+          pendingCasesCount={pendingCasesCount}
+          pendingCases={pendingCases}
+          currentTime={currentTime}
+          eveningTime={eveningTime}
+          handleCopy2={handleCopy2}
+          showDrawer={showDrawer}
+          onClose={onClose}
+          open={open}
+          setSelectedCase={setSelectedCase}
+        />
 
         <Pagination
-          previousLabel={currentPage > 0 ? "< ก่อนหน้า" : "หน้าแรก"}
-          nextLabel={
-            currentPage === Math.ceil(data.length / ITEM_PER_PAGE) - 1
-              ? "สุดท้าย"
-              : "ถัดไป >"
-          }
-          breakLabel="..."
+          currentPage={currentPage}
           pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
-          marginPagesDisplayed={3}
-          pageRangeDisplayed={5}
-          containerClassName={"pagination justify-content-center"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          activeClassName={"active"}
-          onPageChange={handlePageClick}
+          handlePageClick={handlePageClick}
         />
       </Box>
     </div>

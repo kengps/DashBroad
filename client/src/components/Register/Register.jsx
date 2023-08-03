@@ -10,8 +10,11 @@ import { toast } from "react-toastify";
 
 import axios from "axios";
 import { Typography } from "antd";
+import UsernameInput from "../../views/register/UsernameInput";
+import PasswordInput from "../../views/register/PasswordInput";
 
 const Register = () => {
+
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -55,7 +58,7 @@ const Register = () => {
       setConfirmPasswordNotMatch("รหัสผ่านไม่ตรงกัน");
     } else {
       try {
-        const response = await axios.post(
+        await axios.post(
           `${import.meta.env.VITE_REACT_APP_API}/register`,
           {
             username,
@@ -66,8 +69,9 @@ const Register = () => {
         SweetAlert.fire("แจ้งเตือน", "สมัครสมาชิกสำเร็จ", "success");
         setState({ ...state, username: "", password: "", confirmpass: "" });
         setConfirmPasswordNotMatch("");
+
       } catch (err) {
-        alert(err.message);
+        SweetAlert.fire("แจ้งเตือน", "มี username ในระบบแล้ว", 'warning');
       }
     }
   };
@@ -83,31 +87,9 @@ const Register = () => {
       <div className="from-control">
         <Form onSubmit={submitForm}>
           <div>
-            <InputGroup className="border mt-3">
-              <InputGroup.Text>Username</InputGroup.Text>
-              <Form.Control
-                className="form-control input-lg"
-                name="username"
-                onChange={inputValue("username")}
-                value={username}
-              />
-            </InputGroup>
 
-            <InputGroup className="mt-3">
-              <InputGroup.Text>Password</InputGroup.Text>
-              <Form.Control
-                className="form-control input-lg"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={inputValue("password")}
-              />
-
-              <Button variant="secondary" onClick={toggleShowPassword}>
-                {showPassword ? <BiShow /> : <BiHide />} Password
-                {/* <BiHide /> */}
-              </Button>
-            </InputGroup>
+            <UsernameInput inputValue={inputValue} username={username} />
+            <PasswordInput confirmpass={confirmpass} showPassword={showPassword} password={password} inputValue={inputValue} toggleShowPassword={toggleShowPassword} />
 
             {passwordError && (
               <div
@@ -117,23 +99,8 @@ const Register = () => {
                 {passwordError}
               </div>
             )}
-
-            <InputGroup className="mt-3">
-              <InputGroup.Text>Confirm Password</InputGroup.Text>
-              <Form.Control
-                className="form-control input-lg"
-                name="confirmpass"
-                type={showPassword ? "text" : "password"}
-                onChange={inputValue("confirmpass")}
-                value={confirmpass}
-              />
-
-              <Button variant="secondary" onClick={toggleShowPassword}>
-                {showPassword ? <BiShow /> : <BiHide />} password
-              </Button>
-            </InputGroup>
           </div>
-
+          
           {confirmPasswordNotMatch && (
             <div
               className="error mt-1"

@@ -76,11 +76,11 @@ const FormComponent = () => {
 
 
 
-  //Platforms
-  const platformsDetail = data.filter((item) => typeProb[2].includes(item.data.type.types));
-  const newPlatformsDt = new Set(platformsDetail.map((item) => { return item.data.detail.name }))
-  const NewDataPlatform = [...newPlatformsDt]
-  //============================================================================
+  // //Platforms
+  // const platformsDetail = data.filter((item) => typeProb[2].includes(item.data.type.types));
+  // const newPlatformsDt = new Set(platformsDetail.map((item) => { return item.data.detail.name }))
+  // const NewDataPlatform = [...newPlatformsDt]
+  // //============================================================================
 
 
   const { user } = useSelector((state) => ({ ...state }));

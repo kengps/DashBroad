@@ -8,14 +8,18 @@ const app = express();
 
 const http = require('http').createServer(app);
 
+
+
+
 //router
 const caseRouter = require('./routers/caseRoute')
 const ReAndLogRouter = require('./routers/LoginAndRegister')
 const userRouter = require('./routers/userRouter')
 const LoginAuth = require('./routers/login')
-const currentTime = require('./routers/time')
+const currentTime = require('./routers/time');
 
 
+const {swaggerSpec,swaggerUi } = require('./configs/swagger/swagger');
 
 
 const port = process.env.PORT || 3001
@@ -29,6 +33,11 @@ mongoose.connect(process.env.DATABASE, {
     useUnifiedTopology: false
 }).then(() =>console.log('เชื่อมต่อฐานข้อมูลเรียบร้อย'))
 .catch((err) => console.log('เกิดข้อผิดพลาด'+err))
+
+
+
+
+//swagger
 
 
 // //  เชื่อมต่อ socket
@@ -58,8 +67,7 @@ app.use('/api' , caseRouter)
 app.use('/api' , ReAndLogRouter)
 app.use('/api' , userRouter)
 app.use('/api' , LoginAuth)
-
-
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 
