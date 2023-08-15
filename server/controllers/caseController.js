@@ -60,6 +60,7 @@ exports.findCase = async (req, res) => {
 
 exports.allCase = async (req, res) => {
   try {
+    
     const cases = await Cases.find({}).exec();
     res.json(cases);
   } catch (error) {

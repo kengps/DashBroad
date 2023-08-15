@@ -47,7 +47,7 @@ exports.register2 = async (req, res) => {
     console.log('================password====================',password);
     console.log(user);
     console.log('====================================');
-    await user.save();
+    // await user.save();
     res.send({message: 'register success' , user});
   } catch (error) {
     res.status(500).send('server is error!!!!')

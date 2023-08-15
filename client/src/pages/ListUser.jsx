@@ -21,7 +21,7 @@ import Tooltip from "@mui/material/Tooltip";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { changStatus, listUser, changRole, deleteUser } from "../api/user";
+import { changStatus, changRole, deleteUser } from "../api/user";
 import moment from "moment/min/moment-with-locales";
 import { Helmet } from "react-helmet-async";
 
@@ -39,43 +39,43 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { AccordionUI } from "../components/Menu/Index";
 import TableUser from "../views/users/TableUser";
 import Register from "../components/Register/Register";
+import { useStore } from "../service/zustand/storeCase";
+
 
 
 const ListUser = () => {
-  const [value, setValue] = useState([]);
+
+  //const listUse1 = useStore((state) => state.listUser);
+  // const userList = useStore((state) => state.userList);
+  const { listUser, userList, deleteUsers, responseDelete, changStatusUser, changRoleUser } = useStore();
 
 
   const { user } = useSelector((state) => state);
+
+  const resChangStatus = useStore((state) => state.resChangStatus);
+
+
 
   useEffect(() => {
     loadData(user.token);
 
   }, []);
 
+
   const loadData = (authtoken) => {
     listUser(authtoken)
-      .then((res) => {
-        setValue(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
   };
 
 
   //TOdo Func สำหรับลบข้อมล โดยเรียก api จาก  deleteUser
   //! สามารถเขียนรวมได้ใน if (result.isConfirmed) ใน func handleClick ได้นะ
-  const confirmDelete = (id) => {
-    deleteUser(id)
-      .then((res) => {
-        sweetAlert.fire("แจ้งเตือน", res.data.message, "success");
-
-        loadData();
-        // loadUser(user.token);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const confirmDelete = async (id) => {
+    const res = await deleteUsers(id)
+    console.log(`ได้อะไรจากการ return${res}`);
+    sweetAlert.fire("แจ้งเตือน", res, "success");
+    loadData();
+    // loadUser(user.token);
   };
 
   //* หากมีการคลิกที่ปุ่มลบ
@@ -92,7 +92,7 @@ const ListUser = () => {
       if (result.isConfirmed) {
         //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
 
-        confirmDelete(id);
+        await confirmDelete(id);
       }
     } catch (error) {
       console.log(err);
@@ -107,55 +107,79 @@ const ListUser = () => {
   };
 
   //* function สำหรับการเปิด-ปิด user
-  const handleOnchange = (e, id) => {
+  const handleOnchange = async (e, id) => {
+    console.log(`checked = ${e.target.checked}`);
+    //หากใช้ checkbox ให้ใช่ e.target.checked
+    //หากใช้ switch ให้ใช่ e
+
+
+    const checked = e.target.checked
     const value = {
       id: id,
-      enabled: e,
+      enabled: checked,
     };
-
-    changStatus(user.token, value)
-      .then((res) => {
-        const notify =
-          res.data.enabled === true
-            ? "ทำการปิดการใช้งานสำเร็จ"
-            : "ทำการเปิดการใช้งานสำเร็จ";
-
-        toast.success(notify);
-
-        loadData(user.token);
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const result = await sweetAlert.fire({
+        title: "คุณต้องการลบปิดการใช้งานหรือไม่",
+        icon: "warning",
+        showCancelButton: true,
       });
+      console.log("ยืนยันการลบ", result);
+      //todo ถ้ากดปุ่ม OK หรือ ตกลง จะส่ง request ไปที่  api เพื่อลบข้อมูล
+      if (result.isConfirmed) {
+        //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
+
+        await changStatusUser(user.token, value)
+      }
+
+      // สามารถเข้าถึงค่าที่คืนมาจาก changStatusUser ได้เลยโดยใช้ตัวแปร resChangStatus
+
+      const notify =
+        resChangStatus.enabled === true
+          ? "ทำการเปิดการใช้งานสำเร็จ"
+          : "ทำการปิดการใช้งานสำเร็จ";
+
+
+      toast.success(notify);
+
+
+      loadData(user.token);
+    } catch (error) {
+      console.log(error);
+    }
+
+
   };
 
   //แก้ไขระดับ
 
 
   // function สำหรับการแก้ไข role เมื่อมีการเปลี่ยนแปลงข้อมูลตรง select สามารถ copy จากhandleOnchange ได้เลยแต่ต้องเปลี่ยนชื่อ function  เอง
-  const handleOnchangeRole = (e, id) => {
-    const value = {
-      id: id,
-      role: e,
-    };
+  const handleOnchangeRole = async (e, id) => {
+    try {
+      const value = {
+        id: id,
+        role: e,
+      };
 
-    //changRole คือ function การยิง API
-    changRole(user.token, value)
-      .then((res) => {
-        toast.success("ทำการแก้ไขระดับสำเร็จ");
+      //changRole คือ function การยิง API
+      await changRoleUser(user.token, value)
 
-        loadData(user.token);
-      })
-      .catch((err) => {
-        console.log(err.res);
-      });
+      toast.success("ทำการแก้ไขระดับสำเร็จ");
+
+      loadData(user.token);
+
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
 
   return (
     <>
 
-      <TableUser value={value} handleOnchange={handleOnchange} handleClick={handleClick} handleOnchangeRole={handleOnchangeRole} />
+      <TableUser value={userList} handleOnchange={handleOnchange} handleClick={handleClick} handleOnchangeRole={handleOnchangeRole} />
 
     </>
 

@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const detailSchema = mongoose.Schema({
     name: {
         type: String,
+       
     },
 });
 
@@ -16,6 +17,7 @@ const typeSchema = mongoose.Schema({
     },
     name: {
         type: String,
+      
     },
 });
 

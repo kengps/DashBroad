@@ -1,14 +1,20 @@
-FROM node:16-alpine
+FROM node:15
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY ./package.json ./
+COPY package.json .
 
+ARG NODE_ENV
 
-RUN npm install
+RUN if["$NODE_ENV"="development"]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
-COPY . .
+COPY . ./
 
-EXPOSE 5000
+ENV PORT 3000
 
-CMD ["node", "server.js"]
+EXPOSE $PORT
+
+CMD [ "npm" ,"server.js" ]

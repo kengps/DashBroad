@@ -16,21 +16,9 @@ const { TextArea } = Input;
 import { useNavigate } from "react-router-dom";
 import Select1 from "@mui/material/Select";
 import moment from "moment/min/moment-with-locales";
-import {
-  InputLabel,
-  MenuItem,
-  ListSubheader,
-  FormControl,
-  FormHelperText,
-  Box,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  notiAll,
-  notiAllCaseCount,
-  notiWaitCaseCount,
-} from "../common/utils/Notification";
-import { listDetailCase } from "../api/detailCase";
+
 import { useStore } from "../service/zustand/storeCase";
 import ReporterInput from "../views/formcase/ReporterInput";
 import ProblemInput from "../views/formcase/ProblemInput";
@@ -45,8 +33,7 @@ const navDropdownItemStyle = {
 };
 
 const FormComponent = () => {
-  //API DetailCase
-  const [dataProblemType, setDataProblemType] = useState([]);
+
 
 
   useEffect(() => {
@@ -59,7 +46,6 @@ const FormComponent = () => {
   const fetchData = useStore((state) => state.fetchData)
   //Request post
 
-  const { response } = useStore();
 
   const createCase = useStore((state) => state.createCase)
 
@@ -73,14 +59,6 @@ const FormComponent = () => {
   const problemType = data.filter((item) => typeProb[0].includes(item.data.type.types));
   const problemTypeName = new Set(problemType.map((item) => { return item.data.type.name }))
   const newProbType = [...problemTypeName]
-
-
-
-  // //Platforms
-  // const platformsDetail = data.filter((item) => typeProb[2].includes(item.data.type.types));
-  // const newPlatformsDt = new Set(platformsDetail.map((item) => { return item.data.detail.name }))
-  // const NewDataPlatform = [...newPlatformsDt]
-  // //============================================================================
 
 
   const { user } = useSelector((state) => ({ ...state }));
@@ -107,8 +85,7 @@ const FormComponent = () => {
   } = values;
 
   const timestamps = moment().format("LLL"); // June 26, 2023 4:36 PM
-
-  const caseData = {
+  const caseDataForExcel = {
     reporter,
     problemDetail,
     problem,
@@ -132,8 +109,8 @@ const FormComponent = () => {
 
     try {
       // ไม่ฟรีแล้ว
-      //await axios.post("https://sheet.best/api/sheets/490e1f2e-21aa-4b61-9d12-a52da3780268", caseData);
-      await createCase(values)
+      //await axios.post("https://sheet.best/api/sheets/490e1f2e-21aa-4b61-9d12-a52da3780268", caseDataForExcel);
+      const res = await createCase(values)
 
       // setValues({
       //   reporter: "",
@@ -147,7 +124,7 @@ const FormComponent = () => {
       setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
 
 
-      SweetAlert.fire("แจ้งเตือน", response.message, "success");
+      SweetAlert.fire("แจ้งเตือน", res.message, "success");
       setTimeout(() => {
         navigate("/dashboard/listunresolve");
       }, 2000);
@@ -167,21 +144,11 @@ const FormComponent = () => {
 
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
-
-
   };
   //* state ของการเลือก รายละเอียดของปัญหา
   const [selectedDetail, setSelectedDetail] = useState("");
-  const handleChangeDetail = (event) => {
-    setSelectedDetail(event.target.value);
-  };
   //* state ของการเลือกค่ายเกม
   const [campGames, setCampGames] = useState("");
-
-  const handleChangeCampGame = (event) => {
-    setCampGames(event.target.value);
-  };
-  //* ประเภทของปัญหา
 
   return (
     <div className="mt-2">

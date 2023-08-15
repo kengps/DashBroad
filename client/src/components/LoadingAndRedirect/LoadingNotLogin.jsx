@@ -14,11 +14,11 @@ const LoadingNotLogin = () => {
   }, [count]);
   return (
     <div className="redirectLogin">
-        <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <h1>คุณยังไม่ได้ทำการ Login ระบบกำลังนำคุณไปยังหน้า Login ในอีก...{count}</h1>
     </div>
   );

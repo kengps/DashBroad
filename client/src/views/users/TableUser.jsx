@@ -7,6 +7,7 @@ import {
     Switch,
     Card,
     Select,
+
 } from "antd";
 import {
     CheckOutlined,
@@ -36,6 +37,8 @@ import SettingProblem from "../../components/SettingProblem";
 
 import { AccordionUI } from "../../components/Menu/Index";
 
+import { green } from '@mui/material/colors';
+import Checkbox from '@mui/material/Checkbox';
 const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) => {
 
     const { user } = useSelector((state) => state);
@@ -78,7 +81,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
     };
 
     const labelBtn = disabled ? "เปิด" : "ปิด";
-
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
     return (
         <div style={{ marginTop: "75px" }}>
@@ -172,14 +175,29 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                         ตั้งค้า
                       </Button> */}
 
-                                            <Switch
+                                            {/* <Switch
                                                 onChange={(e) => handleOnchange(e, item._id)}
                                                 checked={item.enabled}
                                                 disabled={disabled}
                                                 checkedChildren="✓"
                                                 unCheckedChildren="✗"
                                                 defaultChecked
+                                            /> */}
+
+                                            <Checkbox
+                                                onChange={(e) => handleOnchange(e, item._id)}
+                                                checked={item.enabled}
+                                                
+                                                disabled={disabled}
+                                                sx={{
+                                                    color: green[800],
+                                                    '&.Mui-checked': {
+                                                        color: green[600],
+                                                    },
+                                                }}
                                             />
+
+
                                             <Button type="primary" onClick={toggle}>
                                                 {labelBtn}
                                             </Button>
@@ -282,11 +300,13 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                     </div>
                 }
                 open={isModalOpen1}
-                onOk={handleOk1}
+                //onOk={handleOk1}
                 onCancel={handleCancel1}
+                footer={null}
             >
-                <SettingProblem />
+                <SettingProblem onCloseModal={() => setIsModalOpen1(false)} />
             </Modal>
+
         </div>
     )
 }

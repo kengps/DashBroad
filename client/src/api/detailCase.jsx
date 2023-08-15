@@ -4,7 +4,7 @@ import axios from "axios";
 export const createDetail = async (value) => {
   console.log("ข้อมูลที่ส่งมา1", value);
   return await axios.post(
-    `${import.meta.env.VITE_REACT_APP_API}/create-detailcase`,
+    `${import.meta.env.VITE_REACT_APP_API}/detail-case`,
     value
   );
 };

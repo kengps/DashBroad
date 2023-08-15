@@ -31,22 +31,22 @@ export const AccordionUI = () => {
           <Accordion.Body>
             <div style={{ fontSize: "8px" }}>
               <p>
-                <b>problemType :</b> <i style={{ color: "red" }}>ประเภทปัญหา</i>
+                <b>Type :</b> <i style={{ color: "red" }}>ประเภท</i>
               </p>
               <p>
-                <b>problemDetail :</b>{" "}
-                <i style={{ color: "red" }}>รายละเอียดปัญหา ${biogaming} </i>
+                <b>Campgame :</b>{" "}
+                <i style={{ color: "red" }}>ชื่อค่ายเกม </i>
               </p>
               <p>
-                <b>gameDetail :</b>{" "}
-                <i style={{ color: "red" }}>รายละเอียดเกม</i>
+                <b>Platforms :</b>{" "}
+                <i style={{ color: "red" }}>แพลตฟอร์ม</i>
               </p>
               <p>
-                <b>Platforms :</b> <i style={{ color: "red" }}>แพลตฟอร์ม</i>
+                <b>name :</b> <i style={{ color: "red" }}>ชื่อของประเภท</i>
               </p>
               <p>
-                <b>problemDetailLSM :</b>{" "}
-                <i style={{ color: "red" }}>รายละเอียดปัญหา ${lsm}</i>
+                <b>Detail :</b>{" "}
+                <i style={{ color: "red" }}>รายละเอียด</i>
               </p>
             </div>
           </Accordion.Body>

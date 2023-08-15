@@ -12,7 +12,6 @@ export const resetPassword = async (authtoken, id, values) => {
   return await axios.put(
     `${import.meta.env.VITE_REACT_APP_API}/user/${id}`,
     values,
-
     {
       headers: {
         authtoken,

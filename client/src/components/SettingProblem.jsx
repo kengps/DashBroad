@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
 import { Button, Card, Modal, Select as AntSelect } from "antd";
 import { useState } from "react";
-import ButtonBt from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Select from "@mui/material/Select";
-import Accordion from 'react-bootstrap/Accordion';
 import InputGroup from "react-bootstrap/InputGroup";
-import { SettingOutlined, UserAddOutlined } from "@ant-design/icons";
 import {
   InputLabel,
   MenuItem,
@@ -15,95 +12,286 @@ import {
   FormHelperText,
   Box,
 } from "@mui/material";
-import Table from "react-bootstrap/Table";
 import { createDetail, listDetailCase } from "../api/detailCase";
-import axios from "axios";
 import SweetAlert from "sweetalert2";
 
-const SettingProblem = () => {
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { useStore, useStoreSetting } from "../service/zustand/storeCase";
+
+
+const SettingProblem = ({ onCloseModal }) => {
+
+  //Data Zustand
+  const { fetchData } = useStore();
+  const { resDetail, createDetails } = useStoreSetting();
+
+  const data = useStore((state) => state.cases)
+
+
+  //การ Reduce เอาค่าที่ไม่ซ้ำกัน
+  const uniqueTypesSet = new Set();
+  const uniqueTypess = data.reduce((accumulator, data) => {
+    const type = data.data.type.types;
+    if (type && !uniqueTypesSet.has(type)) {
+      uniqueTypesSet.add(type);
+      accumulator.push(type);
+    }
+    return accumulator;
+  }, []);
+
+
+  const newDataType = data.map((item) => { return item.data.type.types })
+  const typeProb = ([...new Set(newDataType)]).filter(Boolean);
+
+  //Type 
+  const problemType = data.filter((item) => typeProb[0].includes(item.data.type.types));
+  const problemTypeName = new Set(problemType.map((item) => { return item.data.type.name }))
+  const newProbType = [...problemTypeName]
+
+
+  const platforms = data.filter((item) => typeProb[2].includes(item.data.type.types));
+  const platformsName = new Set(platforms.map((item) => { return item.data.type.name }))
+  const newPlatforms = [...platformsName]
+  console.log('problemType', newPlatforms);
+
+
   const [dataProblem, setDataProblem] = useState([]);
 
   const [values, setValues] = useState({
-    type: "",
-    name: "",
+    data: {
+      type: {
+        types: "",
+        name: ""
+      },
+      detail: {
+        name: ""
+      }
+    }
+
   });
 
-  const { type, name } = values;
+  const { types, name, detail } = values;
+
   const inputValue = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(event.target.value);
+    // console.log(event.target.value);
+    // console.log(event);
   };
 
   useEffect(() => {
+    fetchData1();
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData1 = async () => {
     listDetailCase()
       .then((res) => setDataProblem(res.data))
       .catch((err) => console.log(err));
   };
 
-  //กำหนด uniqueTypes โดยใช้ set เพื่อหาข้อมูล หากมีข้อมูลซ้ำก็จะแสดงเพียงข้อมูลเดียว
-  // ใช้ Set เพื่อสร้างเซตของ type ที่ไม่ซ้ำกัน โดยใช้ [...new Set(array)] ซึ่งจะแปลง array เป็น Set เพื่อลบองค์ประกอบที่ซ้ำกัน และใช้ spread operator (...) เพื่อแปลงเซตกลับเป็นอาร์เรย์
-  // ดังนั้น, ในบรรทัด const uniqueTypes = [...new Set(dataProblem.map((items) => items.type))]:
-  // dataProblem.map((items) => items.type) สร้างอาร์เรย์ที่ประกอบด้วย type ทั้งหมดใน dataProblem
-  // new Set(dataProblem.map((items) => items.type)) สร้างเซตที่ประกอบด้วย type ที่ไม่ซ้ำกันจากอาร์เรย์ข้างต้น
-  // [...new Set(dataProblem.map((items) => items.type))] แปลงเซตกลับเป็นอาร์เรย์ เพื่อให้ uniqueTypes เก็บค่า type ที่ไม่ซ้ำกันใน dataProblem
-
-  const uniqueTypes = [...new Set(dataProblem.map((items) => items.type))];
-
-  const typeName = uniqueTypes.map((type) => {
-    return type;
-  });
-
   const submitForm = async (e) => {
-    e.preventDefault();
-    createDetail(values).then((res) => {
-      console.log(res);
+    try {
+
+      const dataToSend = {
+        data: {
+          type: {
+            types: values.types,
+            name: values.name
+          },
+          detail: {
+            name: values.detail
+          }
+        }
+      };
+
+      console.log(dataToSend);
+
+      e.preventDefault();
+      await createDetails(dataToSend)
       SweetAlert.fire("แจ้งเตือน", "เพิ่มข้อมูลสำเร็จ", "success");
-      setValues({ ...values, type: "", name: "" });
-    }).catch((err)=> {
-       alert(err.response.data.message);
-    })
-     
-    
+
+      setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
+      setSelectedOption(""); // เปลี่ยนค่า selectedOption เป็นค่าว่างเปล่า
+
+      onCloseModal();
+    } catch (error) {
+      alert(error);
+    }
+
   };
+
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+
+  const indicesArray = uniqueTypess.map((_, index) => index);
+
+  // แสดงผลอาร์เรย์ที่มีจำนวน index ในรูปแบบ [0, 1, 2, ...]
+  console.log('Indices array:', indicesArray);
 
   return (
     <div className="from-control">
       <Card>
-        <FormControl size="small" sx={{ minWidth: "100%" }}>
-          <InputLabel htmlFor="grouped-select">Type</InputLabel>
-          <Select
-            defaultValue=""
-            id="grouped-select"
-            label="Grouping"
-            onChange={inputValue("type")}
-            name="type"
-          >
-            <MenuItem value="">
-              <em>--กรุณาเลือก Type--</em>
-            </MenuItem>
-            {typeName.map((item, index) => (
-              <MenuItem value={item} key={index}>
-                {item}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
 
-        <InputGroup className="mt-3">
-          <InputGroup.Text id="inputGroup-sizing-default">
-            รายละเอียด
-          </InputGroup.Text>
-          <Form.Control
-            name="name"
-            aria-label="Default"
-            aria-describedby="inputGroup-sizing-default"
-            onChange={inputValue("name")}
-          />
-        </InputGroup>
+        <Autocomplete
+          id="free-solo-demo"
+          freeSolo
+          options={uniqueTypess}
+          sx={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Type" />}
+          onChange={(event, newValue) => {
+            setSelectedOption(newValue);
+            setValues({
+              ...values,
+              types: newValue,
+              name: "", // Reset ชื่อเมื่อเปลี่ยนเลือก Type
+              detail: "" // Reset รายละเอียดเมื่อเปลี่ยนเลือก Type
+            });
+
+          }}
+          onInputChange={(event, newInputValue) => {
+            setValues({
+              ...values,
+              types: newInputValue,
+              name: "", // Reset ชื่อเมื่อเปลี่ยนเลือก Type
+              detail: "" // Reset รายล
+            })
+            inputValue(event, newInputValue); // เรียกใช้ฟังก์ชัน inputValue และส่ง event มา
+
+          }}
+          name="types"
+        />
+
+        {selectedOption === uniqueTypess[0] && (
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '100%' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <Autocomplete
+
+              id="combo-box-demo"
+              options={newProbType}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="name" />}
+              onChange={(event, newValue) => {
+                setValues({ ...values, name: newValue }); // บันทึกค่าที่เลือกไป
+                inputValue(event, newValue); // เรียกใช้ฟังก์ชัน inputValue และส่ง event และ newValue มา
+              }}
+              name="name"
+            />
+            <TextField
+              name="detail"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              id="outlined-basic"
+              label="รายละเอียด"
+              variant="outlined"
+              onChange={inputValue("detail")}
+            />
+
+          </Box>
+
+        )}
+
+        {selectedOption === uniqueTypess[1] && (
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '100%' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              name="name"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              id="outlined-basic"
+              label="ชื่อ"
+              variant="outlined"
+              onChange={inputValue("name")}
+            />
+          </Box>
+
+        )}
+
+        {selectedOption === uniqueTypess[2] && (
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '100%' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <Autocomplete
+
+              id="combo-box-demo"
+              options={newPlatforms}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} label="name" />}
+              onChange={(event, newValue) => {
+                setValues({ ...values, name: newValue }); // บันทึกค่าที่เลือกไป
+                inputValue(event, newValue); // เรียกใช้ฟังก์ชัน inputValue และส่ง event และ newValue มา
+              }}
+              name="name"
+            />
+            <TextField
+              name="detail"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              id="outlined-basic"
+              label="รายละเอียด"
+              variant="outlined"
+              onChange={inputValue("detail")}
+            />
+
+          </Box>
+
+        )}
+        {selectedOption !== uniqueTypess[0] && selectedOption !== uniqueTypess[1] && selectedOption !== uniqueTypess[2] && (
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 1, width: '100%' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              name="name"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              id="outlined-basic"
+              label="ชื่อ"
+              variant="outlined"
+              onChange={inputValue("name")}
+            />
+            <TextField
+              name="detail"
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+              id="outlined-basic"
+              label="รายละเอียด"
+              variant="outlined"
+              onChange={inputValue("detail")}
+            />
+
+          </Box>
+
+        )}
+
+
+
         <Button
           className="btn-primary float-end mt-2"
           type="submit"

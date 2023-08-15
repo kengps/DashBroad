@@ -18,7 +18,8 @@ import IndexRouter from "../LoadingAndRedirect";
 import Password from "antd/es/input/Password";
 import Work from "../../pages/Work";
 import WebScraping from "../../pages/WebScraping";
-
+import AdminRouter from "../LoadingAndRedirect/AdminRoute";
+import AdminRoute from "../LoadingAndRedirect/AdminRoute";
 
 
 const AppRoutes = () => {
@@ -27,7 +28,7 @@ const AppRoutes = () => {
   const dispatch = useDispatch();
 
   if (idToken) {
-    console.log("idToken : " + idToken);
+    // console.log("idToken : " + idToken);
     currentUser(idToken)
       .then((response) => {
         dispatch({
@@ -37,7 +38,8 @@ const AppRoutes = () => {
             username: response.data.username,
             role: response.data.role,
             id: response.data._id,
-          
+            picture: response.data.pictureUrl,
+
           },
         });
         console.log("response ", response);
@@ -46,20 +48,22 @@ const AppRoutes = () => {
   }
 
   return (
-  <IndexRouter>
-   
-    <Routes>
-      <Route path="/app" element={<DashBoard />} />
-      <Route path="/formcontrol" element={<FormCase />} />
-      <Route path="/listunresolve" element={<ListCaseUnResolve />} />
-      <Route path="/listcase" element={<ListCaseAll />} />
-      <Route path="/listuser" element={<ListUser />} />
-      <Route path="/reset-password" element={<ChangPassword />} />
-      <Route path="/work" element={<Work />} />
-      <Route path="/outstanding" element={<WebScraping />} />
-     
-    </Routes>
-  </IndexRouter>
+
+    <IndexRouter>
+      <AdminRoute>
+        <Routes>
+          <Route path="/app" element={<DashBoard />} />
+          <Route path="/formcontrol" element={<FormCase />} />
+          <Route path="/listunresolve" element={<ListCaseUnResolve />} />
+          <Route path="/listcase" element={<ListCaseAll />} />
+          <Route path="/listuser" element={<ListUser />} />
+          <Route path="/reset-password" element={<ChangPassword />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/outstanding" element={<WebScraping />} />
+
+        </Routes>
+      </AdminRoute>
+    </IndexRouter>
   );
 };
 

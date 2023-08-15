@@ -1,6 +1,7 @@
 const express = require('express');
 const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail } = require('../controllers/caseController');
 const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2 } = require('../controllers/detailCaseForm');
+
 const router = express.Router();
 
 
@@ -11,7 +12,7 @@ router.post('/createcase', requestUser)
 //เรียกดูเคสทั้งหมด
 
 
-router.get('/listcase', allCase)
+router.get('/listcase',allCase)
 
 
 

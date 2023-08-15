@@ -1,19 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import MyForm from "../components/NavbarFormcase/ProblemType";
-import { changeStatus, listCases, deleteCase, changeDetail } from "../api/case";
-import { Button, Card, Tag, message, Select, Modal, Input, Drawer } from "antd";
-import { CopyOutlined } from "@ant-design/icons";
-import { toast } from "react-toastify";
 import sweetAlert from "sweetalert2";
-import { Form, InputGroup } from "react-bootstrap";
-import { RxCross2 } from "react-icons/rx";
 import moment from "moment/min/moment-with-locales";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import swal from "sweetalert2";
-const { TextArea } = Input;
-import Button1 from "react-bootstrap/Button";
-
-import ReactQuill from "react-quill";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/material";
 import { notiAll } from "../common/utils/Notification";
@@ -21,6 +9,7 @@ import { useSelector } from "react-redux";
 import Pagination from "../views/paginate/Pagination";
 import SearchCase from "../views/allCaseAndPendingCase/SearchCase";
 import CasePending from "../views/allCaseAndPendingCase/CasePending";
+import { useStoreCase } from "../service/zustand/storeCase";
 
 // import Pagination from "react-paginate";
 
@@ -28,7 +17,14 @@ import CasePending from "../views/allCaseAndPendingCase/CasePending";
 
 const ListCaseUnResolve = () => {
 
+
   const { user } = useSelector((state) => ({ ...state }))
+
+  const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase } = useStoreCase()
+  const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
+
+
+  const responseDelete = useStoreCase((state) => state.resDeleteCase)
 
 
   //*state สำหรับการแก้ไข
@@ -36,7 +32,8 @@ const ListCaseUnResolve = () => {
     id: "",
     detail: "",
   });
-  const [data, setData] = useState([]);
+
+
   //* state สำหรับการค้นหาข้อมูล
   const [search, setSearch] = useState("");
   //* state สำหรับ Pagination
@@ -45,24 +42,15 @@ const ListCaseUnResolve = () => {
 
   useEffect(() => {
     loadData();
+
   }, [currentPage]);
 
   //function axios ดึงข้อมูล
-  const loadData = () => {
-    listCases(currentPage, ITEM_PER_PAGE)
-      .then((res) => {
-        console.log("ทดสอบ", res.data);
-
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const loadData = async () => {
+    await listCasePending(currentPage, ITEM_PER_PAGE);
   };
 
-
   const textRef = useRef([]);
-
   //function  handleCopy สำหรับการ copy โดยหลังผ่านไป 3 วิ จะให้ทำการปิด sweetAlert
   const handleCopy = (e) => {
     e.preventDefault();
@@ -84,25 +72,25 @@ const ListCaseUnResolve = () => {
 
   //func สำหรับการแก้ไข สถานะ โดยมีการกำหนดตัวแปร  statusCase เพื่อทำการนำไปลูป
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
-  const handleOnchange = (e, id) => {
-    let values = {
-      id: id,
-      status: e,
-      closeCaseBy: user.username
-    };
-    changeStatus(values)
-      .then((res) => {
-        notiAll();
-        console.log(res);
-        loadData();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
+  const handleOnchange = async (e, id) => {
+    try {
+      let values = {
+        id: id,
+        status: e,
+        closeCaseBy: user.username
+      };
+      await changeStatusCase(values)
+      notiAll();
+      loadData();
 
-    sweetAlert.fire("แจ้งเตือน", "ทำการเปลี่ยนแปลงสถานะสำเร็จ", "success");
-    // toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
+      // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
+
+      sweetAlert.fire("แจ้งเตือน", "ทำการเปลี่ยนแปลงสถานะสำเร็จ", "success");
+      // toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   //* modal
@@ -116,7 +104,7 @@ const ListCaseUnResolve = () => {
   const handleOk = () => {
     setIsModalOpen(false);
   };
-  
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -129,27 +117,22 @@ const ListCaseUnResolve = () => {
     setValues({ ...values, id: id });
   };
 
-  const handleOk2 = () => {
+  const handleOk2 = async () => {
     setIsModalOpen2(false);
 
     const id = values.id;
 
-    changeDetail(id, { values })
-      .then((res) => {
-        swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
-        loadData();
-        setValues({ detail: "" });
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await changeDetailCase(id, { values })
+
+    swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
+    loadData();
+    setValues({ detail: "" });
+
   };
   const handleCancel2 = () => {
     setIsModalOpen2(false);
   };
   // console.log(search);
-
 
   //func Pagination
   const handlePageClick = ({ selected }) => {
@@ -163,17 +146,18 @@ const ListCaseUnResolve = () => {
   };
 
   //func ปุ่มลบเคสโดยจะเริ่มทำจาก handleClick ก่อน หากมีการกด OK ก็จะแรกใช้ confirmDelete
-  const confirmDelete = (id) => {
-    deleteCase(id)
-      .then((res) => {
-        sweetAlert.fire("แจ้งเตือน", res.data.message, "success");
-        // console.log("การลบ", res);
-        loadData();
-        // loadUser(user.token);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const confirmDelete = async (id) => {
+
+    try {
+      const responseDelete = await DeleteCase(id);
+      //console.log(JSON.stringify(responseDelete)); // แสดงค่าในรูปแบบของ JSON
+      sweetAlert.fire("แจ้งเตือน", responseDelete, "success");
+      loadData();
+    } catch (error) {
+      console.log(error);
+    }
+
+
   };
 
   // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
@@ -203,8 +187,9 @@ const ListCaseUnResolve = () => {
 
 
   // ตัวแปรสำหรับหาจำนวนของเคสที่รอการแก้ไข
-  const pendingCases = data.filter((item) => item.status === "รอการแก้ไข");
+  const pendingCases = resCasePending.filter((item) => item.status === "รอการแก้ไข");
   const pendingCasesCount = pendingCases.length;
+
 
   // func สำหรับ copy สรุปเคส
   const handleCopy2 = (e) => {
@@ -249,7 +234,7 @@ const ListCaseUnResolve = () => {
   };
 
   let currentTime = moment().utcOffset("+07:00").format("LT");
-  let eveningTime = moment("8:30 PM", "h:mm A");
+  let eveningTime = moment("8:32 PM", "h:mm A");
 
   console.log(currentTime);
   return (
@@ -267,7 +252,7 @@ const ListCaseUnResolve = () => {
         />
 
         <CasePending
-          data={data}
+          data={resCasePending}
           search={search}
           currentPage={currentPage}
           ITEM_PER_PAGE={ITEM_PER_PAGE}
@@ -297,11 +282,13 @@ const ListCaseUnResolve = () => {
           setSelectedCase={setSelectedCase}
         />
 
-        <Pagination
-          currentPage={currentPage}
-          pageCount={Math.ceil(data.length / ITEM_PER_PAGE)}
-          handlePageClick={handlePageClick}
-        />
+        {resCasePending.length >= 0 ? "" :
+          <Pagination
+            currentPage={currentPage}
+            pageCount={Math.ceil(resCasePending.length / ITEM_PER_PAGE)}
+            handlePageClick={handlePageClick}
+          />}
+
       </Box>
     </div>
   );

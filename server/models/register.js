@@ -4,11 +4,10 @@ const userRegister = mongoose.Schema(
   {
     username: {
       type: String,
-      required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
+      // required: true, // ห้ามใส่ค่าว่าง ต้องกรอกข้อมูลเสมอ
     },
     password: {
       type: String,
-      required: true,
     },
     role: {
       type: String,
@@ -18,6 +17,10 @@ const userRegister = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    displayName: String,
+    picture: String,
+    ipAddress: String,
+    email: String,
   },
   { timestamps: true }
 ); //ทำการจัดเก็บข้อมูลช่วงเวลาในการสร้างหรือแก้ไข

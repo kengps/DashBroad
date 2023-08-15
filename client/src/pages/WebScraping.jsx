@@ -10,11 +10,18 @@ function DataCase() {
 
   const fetchData = useStore((state) => state.fetchData);
   const data = useStore((state) => state.cases);
+  const listUser = useStore((state) => state.listUser);
+  const userList = useStore((state) => state.userList);
 
   useEffect(() => {
     fetchData();
+    listUser();
   }, []);
 
+
+  console.log('====================================');
+  console.log(userList);
+  console.log('====================================');
   const newDataType = data.map((item) => { return item.data.type.types })
   // const newDataType2 = data.map(({ data: { type: { types } } }) => types);
 
@@ -89,11 +96,11 @@ function CampGame() {
   return (<>
     <h1>CampGame</h1>
     <Form.Select aria-label="Default select example">
-        <option>Open this select menu</option>
-        {NewCampGameDetail.map((item, index) => (
-          <option key={index}>{item}</option>
-        ))}
-      </Form.Select>
+      <option>Open this select menu</option>
+      {NewCampGameDetail.map((item, index) => (
+        <option key={index}>{item}</option>
+      ))}
+    </Form.Select>
   </>)
 }
 
@@ -104,14 +111,16 @@ function Platforms() {
 }
 
 
+
+
 const WebScraping = () => {
   return (
     <div style={{ paddingTop: "75px" }}>
       <h1>WebScrapinsg</h1>
-      <DataCase />
+      {/* <DataCase />
       <ListCase />
       <CampGame/>
-      <Platforms/>
+      <Platforms/> */}
     </div>
   );
 };

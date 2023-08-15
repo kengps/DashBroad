@@ -150,16 +150,16 @@ exports.createDetailCase2 = async (req, res) => {
     const nameDetail = req.body.data.detail.name;
     
     //ให้ตัวนำหน้าเป็นพิมพ์ใหญเท่านั้น
-    const typesFormat = types.charAt(0).toUpperCase() + types.slice(1).toLowerCase();
-    const nameTypeFormat = nameType.charAt(0).toUpperCase() + nameType.slice(1).toLowerCase();
-    const nameDetailFormat = nameDetail.charAt(0).toUpperCase() + nameDetail.slice(1).toLowerCase();
+    // const typesFormat = types.charAt(0).toUpperCase() + types.slice(1).toLowerCase();
+    // const nameTypeFormat = nameType.charAt(0).toUpperCase() + nameType.slice(1).toLowerCase();
+    // const nameDetailFormat = nameDetail.charAt(0).toUpperCase() + nameDetail.slice(1).toLowerCase();
 
    // ตรวจสอบความซ้ำกันของชื่อในฐานข้อมูล
 
     const existingData = await DataDetail.findOne({
-      'data.type.types': typesFormat,
-      'data.type.name': nameTypeFormat,
-      'data.detail.name': nameDetailFormat,
+      'data.type.types': types,
+      'data.type.name': nameType,
+      'data.detail.name': nameDetail,
     });
 
     if (existingData) {
@@ -171,11 +171,11 @@ exports.createDetailCase2 = async (req, res) => {
     const newData = new DataDetail({
       "data": {
         "type": {
-          "types": typesFormat,
-          "name": nameTypeFormat
+          "types": types,
+          "name": nameType
         },
         "detail": {
-          "name": nameDetailFormat
+          "name": nameDetail
         }
       }
     });

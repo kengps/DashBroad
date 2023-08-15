@@ -24,8 +24,11 @@ import DashBorad from "../pages/DashBoard";
 import IndexRouter from "../components/LoadingAndRedirect";
 import WebScraping from "../pages/WebScraping";
 import SettingProblem from "../components/SettingProblem";
+import LineLiff from "../components/LineLiff/LineLiff";
+import UserPage from "../pages/UserPage";
 //import DashBoard from "../pages/DashBoard";
 //IndexRouter คือ component ที่จะแสดงเมื่อไม่มีการ login
+
 
 const MainPage = () => {
   const routes = useRoutes([
@@ -62,6 +65,14 @@ const MainPage = () => {
     {
       path: "*",
       element: <Navigate to="/dashboard/app" />,
+    },
+    {
+      path: "/line",
+      element: <LineLiff />,
+    },
+    {
+      path: "/page-user",
+      element: <UserPage />,
     },
   ]);
 
