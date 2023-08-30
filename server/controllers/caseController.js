@@ -234,7 +234,7 @@ const saveNewCase = async (caseData) => {
 exports.requestUser = async (req, res) => {
 
 
-  const { reporter, problemDetail, problem, detail, campgame, wallet, recorder } = req.body;
+  const { reporter, problemDetail, problem, detail, campgame, wallet, recorder ,editors} = req.body;
 
   try {
     const newCase = await saveNewCase({
@@ -245,6 +245,7 @@ exports.requestUser = async (req, res) => {
       campgame,
       wallet,
       recorder,
+      editors
     });
 
     res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });

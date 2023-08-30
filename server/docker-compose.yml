@@ -11,10 +11,15 @@ services:
       - PORT=3000
     volumes:
       - mongo-db:/data/db
+    depends_on:
+      - mongo
   mongo:
     image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=keng
       - MONGO_INITDB_ROOT_PASSWORD=mypassword
+  redis:
+    image: redis
+
 volumes:
   mongo-db:

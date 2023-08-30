@@ -49,7 +49,7 @@ export const useStore = create((set) => ({
           },
         }
       );
-      console.log('================id====================', id);
+
 
       set({ dataResetpassword: response });
     } catch (error) {
@@ -203,9 +203,6 @@ export const useStoreCaseAll = create((set) => ({
 
 
 
-
-
-
 export const useStoreSetting = create((set) => ({
   resDetail: [],
   createDetails: async (value) => {
@@ -217,9 +214,69 @@ export const useStoreSetting = create((set) => ({
     } catch (error) {
       alert(error);
     }
+  },
+  resEditor: [],
+  getEditors: async (value) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/get-editor`,
+        value)
+      set({ resEditor: response.data })
+      return response.data
+    } catch (error) {
+      alert(error);
+    }
+  },
+  resChangeEditor: [],
+  changeEditor: async (id, value) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_REACT_APP_API}/change-editor/${id}`,
+        value
+      );
+      set({ resChangeEditor: response.data })
+    } catch (error) {
+      alert(error);
+    }
+  },
+  resDeleteEditor: [],
+  deleteEditor: async (id) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API}/delete-editor/${id}`
+      );
+      set({ resDeleteEditor: response.data })
+      return response.data
+    } catch (error) {
+      alert(error);
+    }
+  },
+  resCreateEditor: [],
+  createEditor: async (value) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}/create-editor`,value
+      );
+      set({ resDeleteEditor: response.data })
+      return response.data
+    } catch (error) {
+      alert(error);
+    }
+  }
+}))
+
+//* StoreRegister
+export const useStoreRegister = create((set) => ({
+  resRegister: [],
+  register: async (value) => {
+    console.log("🚀 ~ file: storeCase.js:224 ~ register: ~ value:", value)
+    const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/register`, value)
+    set({ resRegister: response.data })
+    console.log("🚀 ~ file: storeCase.js:227 ~ register: ~ response:", response)
+    return response.data
   }
 
 }))
+
 
 // let store = (set) => ({
 

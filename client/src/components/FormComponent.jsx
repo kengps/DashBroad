@@ -1,30 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { Form, InputGroup, FormGroup, FormLabel } from "react-bootstrap";
 // import { sendCase } from "../api/case";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import axios from "axios";
-import { toast } from "react-toastify";
-import SweetAlert from "sweetalert2";
-import AgentName from "./NavbarFormcase/AgentName";
-import CampGameAndEditor from "./NavbarFormcase/CampGameAndEditor";
-import Details from "./NavbarFormcase/Details";
-import ProblemType from "./NavbarFormcase/ProblemType";
-import { Input, Select, Typography } from "antd";
-const { TextArea } = Input;
-import { useNavigate } from "react-router-dom";
-import Select1 from "@mui/material/Select";
-import moment from "moment/min/moment-with-locales";
 import { Box } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { Input, Row, Col } from "antd";
+import moment from "moment/min/moment-with-locales";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import SweetAlert from "sweetalert2";
+const { TextArea } = Input;
 
-import { useStore } from "../service/zustand/storeCase";
-import ReporterInput from "../views/formcase/ReporterInput";
-import ProblemInput from "../views/formcase/ProblemInput";
+import { useStore, useStoreSetting } from "../service/zustand/storeCase";
 import DetailInput from "../views/formcase/DetailInput";
-import WalletInput from "../views/formcase/WalletInput";
 import GameInput from "../views/formcase/GameInput";
+import ProblemInput from "../views/formcase/ProblemInput";
+import ReporterInput from "../views/formcase/ReporterInput";
+import WalletInput from "../views/formcase/WalletInput";
 
 const navDropdownItemStyle = {
   display: "flex",
@@ -34,10 +25,18 @@ const navDropdownItemStyle = {
 
 const FormComponent = () => {
 
+  const { getEditors } = useStoreSetting()
 
+  const dataEditor = useStoreSetting((state) => state.resEditor.resultData);
+
+  const nameEditor = dataEditor ? dataEditor.filter((item) => item.select === true) : []
+  const editorSelect = nameEditor.map((item) => { return item.username })
+
+  const editorSelect2 = editorSelect.length > 0 ? nameEditor[0].username : '';
 
   useEffect(() => {
     fetchData();
+    getEditors();
 
   }, []);
 
@@ -71,6 +70,7 @@ const FormComponent = () => {
     detail: "",
     campgame: "",
     wallet: "",
+    editors: editorSelect2,
     recorder: getUser,
   });
 
@@ -82,6 +82,7 @@ const FormComponent = () => {
     campgame,
     wallet,
     recorder,
+    // editors
   } = values;
 
   const timestamps = moment().format("LLL"); // June 26, 2023 4:36 PM
@@ -94,6 +95,7 @@ const FormComponent = () => {
     wallet,
     recorder,
     timestamps,
+    // editors
   };
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
@@ -176,24 +178,35 @@ const FormComponent = () => {
             newProbType={newProbType}
           />
 
-
           <WalletInput navDropdownItemStyle={navDropdownItemStyle}
             inputValue={inputValue}
             wallet={wallet}
             typeProb={typeProb}
             data={data}
           />
+          {/* <Input
 
-          <div></div>
+            defaultValue={editorSelect}
+            value={editorSelect}
+            //onChange={inputValue("editors")}
+            name="editors"
+            
+          /> */}
           <hr />
-          <Button
-            type="submit"
-            className="btn btn-primary"
-            value="Submit"
-            style={{ marginLeft: 320 }}
-          >
-            บันทึก
-          </Button>
+          <Row justify={"end"}>
+            <Col>
+              <Button
+                type="submit"
+                className="btn btn-primary"
+                value="Submit"
+                style={{ marginLeft: 320 }}
+              >
+                บันทึก
+              </Button>
+
+            </Col>
+          </Row>
+
         </Form>
       </Box>
 

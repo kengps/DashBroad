@@ -2,30 +2,71 @@ import liff from '@line/liff'
 import React, { useEffect, useState } from 'react'
 import { loginLine } from '../../api/auth'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 
+
+
+import * as loadingData from '../../assets/Json/loadings.json'
+import * as successData from '../../assets/Json/success.json'
+import * as airData from '../../assets/Json/airport.json'
 //antd
 import { Space, Spin } from 'antd';
 
+
+
+import FadeIn from "react-fade-in";
+import Lottie from "react-lottie";
+import Lottie2 from "react-lottie";
+import WaitLoading from '../LoadingAndRedirect/WaitLoading'
+
+
+
+
+
+
+
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingData.default,
+    rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+    }
+};
+
+const defaultOptions2 = {
+    loop: true,
+    autoplay: true,
+    animationData: successData.default,
+    rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+    }
+};
+
 const LineLiff = () => {
     //redux
+
     const dispatch = useDispatch();
     const redirect = useNavigate();
 
-    //state
-    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         loadData()
     }, [])
 
-
     const loadData = async () => {
 
         try {
             await liff.init({ liffId: `${import.meta.env.VITE_LIFF_ID}` })
+
             if (liff.isLoggedIn) {
                 await getData()
+                setLoading(true);
+                setTimeout(() => {
+                    setSuccess(true);
+                }, 1000);
+
             }
         } catch (error) {
             console.log(error);
@@ -35,8 +76,16 @@ const LineLiff = () => {
     }
     //todo: การตรวจสอบ Role
     const levelRole = (role) => {
-        if (role === "admin" || role === "dev" || role === "user") {
+        if (role === "admin" || role === "dev") {
+
             redirect("/dashboard");
+
+        } else if (role === "user") {
+
+            redirect("/page-user");
+            setTimeout(() => {
+                localStorage.clear()
+            }, 2000);
         } else {
             redirect("/login");
         }
@@ -44,9 +93,8 @@ const LineLiff = () => {
     const getData = async () => {
         try {
             const getProfile = await liff.getProfile();
-            console.log('picture', getProfile);
-            await loginLine(getProfile).then((res) => {
 
+            await loginLine(getProfile).then((res) => {
                 dispatch({
                     type: "LOGIN",
                     payload: {
@@ -54,6 +102,7 @@ const LineLiff = () => {
                         username: res.data.payLoad.user.username,
                         role: res.data.payLoad.user.role,
                         id: res.data.payLoad.user.id,
+                        picture: res.data.payLoad.user.picture,
                     },
                 });
                 //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
@@ -76,22 +125,14 @@ const LineLiff = () => {
 
     }
 
-    return loading ?
-        <Space
-            direction="vertical"
-            style={{
-                width: '100%',
-                height: '100vh',  // ให้ Space มีความสูงเท่ากับ viewport height
-                justifyContent: 'center', // จัดการแนวนอนตรงกลาง
-                alignItems: 'center', // จัดการแนวตั้งตรงกลาง
-            }}
-        >
-            <Space>
-
-                <Spin tip="Loading" size="large" />
-            </Space>
-        </Space>
-        : null
+    return <div className="App" style={{
+        width: '100%',
+        height: '100vh',  // ให้ Space มีความสูงเท่ากับ viewport height
+        justifyContent: 'center', // จัดการแนวนอนตรงกลาง
+        alignItems: 'center', // จัดการแนวตั้งตรงกลาง
+    }}>
+        <WaitLoading />
+    </div>
 }
 
 export default LineLiff

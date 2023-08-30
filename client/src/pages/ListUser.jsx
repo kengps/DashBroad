@@ -1,45 +1,13 @@
-import {
-  Typography,
-  Space,
-  Tag,
-  Button,
-  Modal,
-  Switch,
-  Card,
-  Select,
-} from "antd";
-import {
-  CheckOutlined,
-  CloseOutlined,
-  UserAddOutlined,
-  CloseCircleOutlined,
-  SettingOutlined,
-  CheckCircleOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
-import Tooltip from "@mui/material/Tooltip";
-import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { changStatus, changRole, deleteUser } from "../api/user";
-import moment from "moment/min/moment-with-locales";
-import { Helmet } from "react-helmet-async";
+import React, { useEffect } from "react";
 
-import Table from "react-bootstrap/Table";
-import Button1 from "react-bootstrap/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import sweetAlert from "sweetalert2";
 
 import { toast } from "react-toastify";
-import SettingProblem from "../components/SettingProblem";
-import Offcanvas from "react-bootstrap/Offcanvas";
 
-import { AccordionUI } from "../components/Menu/Index";
-import TableUser from "../views/users/TableUser";
-import Register from "../components/Register/Register";
 import { useStore } from "../service/zustand/storeCase";
+import TableUser from "../views/users/TableUser";
 
 
 
@@ -141,7 +109,6 @@ const ListUser = () => {
 
 
       toast.success(notify);
-
 
       loadData(user.token);
     } catch (error) {

@@ -18,7 +18,7 @@ const AdminRoute = ({ element }) => {
     }
 
 
-    if (user.role !== "admin") {
+    if (user.role !== "admin" || user.role !== "dev") {
         // หากไม่ใช่ admin ให้เปลี่ยนเส้นทางไปยังหน้าอื่น (เช่นหน้า Dashboard)
         handleLogin();
         return <Navigate to="/page-user" />;

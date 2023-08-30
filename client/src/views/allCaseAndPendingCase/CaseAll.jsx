@@ -5,34 +5,40 @@ import { CopyOutlined } from "@ant-design/icons";
 import moment from "moment/min/moment-with-locales";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/material";
+import DatePickerCase from "../DatePicker/DatePicker";
 
 const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
 
 
     const textRef = useRef([]);
     return (
-        <div className="mt-5">
+        <div className="mt">
+
+            {/* <DatePickerCase /> */}
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Helmet>
                     <title> Dashboard | CaseAll </title>
                 </Helmet>
                 <table className="table table-striped ">
-                    <thead className="">
+                    <thead className="" style={{ fontSize: '18px',fontWeight:'bolder' }}>
                         <tr className="table-secondary ">
-                            <th scope="col">CodeCase</th>
+                            <th scope="col">ID</th>
                             <th scope="col">ผู้แจ้งปัญหา</th>
                             <th scope="col">ประเภทปัญหา</th>
                             <th scope="col">รายละเอียด</th>
                             <th scope="col">ค่ายเกม</th>
-                            <th scope="col">ผู้ลงเคส</th>
+                            <th scope="col">ผู้บันทึก</th>
                             <th scope="col">ผู้แก้ไข</th>
-                            <th scope="col">เวลาสร้างเคส</th>
+                            <th scope="col">เวลาบันทึกเคส</th>
                             <th scope="col">สถานะ</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
+                    
                     <tbody>
                         {data
-                            .reverse((a, b) => b.id - a.id)
+                          .sort((a, b) => (a.status === "รอการแก้ไข" && b.select !==  "รอการแก้ไข" ? -1 : 1))
+                           .sort((a, b) => b.id - a.id)
                             .slice(
                                 currentPage * ITEM_PER_PAGE,
                                 (currentPage + 1) * ITEM_PER_PAGE
@@ -52,7 +58,7 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                                         {moment(data.createdAt).locale("th").format("lll")} น.
                                     </td>
 
-                                    <td>{data.status}</td>
+                                    <td>{data.status === 'แก้ไขสำเร็จ' ? <b style={{ color: 'green' }}>{data.status}</b> : <b style={{ color: 'red' }}>{data.status}</b>}</td>
                                     <td>
                                         <Card
                                             ref={textRef}

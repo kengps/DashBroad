@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import Pagination from "../views/paginate/Pagination";
 import SearchCase from "../views/allCaseAndPendingCase/SearchCase";
 import CasePending from "../views/allCaseAndPendingCase/CasePending";
-import { useStoreCase } from "../service/zustand/storeCase";
+import { useStoreCase, useStoreSetting } from "../service/zustand/storeCase";
 
 // import Pagination from "react-paginate";
 
@@ -23,6 +23,20 @@ const ListCaseUnResolve = () => {
   const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase } = useStoreCase()
   const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
 
+  const { getEditors } = useStoreSetting()
+
+  const data = useStoreSetting((state) => state.resEditor.resultData);
+
+  //console.log("🚀 ~ file: ListCaseUnResolve.jsx:29 ~ ListCaseUnResolve ~ data:", data)
+  // if (!data) {
+  //   // Data is not available yet, you can show a loading indicator or return null
+  //   return null;
+  // }
+  //const editorSelect = data.filter((item) => { return item.select === true })
+  // console.log("🚀 ~ file: ListCaseUnResolve.jsx:36 ~ ListCaseUnResolve ~ editorSelect:", editorSelect)
+
+  // const editorName = editorSelect.map((item) => {return item.username})
+  // console.log("🚀 ~ file: ListCaseUnResolve.jsx:35 ~ ListCaseUnResolve ~ editorName:", editorName)
 
   const responseDelete = useStoreCase((state) => state.resDeleteCase)
 
@@ -42,6 +56,8 @@ const ListCaseUnResolve = () => {
 
   useEffect(() => {
     loadData();
+
+    getEditors()
 
   }, [currentPage]);
 
@@ -180,6 +196,8 @@ const ListCaseUnResolve = () => {
     }
   };
 
+  
+
   // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -280,6 +298,8 @@ const ListCaseUnResolve = () => {
           onClose={onClose}
           open={open}
           setSelectedCase={setSelectedCase}
+          editor={data}
+         
         />
 
         {resCasePending.length >= 0 ? "" :

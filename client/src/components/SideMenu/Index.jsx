@@ -1,73 +1,52 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import MuiDrawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import GridOnIcon from "@mui/icons-material/GridOn";
+import GroupsIcon from "@mui/icons-material/Groups";
+import MenuIcon from "@mui/icons-material/Menu";
+import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
+import MuiAppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import MuiDrawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { Link, useNavigate } from "react-router-dom";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import GridOnIcon from "@mui/icons-material/GridOn";
-import GroupsIcon from "@mui/icons-material/Groups";
-import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
-import PendingActionsOutlinedIcon from "@mui/icons-material/PendingActionsOutlined";
-import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
-import DynamicFormIcon from "@mui/icons-material/DynamicForm";
-import Avatar from "@mui/material/Avatar";
+import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { deepOrange, deepPurple } from "@mui/material/colors";
+import Typography from "@mui/material/Typography";
+import { deepOrange } from "@mui/material/colors";
+import { styled, useTheme } from "@mui/material/styles";
+import * as React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { BiUser, AiOutlineSetting, RiLockPasswordLine } from "react-icons/all";
-import { NavDropdown, InputGroup } from "react-bootstrap";
+import { InputGroup, NavDropdown } from "react-bootstrap";
+import { RiLockPasswordLine } from "react-icons/all";
 
+import {
+  LogoutOutlined
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert2";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {
-  BugOutlined,
-  SyncOutlined,
-  HomeOutlined,
-  DashboardOutlined,
-  FormOutlined,
-  UnorderedListOutlined,
-  LoadingOutlined,
-  UserOutlined,
-  EditOutlined,
-  TeamOutlined,
-  TableOutlined,
-  AreaChartOutlined,
-  BellFilled,
-  MailOutlined,
-  LogoutOutlined,
-  LoginOutlined,
-  EyeTwoTone,
-} from "@ant-design/icons";
 
-import AppHeader from "../AppHeader/Index";
-import { useState, useEffect } from "react";
-import { Badge, Modal, Input, Space } from "antd";
+import { Badge, Input, Modal } from "antd";
+import { useEffect, useState } from "react";
 import { listCases } from "../../api/case";
-import { resetPassword } from "../../api/user";
-import md5 from "md5";
 import { notiDetail, notiMD5 } from "../../common/utils/Notification";
 import { useStore } from "../../service/zustand/storeCase";
 
+
+import '../../CSS/Responsive.css';
+import SettingBar from "../../views/settingMunuBar/settingBar";
 const drawerWidth = 240;
+
 
 const openedMixin = (theme) => ({
   backgroundColor: "#F2F4F4",
@@ -192,15 +171,29 @@ export default function MiniDrawer() {
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
 
 
+  //settingBar
+  const [open2, setOpen2] = React.useState(false);
+  const handleClick = (e) => {
+    setOpen2(!open2);
+
+    if (!open) {
+      setOpen(true)
+      setOpen2(true);
+    }
+  };
 
 
 
   const handleDrawerOpen = () => {
     setOpen(true);
+
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+
+    setOpen2(false);
+
   };
 
   const handleOpenUserMenu = (event) => {
@@ -313,7 +306,8 @@ export default function MiniDrawer() {
             </IconButton>
           </Box>
           <Typography
-            variant="h4"
+            className="Typography1"
+            // variant="h4"
             style={{
               position: "absolute",
               left: "50%",
@@ -466,6 +460,7 @@ export default function MiniDrawer() {
               key: "/dashboard/outstanding",
               icon: <GridOnIcon />,
             },
+
             {
               label: "สมาชิกทั้งหมด",
               key: "/dashboard/listuser",
@@ -497,6 +492,8 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
         </List>
+        <Divider />
+        <SettingBar handleClick={handleClick} open2={open2}/>
       </Drawer>
 
       <Modal

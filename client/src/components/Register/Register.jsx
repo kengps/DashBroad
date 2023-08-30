@@ -12,8 +12,11 @@ import axios from "axios";
 import { Typography } from "antd";
 import UsernameInput from "../../views/register/UsernameInput";
 import PasswordInput from "../../views/register/PasswordInput";
+import { useStoreRegister } from "../../service/zustand/storeCase";
 
 const Register = () => {
+  //useStore
+  const { resRegister, register } = useStoreRegister();
 
   const [state, setState] = useState({
     username: "",
@@ -45,7 +48,6 @@ const Register = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
-
     const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
 
     if (!regex.test(password)) {
@@ -58,17 +60,11 @@ const Register = () => {
       setConfirmPasswordNotMatch("รหัสผ่านไม่ตรงกัน");
     } else {
       try {
-        await axios.post(
-          `${import.meta.env.VITE_REACT_APP_API}/register`,
-          {
-            username,
-            password,
-            confirmpass,
-          }
-        );
+        await register(state)
         SweetAlert.fire("แจ้งเตือน", "สมัครสมาชิกสำเร็จ", "success");
         setState({ ...state, username: "", password: "", confirmpass: "" });
         setConfirmPasswordNotMatch("");
+
 
       } catch (err) {
         SweetAlert.fire("แจ้งเตือน", "มี username ในระบบแล้ว", 'warning');
@@ -100,7 +96,7 @@ const Register = () => {
               </div>
             )}
           </div>
-          
+
           {confirmPasswordNotMatch && (
             <div
               className="error mt-1"

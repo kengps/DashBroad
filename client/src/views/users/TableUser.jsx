@@ -39,6 +39,13 @@ import { AccordionUI } from "../../components/Menu/Index";
 
 import { green } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
+import '../../CSS/Responsive.css'
+
+
+import { RxSwitch } from 'react-icons/rx';
+import { VscUnlock, VscLock,RiDeleteBin7Line } from 'react-icons/all';
+
+
 const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) => {
 
     const { user } = useSelector((state) => state);
@@ -80,12 +87,12 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
         setDisabled(!disabled);
     };
 
-    const labelBtn = disabled ? "เปิด" : "ปิด";
+    const labelBtn = disabled ? <VscLock /> : <VscUnlock />;
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
     return (
-        <div style={{ marginTop: "75px" }}>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <div style={{ marginTop: "75px" }} className="User">
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
                 <Helmet>
                     <title> Dashboard | User </title>
                 </Helmet>
@@ -115,8 +122,8 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                 {/* //todo จะทำการตรวจสอบว่าหากเป็น Dev จะสามารถแก้ไขการจัดการได้ */}
                 {role === "dev" && (
                     <Table striped bordered hover responsive="sm">
-                        <thead>
-                            <tr style={{ textAlign: "center" }}>
+                        <thead className="" style={{ fontSize: '16px', fontWeight: 'bolder', textAlign: 'center' }}>
+                            <tr className="table-secondary ">
                                 <th scope="col">ลำดับ</th>
                                 <th scope="col">ชื่อ</th>
                                 <th scope="col">ระดับ</th>
@@ -125,6 +132,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                     วันที่สร้าง
                                 </th>
                                 <th scope="col">เข้าใช้งานล่าสุด</th>
+                                <th scope="col">เปิด/ปิด</th>
                                 <th scope="col">การจัดการ</th>
                             </tr>
                         </thead>
@@ -170,6 +178,20 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                             .fromNow()}
                                     </td>
                                     <td>
+                                        <Checkbox
+                                            onChange={(e) => handleOnchange(e, item._id)}
+                                            checked={item.enabled}
+
+                                            disabled={disabled}
+                                            sx={{
+                                                color: green[800],
+                                                '&.Mui-checked': {
+                                                    color: green[600],
+                                                },
+                                            }}
+                                        />
+                                    </td>
+                                    <td>
                                         <Space>
                                             {/* <Button type="primary" onClick={showModal}>
                         ตั้งค้า
@@ -184,10 +206,10 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                                 defaultChecked
                                             /> */}
 
-                                            <Checkbox
+                                            {/* <Checkbox
                                                 onChange={(e) => handleOnchange(e, item._id)}
                                                 checked={item.enabled}
-                                                
+
                                                 disabled={disabled}
                                                 sx={{
                                                     color: green[800],
@@ -195,7 +217,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                                         color: green[600],
                                                     },
                                                 }}
-                                            />
+                                            /> */}
 
 
                                             <Button type="primary" onClick={toggle}>
@@ -207,7 +229,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                                 className="me-1 mt-1"
                                                 onClick={() => handleClick(item._id)}
                                             >
-                                                ลบ
+                                              <RiDeleteBin7Line/>
                                             </Button>
 
                                             <Button1

@@ -96,41 +96,7 @@ const AppHeader = () => {
       <Image src="" alt="" />
       <Typography.Title level={2}>DashBoard Support Case</Typography.Title>
       <Space>
-        {/* <Badge count={10}>
-          <MailOutlined style={{ fontSize: 24 }} />
-        </Badge>
-        <Badge count={10}>
-          <BellFilled style={{ fontSize: 24 }} />
-        </Badge> */}
-        {/* <Button 
-        
-          style={{marginLeft: '10px'}}>Logout</Button> */}
-        {/* {user && (
-          <Menu mode="horizontal">
-            <Menu.Item
-              key={"app"}
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}
-              style={{ float: "right" }}
-              title={user.username}
-            >
-              {user.username}
-            </Menu.Item>
-          </Menu>
-        )} */}
 
-        {/* {!user && (
-          <Menu mode="horizontal">
-            <Menu.Item
-              onClick={handleLogin}
-              key={"app"}
-              icon={<LoginOutlined />}
-              style={{ float: "right" }}
-            >
-              LOGIN
-            </Menu.Item>
-          </Menu>
-        )} */}
         {user && (
           <NavDropdown
             title={

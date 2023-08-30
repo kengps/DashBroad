@@ -15,7 +15,7 @@ import PasswordInput from "../../views/login/PasswordInput";
 import { GoogleOutlined } from "@ant-design/icons"
 import { Button, Space } from 'antd';
 
-import { SiLine,SiFacebook } from 'react-icons/all'
+import { SiLine, SiFacebook } from 'react-icons/all'
 //facebook
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 //import FacebookLogin from 'react-facebook-login';
@@ -50,7 +50,7 @@ const Login = () => {
   //facebook 
 
   const responseFacebook = async (response) => {
-    console.log('res',response);
+    console.log('res', response);
 
     await loginFacebook(response).then((res) => {
       console.log(res);
@@ -124,12 +124,16 @@ const Login = () => {
 
   //todo: การตรวจสอบ Role
   const levelRole = (role) => {
-    if (role === "admin" || role === "dev" ) {
+    if (role === "admin" || role === "dev") {
       redirect("/dashboard");
-    }else if( role === "user"){
+    } else if (role === "user") {
+      dispatch({
+        type: "LOGOUT",
+        payload: null,
+      });
       redirect('/page-user')
     }
-     else {
+    else {
       redirect("/login");
     }
   };
@@ -165,7 +169,7 @@ const Login = () => {
               username: res.data.payLoad.user.username,
               role: res.data.payLoad.user.role,
               id: res.data.payLoad.user.id,
-              // picture: res.data.payLoad.user.picture,
+              picture: res.data.payLoad.user.pictureUrl,
             },
           });
           //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
@@ -225,8 +229,8 @@ const Login = () => {
       </Form>
       <>
         <LoadingButton
-        startIcon={<SiLine/>}
-        fullWidth size="large" type="submit" variant="contained" style={{ backgroundColor: "#43a047" }} onClick={handleLoginLineLiff}>
+          startIcon={<SiLine />}
+          fullWidth size="large" type="submit" variant="contained" style={{ backgroundColor: "#43a047" }} onClick={handleLoginLineLiff}>
           Login with line
         </LoadingButton>
       </>
@@ -234,7 +238,7 @@ const Login = () => {
         {/* <LoadingButton fullWidth size="large" type="submit" variant="contained" style={{ backgroundColor: "#6495ED", marginTop: '2px' }} onClick={handleLoginFacebook}>
           Login with facebook
         </LoadingButton> */}
-{/* 
+        {/* 
         <FacebookLogin
           appId={`${import.meta.env.VITE_FACEBOOK_ID}`}
           autoLoad={false}

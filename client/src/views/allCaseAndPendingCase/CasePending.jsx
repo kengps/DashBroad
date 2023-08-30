@@ -8,6 +8,7 @@ import { InputGroup } from "react-bootstrap";
 import moment from "moment/min/moment-with-locales";
 
 
+
 const { TextArea } = Input;
 
 const CasePending = ({ data,
@@ -36,9 +37,12 @@ const CasePending = ({ data,
   handleCopy2,
   showDrawer,
   onClose,
+  
   open, setSearch, setSelectedCase }) => {
 
   return (
+
+
     <div >
 
       <table className="table table-striped ">
@@ -143,6 +147,7 @@ const CasePending = ({ data,
                   >
                     ลบ
                   </Button>
+
                   <Modal
                     title="Copy Case"
                     open={isModalOpen}
@@ -188,7 +193,7 @@ const CasePending = ({ data,
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้แก้ไข: </strong>
-                            {selectedCase.editors} "
+                            {nameEditor} "
                           </p>
                         </div>
                         <Button

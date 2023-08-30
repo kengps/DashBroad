@@ -12,9 +12,10 @@ import { styled } from "@mui/material/styles";
 import useResponsive from "../hooks/UseResponsive";
 
 import image404 from '../../img/404.jpg'
+
 import image4044 from '../../dist/404.jpg'
 
-
+import img401 from '../../dist/401.png'
 
 
 
@@ -122,7 +123,7 @@ const UserPage = () => {
               </StyledMarquee>
          
             {/* <img src={logo1} alt="login" /> */}
-            <img src={`${image4044}`} alt="login" />
+            <img src={`${img401}`} alt="login" />
           </StyledSection>
         )}
         {/* <Container maxWidth="sm">

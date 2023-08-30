@@ -1,25 +1,24 @@
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //Component
 import DashBoard from "../../pages/DashBoard";
 import FormCase from "../../pages/FormCase";
-import ListCaseUnResolve from "../../pages/ListCaseUnResolve";
 import ListCaseAll from "../../pages/ListCaseAll";
+import ListCaseUnResolve from "../../pages/ListCaseUnResolve";
 import ListUser from "../../pages/ListUser";
 //import Register from "../pages/Register/Register";
-import ChangPassword from "../../pages/ChangPassword";
-import { currentUser } from "../../api/auth";
 import { useDispatch } from "react-redux";
-import IndexRouter from "../LoadingAndRedirect";
-import Password from "antd/es/input/Password";
-import Work from "../../pages/Work";
+import { currentUser } from "../../api/auth";
+import ChangPassword from "../../pages/ChangPassword";
 import WebScraping from "../../pages/WebScraping";
-import AdminRouter from "../LoadingAndRedirect/AdminRoute";
-import AdminRoute from "../LoadingAndRedirect/AdminRoute";
+import Work from "../../pages/Work";
+import IndexRouter from "../LoadingAndRedirect";
+import SettingEditor from "../../pages/SettingEditor";
+import SettingProblemType from "../../pages/SettingProblemType";
+
 
 
 const AppRoutes = () => {
@@ -50,19 +49,20 @@ const AppRoutes = () => {
   return (
 
     <IndexRouter>
-      <AdminRoute>
-        <Routes>
-          <Route path="/app" element={<DashBoard />} />
-          <Route path="/formcontrol" element={<FormCase />} />
-          <Route path="/listunresolve" element={<ListCaseUnResolve />} />
-          <Route path="/listcase" element={<ListCaseAll />} />
-          <Route path="/listuser" element={<ListUser />} />
-          <Route path="/reset-password" element={<ChangPassword />} />
-          <Route path="/work" element={<Work />} />
-          <Route path="/outstanding" element={<WebScraping />} />
+      <Routes>
+        <Route path="/app" element={<DashBoard />} />
+        <Route path="/formcontrol" element={<FormCase />} />
+        <Route path="/listunresolve" element={<ListCaseUnResolve />} />
+        <Route path="/listcase" element={<ListCaseAll />} />
+        <Route path="/listuser" element={<ListUser />} />
+        <Route path="/reset-password" element={<ChangPassword />} />
+        <Route path="/work" element={<Work />} />
+        <Route path="/outstanding" element={<WebScraping />} />
+        <Route path="/list-editor" element={<SettingEditor />} />
+        <Route path="/create-type" element={<SettingProblemType />} />
 
-        </Routes>
-      </AdminRoute>
+      </Routes>
+
     </IndexRouter>
   );
 };

@@ -32,7 +32,6 @@ const schemaCase = mongoose.Schema(
     editors: {
       type: String,
       default: "@pr0jectsp",
-      required: true, 
     },
     recorder: {
       type: String,

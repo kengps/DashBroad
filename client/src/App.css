@@ -182,3 +182,23 @@
     font-size: 2rem;
   }
 }
+@media only screen and (max-width: 360px) {
+  .User  {
+    font-size: 1px;
+    margin: 2px
+  }
+ .AppHeader .MuiTypography-root {
+  font-size: 1px;
+ }
+
+}
+.custom-table-header {
+  background-color: #000; // กำหนดสีหัวข้อตารางที่คุณต้องการ
+}
+
+.table-row-light {
+  background-color: #ffffff;
+}
+.table-row-dark {
+  background-color:rgb(222, 226, 230);
+}
