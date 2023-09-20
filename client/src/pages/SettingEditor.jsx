@@ -1,20 +1,46 @@
-import { Box } from '@mui/material';
-import { Button, Checkbox, Modal, Table, Input, Row, Col } from 'antd'; // นำเข้าคอมโพเนนต์ Table จาก antd
+import { Box, Container, Grid, Paper, styled } from '@mui/material';
+import { Button, Checkbox, Col, Modal, Row, Table } from 'antd'; // นำเข้าคอมโพเนนต์ Table จาก antd
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import sweetAlert from "sweetalert2";
-import { useStore, useStoreSetting } from '../service/zustand/storeCase';
+import { useStoreSetting } from '../service/zustand/storeCase';
 
 
-import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
+import { AccordionUI } from '../components/Menu/Index';
+import SettingProblem from '../components/SettingProblem';
 import InputCreateEditor from '../views/settingMunuBar/InputCreateEditor';
-import DeleteButton from '../views/Button/DeleteButton';
+import SettingProblemType from './SettingProblemType';
 
 
+
+
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 const SettingEditor = () => {
 
+
+  const [textEmpty, setTextEmpty] = useState(false)
+
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const showModal1 = () => {
+    setIsModalOpen1(true);
+  };
+  const handleOk1 = () => {
+    setIsModalOpen1(false);
+  };
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
+  };
 
   // func สำหรับการแก้ไชรายละเอียด
 
@@ -60,6 +86,11 @@ const SettingEditor = () => {
 
     try {
 
+      if (values.username === '') {
+        setTextEmpty(true);
+        return;
+      }
+
       const result = await sweetAlert.fire({
         title: `คุณต้องการเพิ่มผู้แก้ไขชื่อ <i><b>${values.username}</b></i> หรือไม่`,
         icon: "warning",
@@ -84,6 +115,7 @@ const SettingEditor = () => {
 
   };
   const handleCancel = () => {
+
     setIsModalOpen(false);
     setValues('')
   };
@@ -129,16 +161,16 @@ const SettingEditor = () => {
       dataIndex: 'username',
       key: 'username',
     },
-    {
-      title: 'createdAt',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-    },
-    {
-      title: 'updatedAt',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-    },
+    // {
+    //   title: 'createdAt',
+    //   dataIndex: 'createdAt',
+    //   key: 'createdAt',
+    // },
+    // {
+    //   title: 'updatedAt',
+    //   dataIndex: 'updatedAt',
+    //   key: 'updatedAt',
+    // },
     {
       title: 'เปิด/ปิด',
       dataIndex: 'checkbox',
@@ -205,7 +237,7 @@ const SettingEditor = () => {
     }
     try {
       const result = await sweetAlert.fire({
-        title: "คุณต้องการลบผู้ใช้งานหรือไม่",
+        title: "คุณต้องการเปลี่ยนผู้แก้ไขหรือไม่",
         icon: "warning",
         showCancelButton: true,
       });
@@ -218,8 +250,8 @@ const SettingEditor = () => {
 
         const notify =
           resChangeEditor.select === true
-            ? "ทำการเปิดการใช้งานสำเร็จ"
-            : "ทำการปิดการใช้งานสำเร็จ";
+            ? "ทำการเปลี่ยนผู้ใช้แก้ไขสำเร็จ"
+            : "ทำการเปลี่ยนผู้ใช้แก้ไขสำเร็จ";
 
 
         toast.success(notify);
@@ -243,23 +275,58 @@ const SettingEditor = () => {
 
 
   return (
-    <Box component="span" sx={{ p: 2 }}>
-      <Row justify="end" style={{ marginTop: "50px", marginBottom: '5px' }}>
-        <Col>
-          <Button onClick={showModal} type="primary">เพิ่ม</Button>
-        </Col>
-      </Row>
+    <div>
 
-      <Table
-        rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
-        dataSource={dataSource}
-        columns={columns}
-        bordered />
-      <>
-        <InputCreateEditor values={values} handleEditor={handleEditor} isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} />
-      </>
+      <Container maxWidth='xl' >
 
-    </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={6}>
+            <Item>
+
+              <Box component="span" sx={{ p: 2 }}>
+                <Row justify="end" style={{ marginTop: "50px", marginBottom: '5px' }}>
+
+                  <h4>ประเภทปัญหา</h4>
+                  <Col>
+                    <Button onClick={showModal} type="primary">เพิ่ม</Button>
+                   
+                  </Col>
+                </Row>
+                <Table
+                  rowClassName={(record, index) => index % 2 === 0 ? 'table-row-light' : 'table-row-dark'}
+                  dataSource={dataSource}
+                  columns={columns}
+                  bordered />
+                <>
+                  <InputCreateEditor values={values} handleEditor={handleEditor} isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} textEmpty={textEmpty} />
+                </>
+                <Modal
+                  title={
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <span style={{ marginRight: "8px" }}>เพิ่มประเภท</span>
+                      <AccordionUI />
+                    </div>
+                  }
+                  open={isModalOpen1}
+                  //onOk={handleOk1}
+                  onCancel={handleCancel1}
+                  footer={null}
+                >
+                  <SettingProblem onCloseModal={() => setIsModalOpen1(false)} />
+                </Modal>
+              </Box>
+            </Item>
+          </Grid>
+
+          <Grid item xs={12} md={6} lg={6}>
+            <Item>
+              <SettingProblemType showModals={showModal1}/>
+            </Item>
+          </Grid>
+
+        </Grid>
+      </Container>
+    </div>
   );
 };
 

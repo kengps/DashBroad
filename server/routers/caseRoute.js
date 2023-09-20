@@ -1,6 +1,6 @@
 const express = require('express');
 const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail } = require('../controllers/caseController');
-const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2 } = require('../controllers/detailCaseForm');
+const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2, typeData, getTypeData,deleteTypeData } = require('../controllers/detailCaseForm');
 
 const router = express.Router();
 
@@ -55,6 +55,10 @@ router.post('/create-detailcase', createDetailCase2)
 
 
 router.post('/detail-case', createDetailCase2)
+
+router.post('/detail-type', typeData)
+router.get('/get-type', getTypeData)
+router.delete('/delete-type/:id', deleteTypeData)
 
 
 

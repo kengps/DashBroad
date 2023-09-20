@@ -34,8 +34,10 @@ const FormComponent = () => {
 
   const editorSelect2 = editorSelect.length > 0 ? nameEditor[0].username : '';
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   useEffect(() => {
     fetchData();
+    fetchTypesName();
     getEditors();
 
   }, []);
@@ -43,21 +45,49 @@ const FormComponent = () => {
   //==============================================================================
 
   const fetchData = useStore((state) => state.fetchData)
+  const fetchTypesName = useStore((state) => state.fetchTypesName)
   //Request post
 
 
   const createCase = useStore((state) => state.createCase)
 
-  //Requestget
+  //RequestGet
   const data = useStore((state) => state.cases)
 
+  const data2 = useStore((state) => state.typesName)
+
+
   const newDataType = data.map((item) => { return item.data.type.types })
+
+  const newDataType2 = data2.map((item) => { return item.data.main.typeName })
+
   const typeProb = ([...new Set(newDataType)]).filter(Boolean);
+
+  const typeProb2 = ([...new Set(newDataType2)]).filter(Boolean);
 
   //Type 
   const problemType = data.filter((item) => typeProb[0].includes(item.data.type.types));
+
+
+  const problemType2 = data2.filter((item) => typeProb2[0].includes(item.data.main.typeName));
+
+
+
+
   const problemTypeName = new Set(problemType.map((item) => { return item.data.type.name }))
+
+
+  const problemTypeName2 = new Set(problemType2.map((item) => { return item.data.main.sub.name }))
+
+
+
   const newProbType = [...problemTypeName]
+
+
+  const newProbType2 = [...problemTypeName2]
+
+
+
 
 
   const { user } = useSelector((state) => ({ ...state }));
@@ -101,19 +131,31 @@ const FormComponent = () => {
     setValues({ ...values, [name]: e.target.value });
     setCampGames(e.target.value);
     setSelectedDetail(e.target.value);
-
+    setIsButtonDisabled(false)
 
   };
 
   const submitForm = async (e) => {
-
+    setIsButtonDisabled(true)
     e.preventDefault();
 
     try {
+
       // ไม่ฟรีแล้ว
       //await axios.post("https://sheet.best/api/sheets/490e1f2e-21aa-4b61-9d12-a52da3780268", caseDataForExcel);
-      const res = await createCase(values)
 
+      // const res = await createCase(values)
+      if (values) {
+        const res = await createCase(values)
+
+        setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
+
+
+        SweetAlert.fire("แจ้งเตือน", res.message, "success");
+        setTimeout(() => {
+          navigate("/dashboard/listunresolve");
+        }, 2000);
+      }
       // setValues({
       //   reporter: "",
       //   problem: "",
@@ -122,14 +164,14 @@ const FormComponent = () => {
       //   campgame: "",
       //   wallet: "",
       // });
-      //กำหนดให้เป็นค่าว่างหลังจากกดตกลง
-      setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
+      // setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
+      // //กำหนดให้เป็นค่าว่างหลังจากกดตกลง
 
 
       SweetAlert.fire("แจ้งเตือน", res.message, "success");
-      setTimeout(() => {
-        navigate("/dashboard/listunresolve");
-      }, 2000);
+      // setTimeout(() => {
+      //   navigate("/dashboard/listunresolve");
+      // }, 2000);
     } catch (error) {
 
       console.log('เกิดอะไรขึ้น', error);
@@ -165,6 +207,7 @@ const FormComponent = () => {
             inputValue={inputValue}
             handleChange={handleChange}
             values={values}
+            newProbType2={newProbType2}
           />
 
           <DetailInput inputValue={inputValue} detail={detail} />
@@ -173,7 +216,7 @@ const FormComponent = () => {
             inputValue={inputValue}
             values={values}
             typeProb={typeProb}
-            data={data}
+            data={data2}
             selectedOption={selectedOption}
             newProbType={newProbType}
           />
@@ -182,16 +225,17 @@ const FormComponent = () => {
             inputValue={inputValue}
             wallet={wallet}
             typeProb={typeProb}
-            data={data}
+            data={data2}
           />
-          {/* <Input
-
+          
+          <Input
+            type="hidden"
             defaultValue={editorSelect}
             value={editorSelect}
             //onChange={inputValue("editors")}
             name="editors"
-            
-          /> */}
+
+          />
           <hr />
           <Row justify={"end"}>
             <Col>
@@ -200,6 +244,7 @@ const FormComponent = () => {
                 className="btn btn-primary"
                 value="Submit"
                 style={{ marginLeft: 320 }}
+                disabled={isButtonDisabled}
               >
                 บันทึก
               </Button>

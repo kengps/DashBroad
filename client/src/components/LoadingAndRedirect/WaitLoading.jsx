@@ -66,9 +66,9 @@ function WaitLoading() {
             <header className="App-header">
                 {!success ? (
                     <FadeIn>
-                        <h1>loading</h1>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                        <Lottie options={defaultOptions3} height={140} width={140} />
+                            <h1>loading</h1>
+
                             {!loading ? (
                                 <Lottie options={defaultOptions} height={140} width={140} />
                             ) : (

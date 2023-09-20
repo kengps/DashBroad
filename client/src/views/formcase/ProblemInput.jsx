@@ -9,24 +9,27 @@ const navDropdownItemStyle = {
     gap: "1px",
 };
 
-const ProblemInput = ({handleChange,inputValue ,selectedOption  ,values}) => {
-    const data = useStore((state) => state.cases)
-    const newDataType = data.map((item) => { return item.data.type.types })
+const ProblemInput = ({handleChange,inputValue ,selectedOption  ,values, newProbType2}) => {
+
+    const data = useStore((state) => state.typesName)
+    const newDataType = data.map((item) => { return item.data.main.typeName })
     const typeProb = ([...new Set(newDataType)]).filter(Boolean);
   
     //Type 
-    const problemType = data.filter((item) => typeProb[0].includes(item.data.type.types));
-    const problemTypeName = new Set(problemType.map((item) => { return item.data.type.name }))
+    const problemType = data.filter((item) => typeProb[0].includes(item.data.main.typeName));
+    const problemTypeName = new Set(problemType.map((item) => { return item.data.main.sub.name }))
     const newProbType = [...problemTypeName]
   
   
   
     //Type Detail
-    const newType = data.filter((item) => newProbType[0].includes(item.data.type.name))
-    const problemTypeDetail = newType.map((item) => { return item.data.detail.name })
+    const newType = data.filter((item) => newProbType[0].includes(item.data.main.sub.name))
+    
+    const problemTypeDetail = newType.map((item) => { return item.data.main.sub.detail })
     //Type Detail lsm
-    const newLsm = data.filter((item) => newProbType[1].includes(item.data.type.name))
-    const problemTypeDetailLSM = newLsm.map((item) => { return item.data.detail.name })
+    const newLsm = data.filter((item) => newProbType[1].includes(item.data.main.sub.name))
+    const problemTypeDetailLSM = newLsm.map((item) => { return item.data.main.sub.detail})
+    
     return (
         <div className="mt-3">
             <InputGroup className="mt-3" style={navDropdownItemStyle}>

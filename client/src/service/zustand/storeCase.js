@@ -14,6 +14,15 @@ export const useStore = create((set) => ({
       console.error("Error fetching cases:", error);
     }
   },
+  typesName: [],
+  fetchTypesName: async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/get-type`); // Remove the "value" parameter here
+      set({ typesName: response.data });
+    } catch (error) {
+      console.error("Error fetching cases:", error);
+    }
+  },
   response: [],
   createCase: async (data) => {
 
@@ -207,7 +216,7 @@ export const useStoreSetting = create((set) => ({
   resDetail: [],
   createDetails: async (value) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/detail-case`,
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/detail-type`,
         value)
       set({ resDetail: response.data })
       return response.data

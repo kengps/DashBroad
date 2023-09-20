@@ -11,11 +11,13 @@ import {
     Box,
   } from "@mui/material";
 const GameInput = ({values ,inputValue ,data , typeProb ,navDropdownItemStyle ,selectedOption ,newProbType}) => {
+console.log("➡️  file: GameInput.jsx:14  data:", data)
 
 
     //Game
-    const campGame = data.filter((item) => typeProb[1].includes(item.data.type.types));
-    const campGameDetail = campGame.map((item) => { return item.data.type.name })
+    const campGame = data.filter((item) => typeProb[1].includes(item.data.main.typeName));
+    console.log("➡️  file: GameInput.jsx:19  campGame:", campGame)
+    const campGameDetail = campGame.map((item) => { return item.data.main.sub.name })
   return (
     <div>          {/* ตรวจสอบว่า ถ้าค่าในselectedOption ไม่เตรงกับ newProbType array ที่ 1 จะให้แสดง campGameDetail */}
       {selectedOption !== newProbType[1] &&

@@ -21,7 +21,7 @@ exports.createEditor = async (req, res) => {
         res.status(200).send({ message: "User Editor success", resultData });
 
     } catch (error) {
-        console.log("🚀 ~ file: editors.js:20 ~ exports.createEditor= ~ error:", error)
+
         res.status(500).send('server is error!!!!')
     }
 
@@ -80,14 +80,14 @@ exports.deleteEditor = async (req, res) => {
 
 exports.changeEditor = async (req, res) => {
     try {
-      console.log(req.body);
-      const user = await EditorsUser.findOneAndUpdate(
-        { _id: req.body.id },// ตัวที่ค้นหา
-        { select: req.body.select } // ตัวที่ต้องการให้ update
-      ).exec();
-      res.json(user);
+        console.log(req.body);
+        const user = await EditorsUser.findOneAndUpdate(
+            { _id: req.body.id },// ตัวที่ค้นหา
+            { select: req.body.select } // ตัวที่ต้องการให้ update
+        ).exec();
+        res.json(user);
     } catch (error) {
-       console.log("เกิดข้อผิดพลาด", error);
-      //res.status(400).json({ error: "Server isError" });
+        console.log("เกิดข้อผิดพลาด", error);
+        //res.status(400).json({ error: "Server isError" });
     }
-  };
+};

@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 
 
-const InputCreateEditor = ({ handleEditor, values ,isModalOpen,handleOk,handleCancel}) => {
+const InputCreateEditor = ({textEmpty, handleEditor, values ,isModalOpen,handleOk,handleCancel}) => {
 
     return (
         <section>
@@ -17,6 +17,7 @@ const InputCreateEditor = ({ handleEditor, values ,isModalOpen,handleOk,handleCa
                     value={values.username}
                     
                 />
+                    {textEmpty && (<span style={{ color: "red" }}>กรุณากรอกชื่อ</span>)}
             </Modal>
         </section>
 

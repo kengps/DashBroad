@@ -168,6 +168,8 @@ export default function MiniDrawer() {
   const [isDataFilled, setDataFilled] = useState(false);
 
   const [password, setPassword] = useState("");
+
+
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
 
 
@@ -261,12 +263,12 @@ export default function MiniDrawer() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsPasswordEmpty(false);
+    setValues({ password: "" })
   };
   const handleChangePassword = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setPassword(e.target.value);
-
-
     setIsPasswordEmpty(false);
 
   };

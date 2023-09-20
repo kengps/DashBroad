@@ -1,26 +1,36 @@
-import React, { useState } from "react";
-import { Stack, TextField, FormControl } from "@mui/material";
-import { Link, Navigate, json, useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
+import { Stack } from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import { login, loginFacebook } from "../../api/auth";
-import SweetAl from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import SweetAl from "sweetalert2";
+import { login, loginFacebook } from "../../api/auth";
 
+import { Space } from 'antd';
 import { EncryptStorage } from 'encrypt-storage';
-import UsernameInput from "../../views/login/UsernameInput";
-import RememberMeCheckbox from "../../views/login/RememberMeCheckbox";
 import PasswordInput from "../../views/login/PasswordInput";
-import { GoogleOutlined } from "@ant-design/icons"
-import { Button, Space } from 'antd';
+import RememberMeCheckbox from "../../views/login/RememberMeCheckbox";
+import UsernameInput from "../../views/login/UsernameInput";
 
-import { SiLine, SiFacebook } from 'react-icons/all'
+import { SiFacebook, SiLine } from 'react-icons/all';
 //facebook
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 //import FacebookLogin from 'react-facebook-login';
+
+import {
+  LoginSocialFacebook
+} from 'reactjs-social-login';
+
+// CUSTOMIZE ANY UI BUTTON
+import {
+  FacebookLoginButton
+} from 'react-social-login-buttons';
 //Line Liff
-import liff from '@line/liff'
+import liff from '@line/liff';
+//google
+
+
 
 const Login = () => {
   //redux
@@ -50,10 +60,10 @@ const Login = () => {
   //facebook 
 
   const responseFacebook = async (response) => {
-    console.log('res', response);
+    //console.log('res', response);
 
     await loginFacebook(response).then((res) => {
-      console.log(res);
+      console.log('loginFacebook', res);
       dispatch({
         type: "LOGIN",
         payload: {
@@ -207,6 +217,13 @@ const Login = () => {
 
 
 
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
+
+
+
   return (
     <div className="container mt-3">
       <Form onSubmit={handleSubmit}>
@@ -238,9 +255,13 @@ const Login = () => {
         {/* <LoadingButton fullWidth size="large" type="submit" variant="contained" style={{ backgroundColor: "#6495ED", marginTop: '2px' }} onClick={handleLoginFacebook}>
           Login with facebook
         </LoadingButton> */}
-        {/* 
+
+
+
+
+
         <FacebookLogin
-          appId={`${import.meta.env.VITE_FACEBOOK_ID}`}
+          appId={`3595550097394812`}
           autoLoad={false}
           fields="name,email,picture"
           callback={responseFacebook}
@@ -249,9 +270,40 @@ const Login = () => {
               style={{
                 width: '100%',
               }}>
-              <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{mb: 1, mt:1}} onClick={renderProps.onClick} startIcon={< SiFacebook />} >Login with facebook</LoadingButton>
+              <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mb: 1, mt: 1 }} onClick={renderProps.onClick} startIcon={< SiFacebook />} >Login with facebook</LoadingButton>
             </Space>
           )}
+        />
+
+        {/* <LoginSocialFacebook
+
+          appId='3595550097394812'
+          onLoginStart={responseFacebook}
+          onResolve={({ data }) => {
+            setDataLogin(data)
+            console.log("➡️  file: Login.jsx:283  response:", data.first_name)
+
+          }}
+          onReject={(err) => {
+            console.log(err)
+          }}
+        >
+          <FacebookLoginButton />
+        </LoginSocialFacebook>
+ */}
+
+
+
+        {/* 
+        <GoogleLogin
+          clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+          render={renderProps => (
+            <LoadingButton onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</LoadingButton>
+          )}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
         /> */}
       </>
     </div>

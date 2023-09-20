@@ -14,9 +14,11 @@ import {
 const WalletInput = ({navDropdownItemStyle,inputValue,wallet ,typeProb, data}) => {
 
     //Platforms
-  const platformsDetail = data.filter((item) => typeProb[2].includes(item.data.type.types));
-  const newPlatformsDt = new Set(platformsDetail.map((item) => { return item.data.detail.name }))
+  const platformsDetail = data.filter((item) => typeProb[2].includes(item.data.main.typeName));
+  
+  const newPlatformsDt = new Set(platformsDetail.map((item) => { return item.data.main.sub.detail}))
   const NewDataPlatform = [...newPlatformsDt]
+
   return (
       
     <div className="mt-3">

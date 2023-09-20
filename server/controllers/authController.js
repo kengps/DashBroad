@@ -67,7 +67,7 @@ exports.loggedLine = async (req, res) => {
 
     const payLoad = {
       user,
-     
+
     };
     console.log(payLoad);
     const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "8h" });
@@ -84,37 +84,38 @@ exports.loggedLine = async (req, res) => {
 exports.loggedFacebook = async (req, res) => {
 
   try {
-    
-    const {email , name , userId} = req.body
+    const { email, name, userId } = req.body;
 
     let data = {
       username: name,
       email: email
-    }
+    };
 
-    console.log('res',data);
-    let user = await User.findOneAndUpdate({ username: name }, { new: true });
+    console.log('res', data);
+
+    // ค้นหาผู้ใช้ด้วยชื่อ (username)
+    let user = await User.findOne({ username: name });
+
     if (user) {
-      console.log('user Updated');
+      // ถ้าพบผู้ใช้ ให้ทำการอัปเดตข้อมูล
+      user.email = email;
+      await user.save();
+      console.log('User Updated');
     } else {
+      // ถ้าไม่พบผู้ใช้ ให้สร้างผู้ใช้ใหม่
       user = new User(data);
       await user.save();
     }
 
-
     const payLoad = {
-      user,
-     
+      user
     };
+
     console.log(payLoad);
     const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "8h" });
     return res.json({ token, payLoad });
-
-    // res.send({ message: 'Login success', user });
-
   } catch (error) {
     console.log('error', error);
-
   }
 };
 
@@ -130,3 +131,4 @@ exports.currentUser = async (req, res) => {
     res.status(400).send("SerVer is Error!!");
   }
 };
+

@@ -23,16 +23,17 @@ import { useStore, useStoreSetting } from "../service/zustand/storeCase";
 const SettingProblem = ({ onCloseModal }) => {
 
   //Data Zustand
-  const { fetchData } = useStore();
+  const { fetchData, fetchTypesName } = useStore();
   const { resDetail, createDetails } = useStoreSetting();
 
-  const data = useStore((state) => state.cases)
+  const data = useStore((state) => state.typesName)
+
 
 
   //การ Reduce เอาค่าที่ไม่ซ้ำกัน
   const uniqueTypesSet = new Set();
   const uniqueTypess = data.reduce((accumulator, data) => {
-    const type = data.data.type.types;
+    const type = data.data.main.typeName;
     if (type && !uniqueTypesSet.has(type)) {
       uniqueTypesSet.add(type);
       accumulator.push(type);
@@ -41,24 +42,40 @@ const SettingProblem = ({ onCloseModal }) => {
   }, []);
 
 
-  const newDataType = data.map((item) => { return item.data.type.types })
+  const newDataType = data.map((item) => { return item.data.main.typeName })
   const typeProb = ([...new Set(newDataType)]).filter(Boolean);
 
   //Type 
-  const problemType = data.filter((item) => typeProb[0].includes(item.data.type.types));
-  const problemTypeName = new Set(problemType.map((item) => { return item.data.type.name }))
+  const problemType = data.filter((item) => typeProb[0].includes(item.data.main.typeName));
+  const problemTypeName = new Set(problemType.map((item) => { return item.data.main.sub.name }))
   const newProbType = [...problemTypeName]
 
 
-  const platforms = data.filter((item) => typeProb[2].includes(item.data.type.types));
-  const platformsName = new Set(platforms.map((item) => { return item.data.type.name }))
+  const platforms = data.filter((item) => typeProb[2].includes(item.data.main.typeName));
+  const platformsName = new Set(platforms.map((item) => { return item.data.main.sub.name }))
   const newPlatforms = [...platformsName]
   console.log('problemType', newPlatforms);
+
 
 
   const [dataProblem, setDataProblem] = useState([]);
 
   const [values, setValues] = useState({
+    data: {
+      main: {
+        typeName: "",
+        sub: {
+          name: '',
+          detail: '',
+        }
+      }
+    }
+
+  });
+
+
+
+  const [values2, setValues2] = useState({
     data: {
       type: {
         types: "",
@@ -71,17 +88,19 @@ const SettingProblem = ({ onCloseModal }) => {
 
   });
 
+
   const { types, name, detail } = values;
 
   const inputValue = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    // console.log(event.target.value);
-    // console.log(event);
+    console.log(event.target.value);
+     console.log(event);
   };
 
   useEffect(() => {
     fetchData1();
     fetchData();
+    fetchTypesName();
   }, []);
 
   const fetchData1 = async () => {
@@ -92,8 +111,8 @@ const SettingProblem = ({ onCloseModal }) => {
 
   const submitForm = async (e) => {
     try {
-
-      const dataToSend = {
+      console.log("➡️  file: SettingProblem.jsx:75  values:", values)
+      const dataToSend2 = {
         data: {
           type: {
             types: values.types,
@@ -105,8 +124,20 @@ const SettingProblem = ({ onCloseModal }) => {
         }
       };
 
-      console.log(dataToSend);
+      const dataToSend = {
+        data: {
+          main: {
+            typeName: values.typeName,
+            sub: {
+              name: values.name,
+              detail: values.detail,
+            }
+          }
+        }
+      };
+      console.log("➡️  file: SettingProblem.jsx:137  dataToSend:", dataToSend)
 
+    
       e.preventDefault();
       await createDetails(dataToSend)
       SweetAlert.fire("แจ้งเตือน", "เพิ่มข้อมูลสำเร็จ", "success");
@@ -115,6 +146,7 @@ const SettingProblem = ({ onCloseModal }) => {
       setSelectedOption(""); // เปลี่ยนค่า selectedOption เป็นค่าว่างเปล่า
 
       onCloseModal();
+
     } catch (error) {
       alert(error);
     }
@@ -143,12 +175,12 @@ const SettingProblem = ({ onCloseModal }) => {
           freeSolo
           options={uniqueTypess}
           sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Type" />}
+          renderInput={(params) => <TextField {...params} label="typeName" />}
           onChange={(event, newValue) => {
             setSelectedOption(newValue);
             setValues({
               ...values,
-              types: newValue,
+              typeName: newValue,
               name: "", // Reset ชื่อเมื่อเปลี่ยนเลือก Type
               detail: "" // Reset รายละเอียดเมื่อเปลี่ยนเลือก Type
             });
@@ -157,7 +189,7 @@ const SettingProblem = ({ onCloseModal }) => {
           onInputChange={(event, newInputValue) => {
             setValues({
               ...values,
-              types: newInputValue,
+              typeName: newInputValue,
               name: "", // Reset ชื่อเมื่อเปลี่ยนเลือก Type
               detail: "" // Reset รายล
             })

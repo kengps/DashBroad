@@ -2,11 +2,12 @@
 const DataDetail = require("../models/dataDetail");
 const DataModel = require("../models/detailCase");
 const detailCase = require("../models/detailCase");
+const DataModelType = require("../models/typeDetail");
+
 
 
 
 exports.createDetailCase = async (req, res) => {
-  console.log(req.body);
   try {
     const newData = new detailCase(req.body); // สร้างเอกสารใหม่จาก req.body
     const { type, name } = req.body;
@@ -27,7 +28,6 @@ exports.allDetailCase = async (req, res) => {
     const cases = await detailCase.find({}).exec();
     res.json(cases);
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -36,9 +36,10 @@ exports.allDetailCase2 = async (req, res) => {
     const cases = await DataDetail.find({}).exec();
     res.json(cases);
   } catch (error) {
-    console.log(error);
   }
 };
+
+
 // exports.createDetailCase2 = async (req, res) => {
 
 //   try {
@@ -60,9 +61,6 @@ exports.allDetailCase2 = async (req, res) => {
 //     const savedData = await newData.save(); // บันทึกข้อมูลลงในฐานข้อมูล
 //     res.send({ message: "ทำการบันทึกข้อมูลสำเร็จ!!!", savedData });
 //   } catch (error) {
-//     console.log('====================================');
-//     console.log(error);
-//     console.log('====================================');
 //     res.status(500).json({ message: "เกิดข้อผิดพลาดในการบันทึกข้อมูล" });
 //   }
 
@@ -99,9 +97,6 @@ exports.allDetailCase2 = async (req, res) => {
 //     const savedData = await newData.save();
 //     res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', savedData });
 //   } catch (error) {
-//     console.log('====================================');
-//     console.log(error);
-//     console.log('====================================');
 //     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
 //   }
 // };
@@ -132,7 +127,6 @@ exports.allDetailCase2 = async (req, res) => {
 
 //     res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', savedData });
 //   } catch (error) {
-//     console.log(error);
 //     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
 //   }
 // };
@@ -189,12 +183,81 @@ exports.createDetailCase2 = async (req, res) => {
         res.status(500).json({ error: error.message });
       });
   } catch (error) {
-    console.log('====================================');
-    console.log(error);
-    console.log('====================================');
     res.status(500).json({ error: error.message });
   }
 }
+
+
+
+exports.typeData = async (req, res) => {
+  
+  try {
+    
+  let typeName = req.body.data.main.typeName
+  
+  let name  = req.body.data.main.sub.name
+  let detail = req.body.data.main.sub.detail
+  
+  const existingData = await DataModelType.findOne({
+   data: {
+     main: {
+       typeName,
+       sub: {
+          name,
+          detail
+        }
+        }
+      
+    }
+  });
+  
+
+
+  if (existingData) return res.status(400).json({ error: 'Name already exists' });
+  
+
+
+
+
+  const newData = new DataModelType({
+    data: {
+      main: {
+        typeName,
+        sub: {
+          name,
+          detail
+        }
+      }
+      
+    }
+  });
+
+ 
+  const data = await newData.save();
+
+    res.status(201).json({ message: 'บันทึกข้อมูลสำเร็จ' ,data});
+   
+    
+  } catch (error) {
+  }
+};
+
+
+exports.getTypeData = async (req, res) => {
+  try {
+    const cases = await DataModelType.find({}).exec();
+    res.json(cases);
+  } catch (error) {
+  }
+};
+
+exports.deleteTypeData = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const typeName = await DataModelType.findOneAndRemove({ _id: id }).exec();
+    res.json({ message: "ทำการลบข้อมูลสำเร็จ",typeName });
+  } catch (error) { }
+};
 
 
 

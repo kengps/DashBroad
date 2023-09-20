@@ -40,6 +40,7 @@ const ListCaseUnResolve = () => {
 
   const responseDelete = useStoreCase((state) => state.resDeleteCase)
 
+  const [textEmpty, setTextEmpty] = useState(false)
 
   //*state สำหรับการแก้ไข
   const [values, setValues] = useState({
@@ -122,6 +123,7 @@ const ListCaseUnResolve = () => {
   };
 
   const handleCancel = () => {
+    
     setIsModalOpen(false);
   };
 
@@ -134,18 +136,21 @@ const ListCaseUnResolve = () => {
   };
 
   const handleOk2 = async () => {
-    setIsModalOpen2(false);
 
     const id = values.id;
-
+    if (values.detail === '') {
+      setTextEmpty(true)
+      return
+    }
     await changeDetailCase(id, { values })
 
     swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
     loadData();
     setValues({ detail: "" });
-
+    setIsModalOpen2(false);
   };
   const handleCancel2 = () => {
+    setTextEmpty(false)
     setIsModalOpen2(false);
   };
   // console.log(search);
@@ -196,10 +201,11 @@ const ListCaseUnResolve = () => {
     }
   };
 
-  
+
 
   // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
+    setTextEmpty(false)
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
@@ -299,7 +305,7 @@ const ListCaseUnResolve = () => {
           open={open}
           setSelectedCase={setSelectedCase}
           editor={data}
-         
+          textEmpty={textEmpty}
         />
 
         {resCasePending.length >= 0 ? "" :

@@ -1,35 +1,29 @@
 import {
-    Typography,
-    Space,
-    Tag,
-    Button,
-    Modal,
-    Switch,
-    Card,
-    Select,
-
-} from "antd";
-import {
-    CheckOutlined,
-    CloseOutlined,
-    UserAddOutlined,
+    CheckCircleOutlined,
     CloseCircleOutlined,
     SettingOutlined,
-    CheckCircleOutlined,
-    QuestionCircleOutlined,
+    UserAddOutlined
 } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
-import React from "react";
-import { useState } from "react";
+import {
+    Button,
+    Card,
+    Modal,
+    Select,
+    Space,
+    Tag,
+    Typography
+} from "antd";
 import moment from "moment/min/moment-with-locales";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 
-import Table from "react-bootstrap/Table";
-import Button1 from "react-bootstrap/Button";
 import { Box } from "@mui/material";
+import Button1 from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Register from "../../components/Register/Register";
 
 import SettingProblem from "../../components/SettingProblem";
@@ -37,13 +31,12 @@ import SettingProblem from "../../components/SettingProblem";
 
 import { AccordionUI } from "../../components/Menu/Index";
 
-import { green } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
-import '../../CSS/Responsive.css'
+import { green } from '@mui/material/colors';
+import '../../CSS/Responsive.css';
 
 
-import { RxSwitch } from 'react-icons/rx';
-import { VscUnlock, VscLock,RiDeleteBin7Line } from 'react-icons/all';
+import { RiDeleteBin7Line, VscLock, VscUnlock } from 'react-icons/all';
 
 
 const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 import { Button, Card, Tag, message, Select, Modal, Input, Drawer } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
-
+import Table from 'react-bootstrap/Table';
 import { InputGroup } from "react-bootstrap";
 
 import moment from "moment/min/moment-with-locales";
@@ -37,6 +37,7 @@ const CasePending = ({ data,
   handleCopy2,
   showDrawer,
   onClose,
+  textEmpty,
   
   open, setSearch, setSelectedCase }) => {
 
@@ -45,7 +46,7 @@ const CasePending = ({ data,
 
     <div >
 
-      <table className="table table-striped ">
+      <Table className="table table-striped ">
         <thead>
           <tr className="table-secondary" style={{ fontSize: "16px" }}>
             <th scope="col">CodeCase</th>
@@ -193,7 +194,7 @@ const CasePending = ({ data,
                           </p>
                           <p className="d-block m-0">
                             <strong> ผู้แก้ไข: </strong>
-                            {nameEditor} "
+                            {selectedCase.editors} "
                           </p>
                         </div>
                         <Button
@@ -220,6 +221,7 @@ const CasePending = ({ data,
                       name="detail"
                       onChange={handleChangeDetail}
                     />
+                    {textEmpty && (<span style={{color: 'red'}}>กรุณากรอกรายละเอียด</span>)}
                   </Modal>
                 </td>
               </tr>
@@ -259,7 +261,7 @@ const CasePending = ({ data,
             </Card>
           </Drawer>
         </tbody>
-      </table>
+      </Table>
 
     </div>
   )
