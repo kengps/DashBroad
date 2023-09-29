@@ -1,5 +1,5 @@
 const express = require("express");
-const { createEditor, getEditorAll, getEditorOne,deleteEditor,changeEditor } = require("../controllers/editors");
+const { createEditor, getEditorAll, getEditorOne,deleteEditor,changeEditor,createNewDatDetail ,getNewDatDetail} = require("../controllers/editors");
 const router = express.Router();
 
 
@@ -16,7 +16,10 @@ router.put("/change-editor/:id", changeEditor);
 
 
 
+//NewDataDetail
 
+router.post('/newdata-detail', createNewDatDetail)
+router.get('/getnewdata-detail', getNewDatDetail)
 
 
 module.exports = router;

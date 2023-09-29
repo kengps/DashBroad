@@ -16,6 +16,9 @@ import GameInput from "../views/formcase/GameInput";
 import ProblemInput from "../views/formcase/ProblemInput";
 import ReporterInput from "../views/formcase/ReporterInput";
 import WalletInput from "../views/formcase/WalletInput";
+import { storeAuth } from "../service/store/storeZustand";
+
+
 
 const navDropdownItemStyle = {
   display: "flex",
@@ -63,6 +66,7 @@ const FormComponent = () => {
 
   const typeProb = ([...new Set(newDataType)]).filter(Boolean);
 
+
   const typeProb2 = ([...new Set(newDataType2)]).filter(Boolean);
 
   //Type 
@@ -70,7 +74,6 @@ const FormComponent = () => {
 
 
   const problemType2 = data2.filter((item) => typeProb2[0].includes(item.data.main.typeName));
-
 
 
 
@@ -89,9 +92,12 @@ const FormComponent = () => {
 
 
 
+  const username2 = storeAuth((state) => state.user)
 
-  const { user } = useSelector((state) => ({ ...state }));
-  const getUser = user.username;
+
+
+  const getUser = username2.payLoad.user.username;
+
   const navigate = useNavigate();
   const [values, setValues] = useState({
     reporter: "",
@@ -229,11 +235,12 @@ const FormComponent = () => {
           />
           
           <Input
-            type="hidden"
+            //type="hidden"
             defaultValue={editorSelect}
             value={editorSelect}
             //onChange={inputValue("editors")}
             name="editors"
+            disabled
 
           />
           <hr />

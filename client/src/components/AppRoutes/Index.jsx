@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -18,33 +18,49 @@ import Work from "../../pages/Work";
 import IndexRouter from "../LoadingAndRedirect";
 import SettingEditor from "../../pages/SettingEditor";
 import SettingProblemType from "../../pages/SettingProblemType";
+import { storeAuth } from "../../service/store/storeZustand";
+
 
 
 
 const AppRoutes = () => {
+
+  const { login, isAuthenticated, user, updateUserInfo, fetchUserInfo } = storeAuth()
+
+
   const idToken = localStorage.token; //token คือชื่อที่เราตั้ง
+
+  useEffect(() => {
+  
+    fetchUserInfo(idToken)
+    
+
+  }, [])
+
+
+  // console.log("➡️  file: Index.jsx:39  idToken:", idToken)
+  // if (idToken) {
+  //   // console.log("idToken : " + idToken);
+  //   currentUser(idToken)
+  //     .then((response) => {
+  //       console.log("➡️  file: Index.jsx:33  response:", response)
+  //       // updateUserInfo({
+  //       //   payload: {
+  //       //     token: idToken,
+  //       //     username: response.data.username,
+  //       //     role: response.data.role,
+  //       //     id: response.data._id,
+  //       //     picture: response.data.pictureUrl,
+
+  //       //   },
+  //       // });
+
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   const dispatch = useDispatch();
 
-  if (idToken) {
-    // console.log("idToken : " + idToken);
-    currentUser(idToken)
-      .then((response) => {
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            token: idToken,
-            username: response.data.username,
-            role: response.data.role,
-            id: response.data._id,
-            picture: response.data.pictureUrl,
-
-          },
-        });
-        console.log("response ", response);
-      })
-      .catch((err) => console.log(err));
-  }
 
   return (
 

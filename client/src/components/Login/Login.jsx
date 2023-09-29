@@ -30,12 +30,16 @@ import {
 import liff from '@line/liff';
 //google
 
+import { storeAuth } from "../../service/store/storeZustand";
 
 
 const Login = () => {
   //redux
   const dispatch = useDispatch();
   const redirect = useNavigate();
+
+  const { errUser, setErrUser } = useState(null)
+
 
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -47,9 +51,13 @@ const Login = () => {
 
   };
 
+  const loginStore = storeAuth((state) => state.login)
+  const { updateUserInfo, errorRes, login,errorRes2 } = storeAuth();
+
   //login Line Liff
   useEffect(() => {
     liff.init({ liffId: `${import.meta.env.VITE_LIFF_ID}` })
+
   }, [])
 
 
@@ -117,6 +125,7 @@ const Login = () => {
 
     checkAuthStatus();
   }, [redirect]);
+
   const [value, setValue] = useState({
     username: "",
     password: "",
@@ -134,6 +143,7 @@ const Login = () => {
 
   //todo: การตรวจสอบ Role
   const levelRole = (role) => {
+
     if (role === "admin" || role === "dev") {
       redirect("/dashboard");
     } else if (role === "user") {
@@ -150,69 +160,133 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log({title , content , author});
+
+
     try {
-      login(value)
-        .then((res) => {
+      const response = await loginStore(value)
 
-          if (rememberMe) {
-            encryptStorage.setItem("loginCredentials ", value.password);
-          } else {
-            encryptStorage.removeItem("loginCredentials ");
-          }
-          // console.log("มี user ไหม", res.data.payLoad.user.password);
-          const user = res.data.payLoad.user.username;
-          SweetAl.fire(
-            "แจ้งเตือน",
-            `ยินดีต้อนรับ ${user} เข้าทำงาน`,
-            "success"
-          );
-          setTimeout(() => {
-            SweetAl.close();
-          }, 2000)
-          const idUser = res.data.payLoad.user.id;
-          //todo payload มาจาก userReducer จากการ return action.payload
-          dispatch({
-            type: "LOGIN",
-            payload: {
-              token: res.data.token,
-              username: res.data.payLoad.user.username,
-              role: res.data.payLoad.user.role,
-              id: res.data.payLoad.user.id,
-              picture: res.data.payLoad.user.pictureUrl,
-            },
-          });
-          //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
-          // ตั้งค่า timeout เพื่อลบ localStorage เมื่อ JWT หมดอายุ
-          const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
-          //const expirationTime = 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
-          const expirationDate = new Date().getTime() + expirationTime;
-          const one = Number(1)
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("expirationDate", expirationDate);
-          localStorage.setItem('isOnline', one);
+      console.log("➡️  file: Login.jsx:165  response:", response)
 
-          levelRole(res.data.payLoad.user.role);
-        })
-        .catch((error) => {
-          let errorMessage = "";
-          if (error.message === "Request failed with status code 400") {
-            errorMessage = "Username ไม่ถูกต้อง";
-          } else if (error.message === "Request failed with status code 401") {
-            errorMessage = "Password ไม่ถูกต้อง";
-          } else {
-            errorMessage = error.message;
-          }
-          SweetAl.fire("แจ้งเตือน", errorMessage, "error");
-        });
 
-      //* ถ้าlogin สำเร็จ
+      if (rememberMe) {
+        encryptStorage.setItem("loginCredentials ", value.password);
+      } else {
+        encryptStorage.removeItem("loginCredentials ");
+      }
+      // console.log("มี user ไหม", res.data.payLoad.user.password);
+      const user = response.payLoad.user.username;
+      SweetAl.fire(
+        "แจ้งเตือน",
+        `ยินดีต้อนรับ ${user} เข้าทำงาน`,
+        "success"
+      );
+      setTimeout(() => {
+        SweetAl.close();
+      }, 2000)
 
-      // authenticate(response, () => history("/create"));
+
+      // updateUserInfo({
+      //   token: response.token,
+      //   username: response.payLoad.user.username,
+      //   role: response.payLoad.user.role,
+      //   id: response.payLoad.user.id,
+
+      // });
+
+      //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
+      // ตั้งค่า timeout เพื่อลบ localStorage เมื่อ JWT หมดอายุ
+
+      const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+      //const expirationTime = 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+      const expirationDate = new Date().getTime() + expirationTime;
+      const one = Number(1)
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("expirationDate", expirationDate);
+      localStorage.setItem('isOnline', one);
+
+      levelRole(response.payLoad.user.role);
+
+
+
     } catch (error) {
-      console.log(error);
-      SweetAl.fire("แจ้งเตือน", error, "error");
+
+      console.log(errorRes);
+      let errorMessage = ''
+      if (errorRes.status === 400) {
+        errorMessage = errorRes.data.message
+      } else if (errorRes.status === 401) {
+        errorMessage = errorRes.data.error
+      } else {
+        errorMessage = 'กรุณาระบุข้อมูลให้ถูกต้อง'
+      }
+      SweetAl.fire("แจ้งเตือน", errorMessage, "error");
+
     }
+
+    //console.log({title , content , author});
+    // try {
+    //   login(value)
+    //     .then((res) => {
+    //       console.log("➡️  file: Login.jsx:158  res:", res)
+
+    //       if (rememberMe) {
+    //         encryptStorage.setItem("loginCredentials ", value.password);
+    //       } else {
+    //         encryptStorage.removeItem("loginCredentials ");
+    //       }
+    //       // console.log("มี user ไหม", res.data.payLoad.user.password);
+    //       const user = res.data.payLoad.user.username;
+    //       SweetAl.fire(
+    //         "แจ้งเตือน",
+    //         `ยินดีต้อนรับ ${user} เข้าทำงาน`,
+    //         "success"
+    //       );
+    //       setTimeout(() => {
+    //         SweetAl.close();
+    //       }, 2000)
+    //       const idUser = res.data.payLoad.user.id;
+    //       //todo payload มาจาก userReducer จากการ return action.payload
+    //       dispatch({
+    //         type: "LOGIN",
+    //         payload: {
+    //           token: res.data.token,
+    //           username: res.data.payLoad.user.username,
+    //           role: res.data.payLoad.user.role,
+    //           id: res.data.payLoad.user.id,
+    //           picture: res.data.payLoad.user.pictureUrl,
+    //         },
+    //       });
+    //       //TODO: ทำการบันทึกลง Storage ที่ฝั่ง client
+    //       // ตั้งค่า timeout เพื่อลบ localStorage เมื่อ JWT หมดอายุ
+    //       const expirationTime = 12 * 60 * 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+    //       //const expirationTime = 60 * 1000; // 12 ชั่วโมง (เป็นตัวอย่าง)
+    //       const expirationDate = new Date().getTime() + expirationTime;
+    //       const one = Number(1)
+    //       localStorage.setItem("token", res.data.token);
+    //       localStorage.setItem("expirationDate", expirationDate);
+    //       localStorage.setItem('isOnline', one);
+
+    //       levelRole(res.data.payLoad.user.role);
+    //     })
+    //     .catch((error) => {
+    //       let errorMessage = "";
+    //       if (error.message === "Request failed with status code 400") {
+    //         errorMessage = "Username ไม่ถูกต้อง";
+    //       } else if (error.message === "Request failed with status code 401") {
+    //         errorMessage = "Password ไม่ถูกต้อง";
+    //       } else {
+    //         errorMessage = error.message;
+    //       }
+    //       SweetAl.fire("แจ้งเตือน", errorMessage, "error");
+    //     });
+
+    //   //* ถ้าlogin สำเร็จ
+
+    //   // authenticate(response, () => history("/create"));
+    // } catch (error) {
+    //   console.log(error);
+    //   SweetAl.fire("แจ้งเตือน", error, "error");
+    // }
   };
 
 
@@ -259,7 +333,7 @@ const Login = () => {
 
 
 
-
+{/* 
         <FacebookLogin
           appId={`3595550097394812`}
           autoLoad={false}
@@ -273,7 +347,7 @@ const Login = () => {
               <LoadingButton fullWidth size="large" type="submit" variant="contained" sx={{ mb: 1, mt: 1 }} onClick={renderProps.onClick} startIcon={< SiFacebook />} >Login with facebook</LoadingButton>
             </Space>
           )}
-        />
+        /> */}
 
         {/* <LoginSocialFacebook
 

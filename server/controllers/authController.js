@@ -22,7 +22,7 @@ exports.logged = async (req, res) => {
       console.log("pass", user.password);
       //   //const match = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: "pass invalid" });
+        return res.status(401).json({ error: "Password Invalid" });
       }
 
       const payLoad = {
@@ -39,7 +39,7 @@ exports.logged = async (req, res) => {
       // res.send('hello')
     } else {
 
-      res.status(400).json({ error: "User is not Found!!" });
+      res.status(400).json({ message: "User is not Found!!" });
     }
   } catch (error) {
 
@@ -91,13 +91,14 @@ exports.loggedFacebook = async (req, res) => {
       email: email
     };
 
-    console.log('res', data);
 
     // ค้นหาผู้ใช้ด้วยชื่อ (username)
     let user = await User.findOne({ username: name });
 
+
     if (user) {
       // ถ้าพบผู้ใช้ ให้ทำการอัปเดตข้อมูล
+      user.username = name
       user.email = email;
       await user.save();
       console.log('User Updated');
@@ -110,8 +111,9 @@ exports.loggedFacebook = async (req, res) => {
     const payLoad = {
       user
     };
+    console.log("➡️  file: authController.js:114  payLoad:", payLoad)
 
-    console.log(payLoad);
+
     const token = jwt.sign(payLoad, "jwtSecret", { expiresIn: "8h" });
     return res.json({ token, payLoad });
   } catch (error) {
@@ -121,6 +123,8 @@ exports.loggedFacebook = async (req, res) => {
 
 
 exports.currentUser = async (req, res) => {
+console.log("➡️  file: authController.js:127  req:", req.user)
+
   try {
     const user = await User.findOne({ username: req.user.username })
       .select("-password")

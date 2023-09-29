@@ -36,7 +36,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import swal from "sweetalert2";
 
-import { Badge, Input, Modal } from "antd";
+import { Badge, Input, Modal, Button } from "antd";
 import { useEffect, useState } from "react";
 import { listCases } from "../../api/case";
 import { notiDetail, notiMD5 } from "../../common/utils/Notification";
@@ -45,6 +45,7 @@ import { useStore } from "../../service/zustand/storeCase";
 
 import '../../CSS/Responsive.css';
 import SettingBar from "../../views/settingMunuBar/settingBar";
+import { storeAuth } from "../../service/store/storeZustand";
 const drawerWidth = 240;
 
 
@@ -122,7 +123,19 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const { user } = useSelector((state) => ({ ...state }));
 
-  console.log('user', user);
+
+
+
+
+  const { updateUserInfo, logout, fetchUserInfo, login } = storeAuth()
+
+
+
+  const dataUser = storeAuth((state) => state.user)
+ 
+
+
+
   //zustand
   const { resetPasswords, dataResetpassword } = useStore()
 
@@ -139,6 +152,8 @@ export default function MiniDrawer() {
   const [noti, setNoti] = useState({});
 
   useEffect(() => {
+
+
     setNoti(notiDetail());
     setInterval(() => {
       let nmd5 = notiMD5();
@@ -227,9 +242,9 @@ export default function MiniDrawer() {
       setIsPasswordEmpty(true);
       return;
     }
+    
 
-
-    await resetPasswords(user.token, values.id, { values })
+    await resetPasswords(dataUser.token, values.id, { values })
 
     setValues({ password: "" })
 
@@ -267,9 +282,13 @@ export default function MiniDrawer() {
     setValues({ password: "" })
   };
   const handleChangePassword = (e) => {
+
     setValues({ ...values, [e.target.name]: e.target.value });
     setPassword(e.target.value);
     setIsPasswordEmpty(false);
+    console.log(e.target.name);
+    console.log(e.target.value);
+
 
   };
 
@@ -282,15 +301,19 @@ export default function MiniDrawer() {
 
   //todo func สำหรับกดปุ่มออกจากระบบ
   const handleLogout = () => {
-    dispatch({
-      type: "LOGOUT",
-      payload: null,
-    });
+
+    // dispatch({
+    //   type: "LOGOUT",
+    //   payload: null,
+    // });
+    logout();
     navigate("/login");
   };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+
       <AppBar position="fixed" open={open} sx={{ backgroundColor: "" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box sx={{ flexGrow: 1 }}>
@@ -320,15 +343,20 @@ export default function MiniDrawer() {
           </Typography>
           {/* โปรไฟล์ */}
           <Box>
-            {user && (
+            {/* {dataUser && (
+              <>
+                <Button>{dataUser.payLoad.user.username}</Button>
+              </>
+            )} */}
+            {dataUser && (
               <NavDropdown
                 title={
-                  <Tooltip title={user.username} placement="left" arrow>
+                  <Tooltip title={dataUser.payLoad.user.username} placement="left" arrow>
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       {/*                 
                 <Avatar alt={user.username.slice(0,1).toUpperCase()} src="a" /> */}
                       <Avatar sx={{ bgcolor: deepOrange[500] }}>
-                        {user.username.slice(0, 1).toUpperCase()}
+                        {dataUser.payLoad.user.username.slice(0, 1).toUpperCase()}
                       </Avatar>
                     </IconButton>
                   </Tooltip>
@@ -495,7 +523,7 @@ export default function MiniDrawer() {
           ))}
         </List>
         <Divider />
-        <SettingBar handleClick={handleClick} open2={open2}/>
+        <SettingBar handleClick={handleClick} open2={open2} />
       </Drawer>
 
       <Modal
