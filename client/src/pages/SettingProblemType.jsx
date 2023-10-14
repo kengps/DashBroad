@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import TableB from 'react-bootstrap/Table';
 import { AccordionUI } from '../components/Menu/Index';
 import { useStore } from '../service/zustand/storeCase';
-
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { SettingOutlined } from '@ant-design/icons';
-import { Button, Modal, Table } from 'antd';
+import { Button, Modal, Table, Typography } from 'antd';
 import SettingProblem from '../components/SettingProblem';
+
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 const SettingProblemType = ({ showModals }) => {
 
   const { fetchData, fetchTypesName } = useStore()
@@ -154,13 +156,28 @@ const SettingProblemType = ({ showModals }) => {
 
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <br />
       <div>
 
-        <h4>ประเภทปัญหา</h4>
+        <Typography style={{ display: 'grid', gridTemplateColumns: '1fr auto', marginTop: 60 }}>
+          <Typography.Title level={3} style={{ textAlign: 'center' }}>ประเภทปัญหา</Typography.Title>
+          <Button
+            size='large'
+            type="primary"
+            onClick={showModal1}
+            variant="warning"
+            style={{
+              alignItems: "center",
+              gap: "10px",
+              marginLeft: "5px",
+              // backgroundColor: '#ffc107'
+            }}
+          >
+            <AddBoxOutlinedIcon
+              style={{ display: "flex", justifyContent: "center" }}
+            />
+          </Button>
+        </Typography>
+        {/* 
         <Button
           type="primary"
           onClick={showModal1}
@@ -175,7 +192,7 @@ const SettingProblemType = ({ showModals }) => {
           <SettingOutlined
             style={{ display: "flex", justifyContent: "center" }}
           />
-        </Button>
+        </Button> */}
         {/* <Button onClick={showModal1}>Click</Button> */}
       </div>
       {/* <Table striped bordered hover>

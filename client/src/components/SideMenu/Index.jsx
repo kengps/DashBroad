@@ -121,6 +121,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+
   const { user } = useSelector((state) => ({ ...state }));
 
 
@@ -132,7 +133,7 @@ export default function MiniDrawer() {
 
 
   const dataUser = storeAuth((state) => state.user)
- 
+
 
 
 
@@ -141,7 +142,7 @@ export default function MiniDrawer() {
 
   const isLoginLine = localStorage.getItem("loginLine");
 
-  console.log(isLoginLine);
+
 
 
   const navigate = useNavigate();
@@ -230,6 +231,7 @@ export default function MiniDrawer() {
     password: "",
   });
   const showModal = (id) => {
+
     setIsModalOpen(true);
 
     setValues({ ...values, id: id });
@@ -242,7 +244,8 @@ export default function MiniDrawer() {
       setIsPasswordEmpty(true);
       return;
     }
-    
+
+
 
     await resetPasswords(dataUser.token, values.id, { values })
 
@@ -286,8 +289,7 @@ export default function MiniDrawer() {
     setValues({ ...values, [e.target.name]: e.target.value });
     setPassword(e.target.value);
     setIsPasswordEmpty(false);
-    console.log(e.target.name);
-    console.log(e.target.value);
+
 
 
   };
@@ -365,7 +367,7 @@ export default function MiniDrawer() {
               >
                 {!isLoginLine && (<NavDropdown.Item
                   style={navDropdownItemStyle}
-                  onClick={() => showModal(user?.id)}
+                  onClick={() => showModal(dataUser?.payLoad.user.id)}
                 >
 
                   <RiLockPasswordLine />
@@ -480,11 +482,11 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           {[
-            {
-              label: "ตารางวันทำงาน",
-              key: "/dashboard/work",
-              icon: <GridOnIcon />,
-            },
+            // {
+            //   label: "ตารางวันทำงาน",
+            //   key: "/dashboard/work",
+            //   icon: <GridOnIcon />,
+            // },
             {
               label: "ตารางวันทำงาน",
               key: "/dashboard/outstanding",

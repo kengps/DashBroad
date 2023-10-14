@@ -18,6 +18,7 @@ import FadeIn from "react-fade-in";
 import Lottie from "react-lottie";
 import Lottie2 from "react-lottie";
 import WaitLoading from '../LoadingAndRedirect/WaitLoading'
+import { storeAuth } from '../../service/store/storeZustand'
 
 
 
@@ -49,6 +50,7 @@ const LineLiff = () => {
     const dispatch = useDispatch();
     const redirect = useNavigate();
 
+    
 
 
     useEffect(() => {

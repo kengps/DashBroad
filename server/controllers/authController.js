@@ -50,6 +50,7 @@ exports.loggedLine = async (req, res) => {
 
   try {
     const ip = await getIP(req)
+    
     const { userId, displayName, pictureUrl } = req.body
 
     let data = {

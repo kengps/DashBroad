@@ -47,6 +47,8 @@ export const useStore = create((set) => ({
   },
   dataResetpassword: [],
   resetPasswords: async (authtoken, id, values) => {
+    console.log("🚀  file: storeCase.js:50  id:", id)
+    console.log("🚀  file: storeCase.js:50  values:", values)
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_REACT_APP_API}/user/${id}`,
@@ -58,6 +60,7 @@ export const useStore = create((set) => ({
           },
         }
       );
+    
 
 
       set({ dataResetpassword: response });

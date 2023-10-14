@@ -23,7 +23,6 @@ import Button1 from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 
 
-import { useSelector } from "react-redux";
 import Register from "../../components/Register/Register";
 
 import SettingProblem from "../../components/SettingProblem";
@@ -39,10 +38,13 @@ import '../../CSS/Responsive.css';
 import { RiDeleteBin7Line, VscLock, VscUnlock } from 'react-icons/all';
 
 
-const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) => {
 
-    const { user } = useSelector((state) => state);
-    const { role } = user;
+const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole, dataUser }) => {
+
+    // const { user } = useSelector((state) => state);
+    // const { role } = user;
+
+
 
 
     //* Modal สำหรับแก้ไขข้อมูล user
@@ -92,7 +94,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                 <div>
                     <Typography.Title level={2}>
                         สมาชิกทั้งหมด
-                        {role !== "user" && (
+                        {dataUser.payLoad.user.role !== "user" && (
                             <Tooltip title="เพิ่มสมาชิก" placement="right" arrow>
                                 <Button1
                                     onClick={showModal}
@@ -113,7 +115,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                 </div>
 
                 {/* //todo จะทำการตรวจสอบว่าหากเป็น Dev จะสามารถแก้ไขการจัดการได้ */}
-                {role === "dev" && (
+                {dataUser.payLoad.user.role === "dev" && (
                     <Table striped bordered hover responsive="sm">
                         <thead className="" style={{ fontSize: '16px', fontWeight: 'bolder', textAlign: 'center' }}>
                             <tr className="table-secondary ">
@@ -222,7 +224,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                                                 className="me-1 mt-1"
                                                 onClick={() => handleClick(item._id)}
                                             >
-                                              <RiDeleteBin7Line/>
+                                                <RiDeleteBin7Line />
                                             </Button>
 
                                             <Button1
@@ -246,7 +248,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole }) =
                     </Table>
                 )}
                 {/* //todo จะทำการตรวจสอบว่าหากไม่ได้เป็น Dev จะไม่สามารถแก้ไขการจัดการได้ */}
-                {role === "admin" && (
+                {dataUser.payLoad.user.role === "admin" && (
                     <Table striped bordered hover responsive="sm">
                         <thead>
                             <tr>

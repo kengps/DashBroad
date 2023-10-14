@@ -1,17 +1,18 @@
 import { Box, Container, Grid, Paper, styled } from '@mui/material';
-import { Button, Checkbox, Col, Modal, Row, Table } from 'antd'; // นำเข้าคอมโพเนนต์ Table จาก antd
+import { Button, Checkbox, Col, Modal, Row, Table, Typography } from 'antd'; // นำเข้าคอมโพเนนต์ Table จาก antd
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import sweetAlert from "sweetalert2";
 import { useStoreSetting } from '../service/zustand/storeCase';
-
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 import { DeleteOutlined } from '@ant-design/icons';
 import { AccordionUI } from '../components/Menu/Index';
 import SettingProblem from '../components/SettingProblem';
 import InputCreateEditor from '../views/settingMunuBar/InputCreateEditor';
 import SettingProblemType from './SettingProblemType';
+import { storeAuth } from '../service/store/storeZustand';
 
 
 
@@ -27,6 +28,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SettingEditor = () => {
+
+
 
 
   const [textEmpty, setTextEmpty] = useState(false)
@@ -53,6 +56,13 @@ const SettingEditor = () => {
   const { getEditors, changeEditor, resChangeEditor, deleteEditor, createEditor } = useStoreSetting();
   const data = useStoreSetting((state) => state.resEditor.resultData);
 
+
+  
+  const username = storeAuth((state) => state.user)
+  // const getUser = username.payLoad.user.username;
+  // console.log("🚀  file: SettingEditor.jsx:62  username2:", getUser)
+  
+  
   useEffect(() => {
     getEditors();
 
@@ -246,7 +256,7 @@ const SettingEditor = () => {
       if (result.isConfirmed) {
         //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
 
-        await changeEditor(user.token, value)
+        await changeEditor(username.token, value)
 
         const notify =
           resChangeEditor.select === true
@@ -256,7 +266,7 @@ const SettingEditor = () => {
 
         toast.success(notify);
 
-        getEditors(user.token);
+        getEditors(username.token);
       }
     } catch (error) {
 
@@ -283,13 +293,33 @@ const SettingEditor = () => {
           <Grid item xs={12} md={6} lg={6}>
             <Item>
 
-              <Box component="span" sx={{ p: 2 }}>
-                <Row justify="end" style={{ marginTop: "50px", marginBottom: '5px' }}>
+              <Typography style={{ display: 'grid', gridTemplateColumns: '1fr auto', marginTop: 60 }}>
+                <Typography.Title level={3} style={{ textAlign: 'center' }}>ผู้แก้ไข</Typography.Title>
+                <Button
+                  size='large'
+                  type="primary"
+                  onClick={showModal}
+                  variant="warning"
+                  style={{
+                    alignItems: "center",
+                    gap: "10px",
+                    marginLeft: "5px",
+                    // backgroundColor: '#ffc107'
+                  }}
+                >
+                  <AddBoxOutlinedIcon
+                    style={{ display: "flex", justifyContent: "center" }}
+                  />
+                </Button>
+              </Typography>
 
-                  <h4>ประเภทปัญหา</h4>
+
+
+              <Box component="span" sx={{ p: 2 }}>
+                <Row justify="end">
                   <Col>
-                    <Button onClick={showModal} type="primary">เพิ่ม</Button>
-                   
+
+
                   </Col>
                 </Row>
                 <Table
@@ -320,7 +350,7 @@ const SettingEditor = () => {
 
           <Grid item xs={12} md={6} lg={6}>
             <Item>
-              <SettingProblemType showModals={showModal1}/>
+              <SettingProblemType showModals={showModal1} />
             </Item>
           </Grid>
 

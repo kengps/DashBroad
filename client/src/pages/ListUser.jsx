@@ -6,9 +6,9 @@ import sweetAlert from "sweetalert2";
 
 import { toast } from "react-toastify";
 
+import { storeAuth } from "../service/store/storeZustand";
 import { useStore } from "../service/zustand/storeCase";
 import TableUser from "../views/users/TableUser";
-
 
 
 const ListUser = () => {
@@ -20,12 +20,18 @@ const ListUser = () => {
 
   const { user } = useSelector((state) => state);
 
+  const dataUser = storeAuth((state) => state.user)
+
+
+
+
+
   const resChangStatus = useStore((state) => state.resChangStatus);
 
 
 
   useEffect(() => {
-    loadData(user.token);
+    loadData(dataUser.token);
 
   }, []);
 
@@ -40,7 +46,6 @@ const ListUser = () => {
   //! สามารถเขียนรวมได้ใน if (result.isConfirmed) ใน func handleClick ได้นะ
   const confirmDelete = async (id) => {
     const res = await deleteUsers(id)
-    console.log(`ได้อะไรจากการ return${res}`);
     sweetAlert.fire("แจ้งเตือน", res, "success");
     loadData();
     // loadUser(user.token);
@@ -63,7 +68,6 @@ const ListUser = () => {
         await confirmDelete(id);
       }
     } catch (error) {
-      console.log(err);
     }
   };
 
@@ -76,7 +80,6 @@ const ListUser = () => {
 
   //* function สำหรับการเปิด-ปิด user
   const handleOnchange = async (e, id) => {
-    console.log(`checked = ${e.target.checked}`);
     //หากใช้ checkbox ให้ใช่ e.target.checked
     //หากใช้ switch ให้ใช่ e
 
@@ -92,12 +95,11 @@ const ListUser = () => {
         icon: "warning",
         showCancelButton: true,
       });
-      console.log("ยืนยันการลบ", result);
       //todo ถ้ากดปุ่ม OK หรือ ตกลง จะส่ง request ไปที่  api เพื่อลบข้อมูล
       if (result.isConfirmed) {
         //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
 
-        await changStatusUser(user.token, value)
+        await changStatusUser(dataUser.token, value)
       }
 
       // สามารถเข้าถึงค่าที่คืนมาจาก changStatusUser ได้เลยโดยใช้ตัวแปร resChangStatus
@@ -110,9 +112,8 @@ const ListUser = () => {
 
       toast.success(notify);
 
-      loadData(user.token);
+      loadData(dataUser.token);
     } catch (error) {
-      console.log(error);
     }
 
 
@@ -130,14 +131,13 @@ const ListUser = () => {
       };
 
       //changRole คือ function การยิง API
-      await changRoleUser(user.token, value)
+      await changRoleUser(dataUser.token, value)
 
       toast.success("ทำการแก้ไขระดับสำเร็จ");
 
-      loadData(user.token);
+      loadData(dataUser.token);
 
     } catch (error) {
-      console.log(error);
     }
 
   };
@@ -146,7 +146,7 @@ const ListUser = () => {
   return (
     <>
 
-      <TableUser value={userList} handleOnchange={handleOnchange} handleClick={handleClick} handleOnchangeRole={handleOnchangeRole} />
+      <TableUser value={userList} handleOnchange={handleOnchange} handleClick={handleClick} handleOnchangeRole={handleOnchangeRole} dataUser={dataUser} />
 
     </>
 

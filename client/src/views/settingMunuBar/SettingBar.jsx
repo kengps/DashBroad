@@ -35,13 +35,13 @@ const SettingBar = ({ handleClick, open2 }) => {
                         </ListItemIcon>
                         <ListItemText primary="ตั้งค่าผู้แก้ไข" />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }} component={Link}
+                    {/* <ListItemButton sx={{ pl: 4 }} component={Link}
                         to="/dashboard/create-type">
                         <ListItemIcon>
                             <StarBorder />
                         </ListItemIcon>
                         <ListItemText primary="ตั้งค่าประเภทปัญหา" />
-                    </ListItemButton>
+                    </ListItemButton> */}
                 </List>
             </Collapse>
         </List>

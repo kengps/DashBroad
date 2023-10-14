@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { currentUser, login } from '../../api/auth';
-
+import { currentUser, login, loginLine } from '../../api/auth';
 
 
 const store = (set) => ({
@@ -21,6 +20,23 @@ const store = (set) => ({
 
         try {
             const response = await login(value)
+            const userData = response.data
+            set({ isAuthenticated: true, user: userData });
+
+
+
+            return response.data
+
+        } catch (error) {
+            const response = error.response
+            set({ errorRes: response })
+
+        }
+    },
+    loginLine: async (value) => {
+
+        try {
+            const response = await loginLine(value)
             const userData = response.data
             set({ isAuthenticated: true, user: userData });
 

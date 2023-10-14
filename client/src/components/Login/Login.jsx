@@ -1,31 +1,23 @@
 import { LoadingButton } from "@mui/lab";
 import { Stack } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SweetAl from "sweetalert2";
-import { login, loginFacebook } from "../../api/auth";
+import { loginFacebook } from "../../api/auth";
 
-import { Space } from 'antd';
 import { EncryptStorage } from 'encrypt-storage';
 import PasswordInput from "../../views/login/PasswordInput";
 import RememberMeCheckbox from "../../views/login/RememberMeCheckbox";
 import UsernameInput from "../../views/login/UsernameInput";
 
-import { SiFacebook, SiLine } from 'react-icons/all';
+import { SiLine } from 'react-icons/all';
 //facebook
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 //import FacebookLogin from 'react-facebook-login';
 
-import {
-  LoginSocialFacebook
-} from 'reactjs-social-login';
 
 // CUSTOMIZE ANY UI BUTTON
-import {
-  FacebookLoginButton
-} from 'react-social-login-buttons';
 //Line Liff
 import liff from '@line/liff';
 //google
@@ -41,8 +33,7 @@ const Login = () => {
   const { errUser, setErrUser } = useState(null)
 
 
-  const { user } = useSelector((state) => ({ ...state }));
-
+  
   const [rememberMe, setRememberMe] = useState(false);
   const encryptStorage = new EncryptStorage('SECRET-KEY')
 
@@ -52,10 +43,14 @@ const Login = () => {
   };
 
   const loginStore = storeAuth((state) => state.login)
-  const { updateUserInfo, errorRes, login,errorRes2 } = storeAuth();
+  const dataUser = storeAuth((state) => state.user)
+ 
+
+  const { updateUserInfo, errorRes, login, errorRes2 } = storeAuth();
 
   //login Line Liff
   useEffect(() => {
+
     liff.init({ liffId: `${import.meta.env.VITE_LIFF_ID}` })
 
   }, [])
@@ -101,8 +96,18 @@ const Login = () => {
 
   useEffect(() => {
     const checkAuthStatus = () => {
+
       const token = localStorage.getItem("token");
       const expirationDate = localStorage.getItem("expirationDate");
+
+
+      // if (!dataUser) {
+      //   localStorage.removeItem("token");
+      //   localStorage.removeItem("expirationDate");
+      //   console.log('====================================');
+      //   console.log('ทำการลบ store แล้ว');
+      //   console.log('====================================');
+      // }
 
       if (token && expirationDate) {
         const currentTime = new Date().getTime();
@@ -333,7 +338,7 @@ const Login = () => {
 
 
 
-{/* 
+        {/* 
         <FacebookLogin
           appId={`3595550097394812`}
           autoLoad={false}
