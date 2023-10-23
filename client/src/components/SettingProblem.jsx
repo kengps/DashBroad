@@ -54,7 +54,7 @@ const SettingProblem = ({ onCloseModal }) => {
   const platforms = data.filter((item) => typeProb[2].includes(item.data.main.typeName));
   const platformsName = new Set(platforms.map((item) => { return item.data.main.sub.name }))
   const newPlatforms = [...platformsName]
-  console.log('problemType', newPlatforms);
+  // console.log('problemType', newPlatforms);
 
 
 
@@ -93,8 +93,8 @@ const SettingProblem = ({ onCloseModal }) => {
 
   const inputValue = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(event.target.value);
-     console.log(event);
+    // console.log(event.target.value);
+    //  console.log(event);
   };
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const SettingProblem = ({ onCloseModal }) => {
 
   const submitForm = async (e) => {
     try {
-      console.log("➡️  file: SettingProblem.jsx:75  values:", values)
+      // console.log("➡️  file: SettingProblem.jsx:75  values:", values)
       const dataToSend2 = {
         data: {
           type: {
@@ -135,7 +135,7 @@ const SettingProblem = ({ onCloseModal }) => {
           }
         }
       };
-      console.log("➡️  file: SettingProblem.jsx:137  dataToSend:", dataToSend)
+      // console.log("➡️  file: SettingProblem.jsx:137  dataToSend:", dataToSend)
 
     
       e.preventDefault();
@@ -164,7 +164,7 @@ const SettingProblem = ({ onCloseModal }) => {
   const indicesArray = uniqueTypess.map((_, index) => index);
 
   // แสดงผลอาร์เรย์ที่มีจำนวน index ในรูปแบบ [0, 1, 2, ...]
-  console.log('Indices array:', indicesArray);
+  // console.log('Indices array:', indicesArray);
 
   return (
     <div className="from-control">

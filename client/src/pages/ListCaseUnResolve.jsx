@@ -10,6 +10,7 @@ import Pagination from "../views/paginate/Pagination";
 import SearchCase from "../views/allCaseAndPendingCase/SearchCase";
 import CasePending from "../views/allCaseAndPendingCase/CasePending";
 import { useStoreCase, useStoreSetting } from "../service/zustand/storeCase";
+import { storeAuth } from "../service/store/storeZustand";
 
 // import Pagination from "react-paginate";
 
@@ -19,6 +20,7 @@ const ListCaseUnResolve = () => {
 
 
   const { user } = useSelector((state) => ({ ...state }))
+  const dataUser = storeAuth((state) => state.user)
 
   const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase } = useStoreCase()
   const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
@@ -94,7 +96,7 @@ const ListCaseUnResolve = () => {
       let values = {
         id: id,
         status: e,
-        closeCaseBy: user.username
+        closeCaseBy: dataUser.username
       };
       await changeStatusCase(values)
       notiAll();
@@ -190,7 +192,7 @@ const ListCaseUnResolve = () => {
         icon: "warning",
         showCancelButton: true,
       });
-      console.log("ยืนยันการลบ", result);
+      // console.log("ยืนยันการลบ", result);
       //todo ถ้ากดปุ่ม OK หรือ ตกลง จะส่ง request ไปที่  api เพื่อลบข้อมูล
       if (result.isConfirmed) {
         //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
@@ -260,7 +262,7 @@ const ListCaseUnResolve = () => {
   let currentTime = moment().utcOffset("+07:00").format("LT");
   let eveningTime = moment("8:32 PM", "h:mm A");
 
-  console.log(currentTime);
+  // console.log(currentTime);
   return (
     <div className="mt-5">
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

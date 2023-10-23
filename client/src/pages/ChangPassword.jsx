@@ -14,7 +14,7 @@ const ChangPassword = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = (id) => {
-    console.log(id);
+    // console.log(id);
     setIsModalOpen(true);
     setValues({ ...values, id: id });
   };
@@ -23,7 +23,7 @@ const ChangPassword = () => {
     setIsModalOpen(false);
     resetPassword1(user.token, values.id, { values })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.log(err);

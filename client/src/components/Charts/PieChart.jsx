@@ -20,7 +20,7 @@ const PieChart = () => {
       return acc;
     }, {});
 
-    console.log("Pie ได้ชื่อมาหรือไม่", groupedData);
+    // console.log("Pie ได้ชื่อมาหรือไม่", groupedData);
     const PieKeys = Object.keys(groupedData);
     const PieValue = Object.values(groupedData);
 

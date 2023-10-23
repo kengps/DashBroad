@@ -66,7 +66,7 @@ const Login = () => {
     //console.log('res', response);
 
     await loginFacebook(response).then((res) => {
-      console.log('loginFacebook', res);
+      // console.log('loginFacebook', res);
       dispatch({
         type: "LOGIN",
         payload: {
@@ -113,7 +113,7 @@ const Login = () => {
         const currentTime = new Date().getTime();
 
 
-        console.log('เวลาปัจจุบัน', currentTime);
+        // console.log('เวลาปัจจุบัน', currentTime);
         if (currentTime > expirationDate) {
           // JWT หมดอายุแล้ว ลบ localStorage
           localStorage.removeItem("token");
@@ -170,7 +170,7 @@ const Login = () => {
     try {
       const response = await loginStore(value)
 
-      console.log("➡️  file: Login.jsx:165  response:", response)
+      // console.log("➡️  file: Login.jsx:165  response:", response)
 
 
       if (rememberMe) {

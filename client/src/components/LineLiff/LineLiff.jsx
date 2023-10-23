@@ -95,6 +95,7 @@ const LineLiff = () => {
     const getData = async () => {
         try {
             const getProfile = await liff.getProfile();
+            console.log("🚀  file: LineLiff.jsx:98  getProfile:", getProfile)
 
             await loginLine(getProfile).then((res) => {
                 dispatch({

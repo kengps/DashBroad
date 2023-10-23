@@ -51,7 +51,7 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                                     <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
                                         {data.detail}
                                     </td>
-                                    <td>{data.campgame}</td>
+                                    <td>{data.campgame.length === 0 ? <Tag color="volcano"><i>ไม่ระบุ</i></Tag> : <>{data.campgame}</>}</td>
                                     <td>{data.recorder}</td>
                                     <td>{data.editors}</td>
                                     <td>

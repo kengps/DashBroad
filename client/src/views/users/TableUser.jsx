@@ -227,7 +227,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole, dat
                                                 <RiDeleteBin7Line />
                                             </Button>
 
-                                            <Button1
+                                            {/* <Button1
                                                 onClick={showModal1}
                                                 variant="warning"
                                                 style={{
@@ -239,7 +239,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole, dat
                                                 <SettingOutlined
                                                     style={{ display: "flex", justifyContent: "center" }}
                                                 />
-                                            </Button1>
+                                            </Button1> */}
                                         </Space>
                                     </td>
                                 </tr>
@@ -309,7 +309,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole, dat
                     <Register />
                 </Card>
             </Modal>
-            <Modal
+            {/* <Modal
                 title={
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <span style={{ marginRight: "8px" }}>เพิ่มประเภท</span>
@@ -322,7 +322,7 @@ const TableUser = ({ value, handleOnchange, handleClick, handleOnchangeRole, dat
                 footer={null}
             >
                 <SettingProblem onCloseModal={() => setIsModalOpen1(false)} />
-            </Modal>
+            </Modal> */}
 
         </div>
     )

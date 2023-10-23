@@ -22,8 +22,4 @@ router.post('/newdata-detail', createNewDatDetail)
 router.get('/getnewdata-detail', getNewDatDetail)
 
 
-
-//router.get('/getnewdata-detail', getNewDatDetail)
-
-
 module.exports = router;

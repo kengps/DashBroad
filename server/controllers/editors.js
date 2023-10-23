@@ -91,7 +91,7 @@ exports.createNewDatDetail = async (req, res) => {
     const { name, active, detail } = req.body;
 
     const detailName = req.body.detail[0].name
-    console.log("🚀  file: editors.js:94  detailName:", detailName)
+
 
     const detailName2 = req.body.detail.map((item) => { return item.name })
 
@@ -109,16 +109,8 @@ exports.createNewDatDetail = async (req, res) => {
 
         const existingData = await newDatDetail.findOne({ name: name }).exec();
 
-        if (existingData) {
-            existingData.detail.push({
-                name: req.body.detail[0].name,
-                active: true,
-                upper: existingData._id
-            })
-            const result = await existingData.save()
-            res.status(200).json({ message: 'Save Data successfully', result })
-        } else {
-
+        if (!existingData) {
+            //ถ้ายังไม่มี name
             const newData2 = new newDatDetail({
                 _id: newData._id,
                 name: newData.name,
@@ -130,7 +122,19 @@ exports.createNewDatDetail = async (req, res) => {
                 }))
             })
             const result2 = await newData2.save()
-            res.status(200).json({ message: 'Save Data successfully', result2 })
+            console.log("🚀  file: editors.js:135  result2:", result2)
+            res.status(200).json({ message: 'Save UpdateData successfully', result2 })
+        } else {
+            //ถ้ามี name แล้ว จะให้อัปเดตลงไปที่ name ตัวเดิม โดยนำ detail.name เข้าไปใส่ใน detail 
+            existingData.detail.push({
+                name: req.body.detail[0].name,
+                active: true,
+                upper: existingData._id
+            })
+            const result = await existingData.save()
+            console.log("🚀  file: editors.js:119  result:", result)
+
+            res.status(200).json({ message: 'Save Data successfully', result })
         }
 
     } catch (error) {

@@ -60,16 +60,16 @@ const Doughnuts = () => {
   let sumTotal = valueArr2.reduce(function (prev, curr) {
     return prev + curr;
   }, 0);
-  console.log("labelArr2", labelArr2);
+  // console.log("labelArr2", labelArr2);
 
-  console.log("valueArr2", valueArr2);
-  console.log("sumTotal", sumTotal);
+  // console.log("valueArr2", valueArr2);
+  // console.log("sumTotal", sumTotal);
 
   function calculateTotal() {
     let sum = 0;
     for (let i = 0; i < valueArr2.length; i++) {
       sum += valueArr2[i];
-      console.log("ผลรวม", sum);
+      // console.log("ผลรวม", sum);
     }
     return sum;
   }

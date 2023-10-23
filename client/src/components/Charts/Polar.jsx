@@ -13,7 +13,7 @@ const Polar = () => {
       return acc;
     }, {});
 
-    console.log("Polar ได้ชื่อมาหรือไม่", groupedData);
+    // console.log("Polar ได้ชื่อมาหรือไม่", groupedData);
 
     const options = {
       plugins: {
@@ -49,17 +49,19 @@ const Polar = () => {
       datasets: [
         {
           hoverBackgroundColor: [
-            "rgba(54, 162, 235, 1)",
+            "rgba(39, 174, 96 , 1)",
             "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
           ],
           hoverBorderColor: "#666666",
           label: "# จำนวน",
           data: Object.values(groupedData),
           backgroundColor: [
-            "rgba(54, 162, 235, 0.2)",
+            "rgba(39, 174, 96 , 0.2)",
             "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
           ],
-          borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+          borderColor: ["rgba(39, 174, 96 , 1)", "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)",],
           borderWidth: 1,
         },
       ],

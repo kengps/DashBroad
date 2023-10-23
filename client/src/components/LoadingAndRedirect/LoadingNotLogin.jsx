@@ -5,7 +5,9 @@ import { storeAuth } from "../../service/store/storeZustand";
 const LoadingNotLogin = () => {
   const navigate = useNavigate();
   let [count, setCount] = useState(5); //กำหนด 3 = 3 วิ
-  // const { user } = storeAuth();
+
+  const { user } = storeAuth();
+  const username = storeAuth((state) => state.user)
 
   useEffect(() => {
 
@@ -16,6 +18,8 @@ const LoadingNotLogin = () => {
 
     const interval = setInterval(() => {
       setCount((currentCount) => --currentCount);
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationDate");
     }, 1000);
     count === 0 && navigate("/login");
     return () => clearInterval(interval);

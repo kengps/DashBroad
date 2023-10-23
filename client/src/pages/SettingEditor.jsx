@@ -238,8 +238,8 @@ const SettingEditor = () => {
     }));
 
   const onChange = async (e, id, username) => {
-    console.log(`checked = ${e.target.checked}`);
-    console.log(`username = ${username}`);
+    // console.log(`checked = ${e.target.checked}`);
+    // console.log(`username = ${username}`);
     const checked = e.target.checked
     const value = {
       id: id,

@@ -65,7 +65,7 @@ const BarChart = () => {
 
     const problemTypes = [...new Set(value.map((item) => item.campgame))];
 
-    console.log("All Problem Types:", problemTypes);
+    // console.log("All Problem Types:", problemTypes);
 
     const problemsByMonth = value.reduce((acc, curr) => {
       const date = moment(curr.createdAt).locale("th");
@@ -81,7 +81,7 @@ const BarChart = () => {
       return acc;
     }, {});
 
-    console.log("Problems by Month:", problemsByMonth);
+    // console.log("Problems by Month:", problemsByMonth);
 
     const filteredProblemTypes = problemTypes.filter((problemType) => {
       if (problemType !== "" && problemType.trim() !== "") {
@@ -95,7 +95,7 @@ const BarChart = () => {
       return false;
     });
 
-    console.log("Filtered Problem Types:", filteredProblemTypes);
+    // console.log("Filtered Problem Types:", filteredProblemTypes);
 
     const backgroundColor = backgroundColor1;
 

@@ -40,6 +40,7 @@ exports.register2 = async (req, res) => {
       username,
       password,
     });
+    
     user.password = await bcrypt.hash(password, salt);
 
 

@@ -13,9 +13,6 @@ const RedisStore = require('connect-redis').default
 
 const http = require('http').createServer(app);
 
-
-
-
 //router
 const caseRouter = require('./routers/caseRoute')
 const ReAndLogRouter = require('./routers/LoginAndRegister')
@@ -26,6 +23,9 @@ const editorRouter = require('./routers/editors');
 
 
 const { swaggerSpec, swaggerUi } = require('./configs/swagger/swagger');
+
+//cron
+const cronStart = require('./services/cron');
 
 
 const port = process.env.PORT || 3000
@@ -42,7 +42,7 @@ connectWithRetry = () => {
         useNewUrlParser: true,
         useUnifiedTopology: false
     }).then(() => console.log('Connected! to mongoose successfully'))
-        .catch((err) => { setTimeout(connectWithRetry, 5000) })
+        .catch((err) => { setTimeout(connectWithRetry, 5000), err })
 }
 connectWithRetry()
 
@@ -61,7 +61,7 @@ const sendAPIRequest = async (ipAddress) => {
 
 app.get('/', async (req, res) => {
     res.send('<h1>Im the Flash!!!</h1>')
-
+    
 })
 //swagger
 // //  เชื่อมต่อ socket
@@ -110,6 +110,10 @@ app.use('/api', userRouter)
 app.use('/api', LoginAuth)
 app.use('/api', editorRouter)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+//start cron
+cronStart.start();
+
 
 
 

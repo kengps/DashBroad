@@ -31,9 +31,9 @@ const Work = () => {
    
   const showUserEnable = userList.filter((item) => {return item.enabled === true})
 
-  console.log('==============showUserEnable======================');
-  console.log(showUserEnable);
-  console.log('====================================');
+  // console.log('==============showUserEnable======================');
+  // console.log(showUserEnable);
+  // console.log('====================================');
   return (
     <div style={{ paddingTop: "75px" }}>
       <Helmet>

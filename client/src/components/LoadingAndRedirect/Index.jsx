@@ -11,7 +11,14 @@ const IndexRouter = ({ children }) => {
   const { isAuthenticated, user } = storeAuth();
 
 
-  console.log("➡️  file: Index.jsx:12  user: >", user)
+
+  // if(!user.token) {
+  //    setTimeout(() => {
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("expirationDate");
+  //    },2000)
+  //   }
+  //  console.log("➡️  file: Index.jsx:12  user: >", user.token)
   //console.log("➡️  file: Index.jsx:10  isAuthenticated: > ", isAuthenticated)
 
   const [ok, setOk] = useState(false);

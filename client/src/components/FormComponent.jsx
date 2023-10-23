@@ -60,11 +60,13 @@ const FormComponent = () => {
   const data2 = useStore((state) => state.typesName)
 
 
+
   const newDataType = data.map((item) => { return item.data.type.types })
 
   const newDataType2 = data2.map((item) => { return item.data.main.typeName })
 
   const typeProb = ([...new Set(newDataType)]).filter(Boolean);
+  
 
 
   const typeProb2 = ([...new Set(newDataType2)]).filter(Boolean);
@@ -153,6 +155,7 @@ const FormComponent = () => {
       // const res = await createCase(values)
       if (values) {
         const res = await createCase(values)
+        console.log("🚀  file: FormComponent.jsx:158  res:", res)
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
 

@@ -29,7 +29,7 @@ export const useStore = create((set) => ({
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/createcase`, data);
       set({ response: response.data });
-      return response.data
+       return response.data
     } catch (error) {
       console.error('Error while posting to API:', error);
       // Handle the error as needed

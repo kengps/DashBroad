@@ -38,8 +38,9 @@ const CasePending = ({ data,
   showDrawer,
   onClose,
   textEmpty,
-  
+
   open, setSearch, setSelectedCase }) => {
+
 
   return (
 
@@ -100,9 +101,14 @@ const CasePending = ({ data,
                 <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
                   {data.detail}
                 </td>
-                <td>{data.campgame}</td>
+                <td>{data.campgame.length === 0 ? <Tag color="volcano"><i>ไม่ระบุ</i></Tag> : <>{data.campgame}</>}</td>
                 <td>{data.recorder}</td>
-                <td>{data.editors}</td>
+
+
+                <td>{data.editors.length !== 0 ? data.editors : "@pr0jectsp"}</td>
+
+
+
                 <td>
                   {moment(data.createdAt).locale("th").format("l LT")} น.
                 </td>
@@ -165,14 +171,14 @@ const CasePending = ({ data,
                       >
                         <div>
                           <p className="d-block m-0">
-                            "<strong> เคส:</strong> {selectedCase.caseId}
+                            "<strong>{"[เคส]: "}</strong> {selectedCase.caseId}
                           </p>
                           <p className="d-block m-0">
                             <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
                             {selectedCase.reporter}
                           </p>
                           <p className="d-block m-0">
-                            <strong>ประเภทปัญหา: </strong>
+                            <strong>{"[ประเภทปัญหา]: "} </strong>
                             {selectedCase.problemDetail}
                           </p>
                           <p
@@ -182,19 +188,19 @@ const CasePending = ({ data,
                               maxWidth: "30ch",
                             }}
                           >
-                            <strong>รายละเอียด: </strong>
+                            <strong>{"[รายละเอียด]: "}</strong>
                             {selectedCase.detail}
                           </p>
                           <p className="d-block m-0 font-weight-bold">
-                            <strong>ค่ายเกม:</strong> {selectedCase.campgame}
+                            <strong>{"[ค่ายเกม]: "}</strong> {selectedCase.campgame.length === 0 ? <> - </> : <>{selectedCase.campgame}</>}
                           </p>
                           <p className="d-block m-0">
-                            <strong> ผู้ลงเคส: </strong>
+                            <strong> {"[ผู้ลงเคส]: "}</strong>
                             {selectedCase.recorder}
                           </p>
                           <p className="d-block m-0">
-                            <strong> ผู้แก้ไข: </strong>
-                            {selectedCase.editors} "
+                            <strong> {"[ผู้แก้ไข]: "} </strong>
+                            {selectedCase.editors.length !== 0 ? selectedCase.editors : "@pr0jectsp"} "
                           </p>
                         </div>
                         <Button
@@ -221,7 +227,7 @@ const CasePending = ({ data,
                       name="detail"
                       onChange={handleChangeDetail}
                     />
-                    {textEmpty && (<span style={{color: 'red'}}>กรุณากรอกรายละเอียด</span>)}
+                    {textEmpty && (<span style={{ color: 'red' }}>กรุณากรอกรายละเอียด</span>)}
                   </Modal>
                 </td>
               </tr>
@@ -235,12 +241,13 @@ const CasePending = ({ data,
             <Card ref={textRef}>
               {/* <p>══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p> */}
               <p>
-                {" "}
+                {/* {" "}
                 {moment(currentTime, "h:mm A").isAfter(eveningTime) ? (
                   <p> ══════════ สรุปเคสประจำวันกะดึก ════════════</p>
                 ) : (
                   <p>══════════ สรุปเคสประจำวันกะเช้า ════════════</p>
-                )}
+                )} */}
+                 <p> ══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p>
               </p>
               <p>
                 <p>
@@ -254,7 +261,7 @@ const CasePending = ({ data,
                   </p>
                 </p>
               </p>
-              <p>═══════════════ (▰˘◡˘▰)════════════════</p>
+              <p>══════════════ 𝔹𝕀𝕆𝔾𝔸𝕄𝕀ℕ𝔾 ═══════════════</p>
               <Button onClick={handleCopy2} className="btn-primary float-end">
                 <CopyOutlined />
               </Button>

@@ -12,7 +12,7 @@ const navDropdownItemStyle = {
 const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newProbType2 }) => {
 
     const data = useStore((state) => state.typesName)
-    console.log("➡️  file: ProblemInput.jsx:15  data:", data)
+    // console.log("➡️  file: ProblemInput.jsx:15  data:", data)
     const newDataType = data.map((item) => { return item.data.main.typeName })
     const typeProb = ([...new Set(newDataType)]).filter(Boolean);
 
@@ -34,12 +34,12 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
 
 
     useEffect(() => {
-        console.log(" Dev ====");
-        console.log(newProbType);
+        // console.log(" Dev ====");
+        // console.log(newProbType);
     }, [newProbType])
 
     const newProbTypeChange = (e) => {
-        console.log('newProbTypeChange(e) ================ ');
+        // console.log('newProbTypeChange(e) ================ ');
         // console.log(e.target.options[e.target.selectedIndex].getAttribute('key'));
         // console.log((e.target).options);
         // console.log((e.target).selectedIndex);
@@ -52,8 +52,8 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
         const newType = data.filter((item) => newProbType[(e.target).selectedIndex - 1].includes(item.data.main.sub.name))
         const problemTypeDetail = newType.map((item) => { return item.data.main.sub.detail })
         setDataDetail(problemTypeDetail);
-        console.log("➡️  file: ProblemInput.jsx:53  newType:", newType)
-        console.log("➡️  file: ProblemInput.jsx:54  problemTypeDetail:", problemTypeDetail)
+        // console.log("➡️  file: ProblemInput.jsx:53  newType:", newType)
+        // console.log("➡️  file: ProblemInput.jsx:54  problemTypeDetail:", problemTypeDetail)
     }
 
 
