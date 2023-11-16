@@ -8,6 +8,11 @@ import { BrowserRouter } from "react-router-dom";
 import MyRouter from "./MyRouter";
 import { HelmetProvider } from "react-helmet-async";
 
+
+//useParams
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+
 //redux
 //* ใช้เวอร์ชั่นนี้ ติดตั้งด้วยละ
 import { configureStore } from "@reduxjs/toolkit";
@@ -21,7 +26,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <HelmetProvider>
       <BrowserRouter>
-        <App />
+        <QueryParamProvider adapter={ReactRouter6Adapter}>
+
+          <App />
+        </QueryParamProvider>
       </BrowserRouter>
     </HelmetProvider>
   </Provider>

@@ -6,10 +6,12 @@ import axios from "axios";
 
 export const useStore = create((set) => ({
   cases: [],
+  loading: true,
   fetchData: async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/listdetail2`); // Remove the "value" parameter here
-      set({ cases: response.data });
+      set({ cases: response.data, loading: false });
+
     } catch (error) {
       console.error("Error fetching cases:", error);
     }
@@ -19,6 +21,7 @@ export const useStore = create((set) => ({
     try {
       const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}/get-type`); // Remove the "value" parameter here
       set({ typesName: response.data });
+      set({ loading: false })
     } catch (error) {
       console.error("Error fetching cases:", error);
     }
@@ -29,7 +32,8 @@ export const useStore = create((set) => ({
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/createcase`, data);
       set({ response: response.data });
-       return response.data
+      set({ loading: false })
+      return response.data
     } catch (error) {
       console.error('Error while posting to API:', error);
       // Handle the error as needed
@@ -60,7 +64,7 @@ export const useStore = create((set) => ({
           },
         }
       );
-    
+
 
 
       set({ dataResetpassword: response });
@@ -266,7 +270,7 @@ export const useStoreSetting = create((set) => ({
   createEditor: async (value) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_API}/create-editor`,value
+        `${import.meta.env.VITE_REACT_APP_API}/create-editor`, value
       );
       set({ resDeleteEditor: response.data })
       return response.data

@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
-import CaseAll from "../views/allCaseAndPendingCase/CaseAll";
-import Pagination from "../views/paginate/Pagination";
-import { useStoreCaseAll } from "../service/zustand/storeCase";
-import { Col, DatePicker, Row, Space, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Box } from "@mui/material";
+import { Col, DatePicker, Row } from "antd";
 import moment from "moment";
 import "moment/locale/th";
+import React, { useEffect, useState } from "react";
+import { useStoreCaseAll } from "../service/zustand/storeCase";
 import DatePickerCase from "../views/DatePicker/DatePicker";
-import { Box } from "@mui/material";
+import CaseAll from "../views/allCaseAndPendingCase/CaseAll";
+import Pagination from "../views/paginate/Pagination";
 
-import * as loadingData from "../../src/assets/Json/loading.json";
-import * as successData from "../../src/assets/Json/success.json";
-import * as loading3 from "../../src/assets/Json/loading3.json";
 import * as loading4 from "../../src/assets/Json/loading4.json";
-import * as loading5 from "../../src/assets/Json/loading5.json";
+import * as successData from "../../src/assets/Json/success.json";
 
 
-import Lottie from "react-lottie";
-import FadeIn from "react-fade-in/lib/FadeIn";
 import WaitLoading from "../components/LoadingAndRedirect/WaitLoading";
 
 const { RangePicker } = DatePicker;
 
+import { useSearchParams } from "react-router-dom";
 
 
 
@@ -49,22 +44,32 @@ const ListCaseAll = () => {
 
   const { listCaseAll, resListCaseAll } = useStoreCaseAll(); // เพิ่ม isLoading จาก useStoreCaseAll
   const { setCurrentPages, currentPages } = useStoreCaseAll();
-  const ITEM_PER_PAGE = 10;
+  const ITEM_PER_PAGE = 20;
 
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedDate, setSelectedDate] = useState(null);
+
+
+
   const [filteredData, setFilteredData] = useState([]);
+  const  dataTotal = filteredData.length
 
   const [loading, setLoading] = useState(false);
 
+  const [count, setCount] = useState(dataTotal);
+  
 
   useEffect(() => {
-
+    
     listCaseAll(currentPages, ITEM_PER_PAGE, selectedDate);
   }, [currentPages, listCaseAll, selectedDate]);
 
 
   useEffect(() => {
+
     if (selectedDate) {
+
       const filtered = resListCaseAll.filter(
         (data) =>
           moment(data.createdAt).isBetween(
@@ -73,25 +78,40 @@ const ListCaseAll = () => {
           )
       );
 
+
       setFilteredData(filtered);
+      setCount(filteredData.length)
+
     } else {
 
       setFilteredData(resListCaseAll);
+      setCount(filteredData.length)
     }
   }, [selectedDate, resListCaseAll]);
 
 
   const handlePageClick = ({ selected }) => {
     setCurrentPages(selected);
+
   };
 
   const handleDateChange = async (dates) => {
+
+
+
     if (dates && dates.length === 2) {
       const [start, end] = dates;
+
       setSelectedDate([
-        start.format("YYYY-MM-DD HH:mm"),
-        end.format("YYYY-MM-DD HH:mm"),
+        start.format("YYYY-MM-DD"),
+        end.format("YYYY-MM-DD"),
       ]);
+
+      setSearchParams({
+        startDate: start.format("DD-MM-YYYY"),
+        endDate: end.format("DD-MM-YYYY"),
+      });
+
       setLoading(true); // เริ่มแสดง Spin หลังจากมีการเลือกวันที่
 
       setTimeout(async () => {
@@ -102,9 +122,9 @@ const ListCaseAll = () => {
         setLoading(false);
       }, 1500)
 
-
     } else {
       setSelectedDate(null);
+      setSearchParams({});
       setLoading(true); // ไม่ต้องแสดง Spin ในกรณีไม่มีการเลือกวันที่
       setTimeout(() => {
         setLoading(false); // ไม่ต้องแสดง Spin ในกรณีไม่มีการเลือกวันที่
@@ -116,17 +136,18 @@ const ListCaseAll = () => {
   return (
     <div>
       <Row justify={"start"} style={{ marginTop: "6rem" }}>
-        <Col>
-          <DatePickerCase handleDateChange={handleDateChange} />
 
+        <Col>
+          <DatePickerCase handleDateChange={handleDateChange} count={count} />
+          
         </Col>
       </Row>
       <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", paddingTop: '4px' }}>
         <Row justify={"end"}>
           <Col>
             {loading && (
-            //  <Lottie options={defaultOptions} height={500} width={500} />
-            <WaitLoading/>
+              //  <Lottie options={defaultOptions} height={500} width={500} />
+              <WaitLoading />
             )}
           </Col>
         </Row>

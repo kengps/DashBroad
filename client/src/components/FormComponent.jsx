@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 // import { sendCase } from "../api/case";
@@ -18,7 +18,7 @@ import ReporterInput from "../views/formcase/ReporterInput";
 import WalletInput from "../views/formcase/WalletInput";
 import { storeAuth } from "../service/store/storeZustand";
 
-
+import { useSearchParams } from "react-router-dom";
 
 const navDropdownItemStyle = {
   display: "flex",
@@ -38,6 +38,11 @@ const FormComponent = () => {
   const editorSelect2 = editorSelect.length > 0 ? nameEditor[0].username : '';
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+
+
+
+  
   useEffect(() => {
     fetchData();
     fetchTypesName();
@@ -57,6 +62,21 @@ const FormComponent = () => {
   //RequestGet
   const data = useStore((state) => state.cases)
 
+
+  const isInitialRender = useRef(true);
+
+  const { loading } = useStore();
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return; // Skip logging during the initial render
+    }
+
+    console.log("🚀  file: FormComponent.jsx:60  loading:", loading);
+  }, [loading]);
+
+
   const data2 = useStore((state) => state.typesName)
 
 
@@ -66,7 +86,7 @@ const FormComponent = () => {
   const newDataType2 = data2.map((item) => { return item.data.main.typeName })
 
   const typeProb = ([...new Set(newDataType)]).filter(Boolean);
-  
+
 
 
   const typeProb2 = ([...new Set(newDataType2)]).filter(Boolean);
@@ -236,7 +256,7 @@ const FormComponent = () => {
             typeProb={typeProb}
             data={data2}
           />
-          
+
           <Input
             //type="hidden"
             defaultValue={editorSelect}

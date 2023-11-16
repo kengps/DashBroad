@@ -3,6 +3,8 @@ import { Form, InputGroup, FormGroup, FormLabel } from "react-bootstrap";
 import { Input, Select, Typography } from "antd";
 const { TextArea } = Input;
 const DetailInput = ({inputValue,detail}) => {
+
+  
   return (
     <div className="mt-3">
             <InputGroup className="mt-3">

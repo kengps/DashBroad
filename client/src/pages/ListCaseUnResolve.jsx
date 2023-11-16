@@ -11,6 +11,7 @@ import SearchCase from "../views/allCaseAndPendingCase/SearchCase";
 import CasePending from "../views/allCaseAndPendingCase/CasePending";
 import { useStoreCase, useStoreSetting } from "../service/zustand/storeCase";
 import { storeAuth } from "../service/store/storeZustand";
+import { useSearchParams } from "react-router-dom";
 
 // import Pagination from "react-paginate";
 
@@ -51,8 +52,23 @@ const ListCaseUnResolve = () => {
   });
 
 
-  //* state สำหรับการค้นหาข้อมูล
-  const [search, setSearch] = useState("");
+  //* สำหรับการค้นหาข้อมูล โดยสร้าง  state จาก useSearchParams 
+
+  const [search, setSearch] = useSearchParams();
+
+  // สร้างตัวแปรมารับค่า จาก search.get แล้วส่งไปยัง Component CasePending SearchCase
+  const searchTerm = search.get('search') || '';
+  // console.log("🚀  file: ListCaseUnResolve.jsx:61  searchTerm:", searchTerm)
+
+
+
+
+
+
+
+
+
+
   //* state สำหรับ Pagination
   const [currentPage, setCurrentPage] = useState([]);
   const ITEM_PER_PAGE = 20;
@@ -125,7 +141,7 @@ const ListCaseUnResolve = () => {
   };
 
   const handleCancel = () => {
-    
+
     setIsModalOpen(false);
   };
 
@@ -259,8 +275,8 @@ const ListCaseUnResolve = () => {
     setOpen(false);
   };
 
-  let currentTime = moment().utcOffset("+07:00").format("LT");
-  let eveningTime = moment("8:32 PM", "h:mm A");
+  let currentTime = moment().locale('th').utcOffset("+07:00").format("LT");
+  let eveningTime = moment("20:32 PM", "h:mm A").locale('th');
 
   // console.log(currentTime);
   return (
@@ -271,7 +287,7 @@ const ListCaseUnResolve = () => {
         </Helmet>
 
         <SearchCase
-          search={search}
+          search={searchTerm}
           setSearch={setSearch}
           onClickButton={onClickButton}
           showDrawer={showDrawer}
@@ -279,7 +295,7 @@ const ListCaseUnResolve = () => {
 
         <CasePending
           data={resCasePending}
-          search={search}
+          search={searchTerm}
           currentPage={currentPage}
           ITEM_PER_PAGE={ITEM_PER_PAGE}
           statusCase={statusCase}

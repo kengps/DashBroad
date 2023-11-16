@@ -15,7 +15,7 @@ import { currentUser } from "../../api/auth";
 import ChangPassword from "../../pages/ChangPassword";
 import WebScraping from "../../pages/WebScraping";
 import Work from "../../pages/Work";
-import IndexRouter from "../LoadingAndRedirect";
+import IndexRouter from "../LoadingAndRedirect/Index";
 import SettingEditor from "../../pages/SettingEditor";
 import SettingProblemType from "../../pages/SettingProblemType";
 import { storeAuth } from "../../service/store/storeZustand";

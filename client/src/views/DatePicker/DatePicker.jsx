@@ -10,7 +10,7 @@ import { Box } from '@mui/material';
 
 import dayjs from 'dayjs';
 
-const DatePickerCase = ({ handleDateChange }) => {
+const DatePickerCase = ({ handleDateChange ,count}) => {
 
 
 
@@ -88,6 +88,7 @@ const DatePickerCase = ({ handleDateChange }) => {
                     </Space>
                 </Box>
             </Col>
+            <p>จำนวน {count}</p>
         </Row>
 
     )

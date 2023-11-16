@@ -68,6 +68,7 @@
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "sweetalert2": "^11.7.3",
+    "use-query-params": "^2.2.1",
     "xlsx": "^0.18.5",
     "zustand": "^4.3.9"
   },

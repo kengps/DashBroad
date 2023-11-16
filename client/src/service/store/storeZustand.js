@@ -22,9 +22,6 @@ const store = (set) => ({
             const response = await login(value)
             const userData = response.data
             set({ isAuthenticated: true, user: userData });
-
-
-
             return response.data
 
         } catch (error) {
@@ -39,9 +36,6 @@ const store = (set) => ({
             const response = await loginLine(value)
             const userData = response.data
             set({ isAuthenticated: true, user: userData });
-
-
-
             return response.data
 
         } catch (error) {
@@ -54,6 +48,7 @@ const store = (set) => ({
         try {
             if (idToken) {
                await currentUser(idToken).then((res) => {  
+                    console.log("🚀  file: storeZustand.js:51  res:", res)
                     set({
                         isAuthenticated: true,
                         user: {
@@ -78,4 +73,4 @@ const store = (set) => ({
     }
 
 });
-export const storeAuth = create(devtools(store))
+export const storeAuth = create(devtools(store));

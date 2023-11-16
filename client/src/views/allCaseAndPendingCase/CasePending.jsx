@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 import { InputGroup } from "react-bootstrap";
 
 import moment from "moment/min/moment-with-locales";
-
+import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 
 
 const { TextArea } = Input;
@@ -40,6 +40,55 @@ const CasePending = ({ data,
   textEmpty,
 
   open, setSearch, setSelectedCase }) => {
+
+
+    const [foo, setFoo] = useQueryParam('foo', StringParam);
+
+
+
+  const targetDate = moment(); // 24 ตุลาคม 2023
+
+  const formattedDate = targetDate.locale('th').format('lll');
+
+
+
+  const currentTime1 = moment();
+  const isMorning = currentTime1.isBetween(moment('08:35', 'HH:mm'), moment('20:35', 'HH:mm'));
+
+  const timeOfDay = isMorning ? '(กะเช้า)' : '(กะดึก)';
+
+
+  //const apiData = "รบกวนตรวจสอบยูสเชอร์ Kfc1s81659336487293 ค่ายเกม Evoplay transactionID : 5314578960 Project ID: 8587 ลูกค้าขอดูรายละเอียดการเล่นยอดนี้หน่อยครับ";
+
+  // ใช้การแบ่งข้อมูลด้วยเครื่องหมาย ":" และช่องว่างเป็นตัวแบ่ง
+
+    
+  // const apiData = selectedCase.detail
+  // const parts = apiData.split(/[:\s]/);
+
+
+  // // ลบส่วนข้อมูลที่ว่างเปล่าออก
+  // const filteredParts = parts.filter(part => part.trim() !== "");
+
+  // // จัดรูปแบบข้อมูลใหม่โดยให้แต่ละส่วนเป็นคู่ key-value
+  // let formattedData = "";
+  // let key = "";
+  // for (const part of filteredParts) {
+  //   if (!key) {
+  //     key = part;
+  //   } else {
+  //     const value = part === "undefined" ? "" : part; // แทนค่า "undefined" ด้วยค่าว่าง
+  //     formattedData += `${key} : ${value}\n`;
+  //     key = "";
+  //   }
+  // }
+
+  // console.log('wfh',formattedData);
+
+
+
+    // const mapdata = data.map((item) => item.detail)
+    // console.log("🚀  file: CasePending.jsx:92  mapdata:", mapdata)
 
 
   return (
@@ -160,6 +209,7 @@ const CasePending = ({ data,
                     open={isModalOpen}
                     onOk={handleOk}
                     onCancel={handleCancel}
+                    footer={null}
                   >
                     {selectedCase && (
                       <Card
@@ -189,6 +239,7 @@ const CasePending = ({ data,
                             }}
                           >
                             <strong>{"[รายละเอียด]: "}</strong>
+                            <br />
                             {selectedCase.detail}
                           </p>
                           <p className="d-block m-0 font-weight-bold">
@@ -239,29 +290,32 @@ const CasePending = ({ data,
             open={open}
           >
             <Card ref={textRef}>
-              {/* <p>══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p> */}
+
               <p>
-                {/* {" "}
-                {moment(currentTime, "h:mm A").isAfter(eveningTime) ? (
-                  <p> ══════════ สรุปเคสประจำวันกะดึก ════════════</p>
-                ) : (
-                  <p>══════════ สรุปเคสประจำวันกะเช้า ════════════</p>
-                )} */}
-                 <p> ══════════ สรุปเคสประจำวันระหว่างกะ ════════════</p>
+
+
+                {isMorning ? <p>🌞 สรุปเคสค้างวันที่ {formattedDate} {timeOfDay} 🌞</p> : <p>🌜 สรุปเคสค้างวันที่ {formattedDate}  {timeOfDay} 🌛</p>}
               </p>
               <p>
                 <p>
                   {pendingCasesCount === 0
-                    ? "ไม่มีรายการค้าง"
+                    ? "- ไม่มีรายการค้าง"
                     : ` เคสค้างจำนวน ${pendingCasesCount} รายการ`}
                   <p>
                     {pendingCases.map((item, index) => (
-                      <span key={index}>{item.caseId}, </span>
+                      <p key={index}>
+                        {index + 1}. {item.caseId} -{" "}
+                        {item.status === "รอการแก้ไข"
+                          ? "กำลังดำเนินการ"
+                          : "รอการตรวจสอบ"}
+                      </p>
                     ))}
                   </p>
                 </p>
               </p>
-              <p>══════════════ 𝔹𝕀𝕆𝔾𝔸𝕄𝕀ℕ𝔾 ═══════════════</p>
+              {/* <div style={{ textAlign: 'center' }}>
+                <p>𝔹𝕀𝕆𝔾𝔸𝕄𝕀ℕ𝔾</p>
+              </div> */}
               <Button onClick={handleCopy2} className="btn-primary float-end">
                 <CopyOutlined />
               </Button>
