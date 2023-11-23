@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Paginate from "react-paginate";
 const Pagination = ({ currentPage, pageCount, handlePageClick }) => {
+// console.log("🚀  file: Pagination.jsx:4  handlePageClick:", handlePageClick)
+// console.log("🚀  file: Pagination.jsx:4  pageCount:", pageCount)
+// console.log("🚀  file: Pagination.jsx:4  currentPage:", currentPage)
 
     // //* Paginate
 

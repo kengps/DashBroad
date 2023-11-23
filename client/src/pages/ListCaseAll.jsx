@@ -48,21 +48,31 @@ const ListCaseAll = () => {
 
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const [pagesParams, setPagesParams] = useSearchParams();
+
+
+  // สร้างตัวแปรมารับค่า จาก search.get แล้วส่งไปยัง Component CasePending SearchCase
+
+
+
+
   const [selectedDate, setSelectedDate] = useState(null);
 
 
 
   const [filteredData, setFilteredData] = useState([]);
-  const  dataTotal = filteredData.length
+  const dataTotal = filteredData.length
 
   const [loading, setLoading] = useState(false);
 
   const [count, setCount] = useState(dataTotal);
-  
+
 
   useEffect(() => {
-    
+
     listCaseAll(currentPages, ITEM_PER_PAGE, selectedDate);
+
+    setPagesParams({ page: currentPages + 1, limit: ITEM_PER_PAGE })
   }, [currentPages, listCaseAll, selectedDate]);
 
 
@@ -91,6 +101,8 @@ const ListCaseAll = () => {
 
 
   const handlePageClick = ({ selected }) => {
+
+
     setCurrentPages(selected);
 
   };
@@ -139,7 +151,7 @@ const ListCaseAll = () => {
 
         <Col>
           <DatePickerCase handleDateChange={handleDateChange} count={count} />
-          
+
         </Col>
       </Row>
       <Box style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", paddingTop: '4px' }}>

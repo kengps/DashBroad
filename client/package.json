@@ -67,6 +67,7 @@
     "recharts": "^2.5.0",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
+    "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.7.3",
     "use-query-params": "^2.2.1",
     "xlsx": "^0.18.5",

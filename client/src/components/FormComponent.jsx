@@ -42,7 +42,7 @@ const FormComponent = () => {
 
 
 
-  
+
   useEffect(() => {
     fetchData();
     fetchTypesName();
@@ -155,12 +155,16 @@ const FormComponent = () => {
     timestamps,
     // editors
   };
+
+  const reporterRef = useRef();
   const inputValue = (name) => (e) => {
     setValues({ ...values, [name]: e.target.value });
     setCampGames(e.target.value);
     setSelectedDetail(e.target.value);
     setIsButtonDisabled(false)
 
+
+    // console.log({ reporter: reporterRef.current.value });
   };
 
   const submitForm = async (e) => {
@@ -203,7 +207,7 @@ const FormComponent = () => {
       // }, 2000);
     } catch (error) {
 
-      console.log('เกิดอะไรขึ้น', error);
+      console.log('error Message', error);
     }
   };
 
@@ -229,7 +233,7 @@ const FormComponent = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Form onSubmit={submitForm}>
 
-          <ReporterInput inputValue={inputValue} reporter={reporter} />
+          <ReporterInput inputValue={inputValue} reporter={reporter} reporterRef={reporterRef} />
 
           <ProblemInput
             selectedOption={selectedOption}

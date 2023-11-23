@@ -14,11 +14,10 @@ import { storeAuth } from "../service/store/storeZustand";
 import { useSearchParams } from "react-router-dom";
 
 // import Pagination from "react-paginate";
-
+import { io } from 'socket.io-client';
 
 
 const ListCaseUnResolve = () => {
-
 
   const { user } = useSelector((state) => ({ ...state }))
   const dataUser = storeAuth((state) => state.user)
@@ -74,9 +73,19 @@ const ListCaseUnResolve = () => {
   const ITEM_PER_PAGE = 20;
 
   useEffect(() => {
-    loadData();
 
+    // const socketIo = () => {
+    //   const socket = io('http://localhost:5000');
+    //   console.log("🚀  file: ListCaseUnResolve.jsx:25  socket:", socket.on('hello', (msg) => {
+    //     console.log("🚀  file: ListCaseUnResolve.jsx:80  msg:", msg)
+
+    //   }))
+    // }
+    // socketIo();
+    loadData();
     getEditors()
+
+
 
   }, [currentPage]);
 
