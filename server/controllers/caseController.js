@@ -254,10 +254,10 @@ exports.requestUser = async (req, res) => {
 
     }
 
-    // const newCase = await saveNewCase(data);
+    const newCase = await saveNewCase(data);
 
 
-    // res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
+    res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
   } catch (error) {
 
     res.status(500).send({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล', error });
