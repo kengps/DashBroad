@@ -1,13 +1,15 @@
 const express = require('express');
 const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail } = require('../controllers/caseController');
 const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2, typeData, getTypeData,deleteTypeData } = require('../controllers/detailCaseForm');
+const { upload } = require('../middleware/uploadFile');
+
 
 const router = express.Router();
 
 
 //สร้าง case 
 
-router.post('/createcase', requestUser)
+router.post('/createcase',upload, requestUser)
 
 //เรียกดูเคสทั้งหมด
 

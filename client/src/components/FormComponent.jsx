@@ -19,7 +19,8 @@ import WalletInput from "../views/formcase/WalletInput";
 import { storeAuth } from "../service/store/storeZustand";
 
 import { useSearchParams } from "react-router-dom";
-
+import { FilledInput } from '@mui/material';
+import PictureInput from "../views/picture/PictureInput";
 const navDropdownItemStyle = {
   display: "flex",
   alignItems: "center",
@@ -126,6 +127,7 @@ const FormComponent = () => {
     problem: "",
     problemDetail: "",
     detail: "",
+    file: "",
     campgame: "",
     wallet: "",
     editors: editorSelect2,
@@ -158,13 +160,18 @@ const FormComponent = () => {
 
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
-    setValues({ ...values, [name]: e.target.value });
-    setCampGames(e.target.value);
-    setSelectedDetail(e.target.value);
-    setIsButtonDisabled(false)
+    // const newFiles = e.target.files[0];
+
+    if (e.target.name === 'file') {
+      setValues({ ...values, [name]: e.target.files[0] });
+    } else {
+      setValues({ ...values, [name]: e.target.value });
+      setCampGames(e.target.value);
+      setSelectedDetail(e.target.value);
+      setIsButtonDisabled(false)
+    }
 
 
-    // console.log({ reporter: reporterRef.current.value });
   };
 
   const submitForm = async (e) => {
@@ -178,13 +185,20 @@ const FormComponent = () => {
 
       // const res = await createCase(values)
       if (values) {
-        const res = await createCase(values)
-        console.log("🚀  file: FormComponent.jsx:158  res:", res)
+
+        const formData = new FormData();
+
+        for (let key in values) {
+
+          formData.append(key, values[key]);
+        }
+        await createCase(formData)
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
 
 
-        SweetAlert.fire("แจ้งเตือน", res.message, "success");
+
+        SweetAlert.fire("แจ้งเตือน", 'บันทึกข้อมูลสำเร็จ', "success");
         setTimeout(() => {
           navigate("/dashboard/listunresolve");
         }, 2000);
@@ -200,8 +214,6 @@ const FormComponent = () => {
       // setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
       // //กำหนดให้เป็นค่าว่างหลังจากกดตกลง
 
-
-      SweetAlert.fire("แจ้งเตือน", res.message, "success");
       // setTimeout(() => {
       //   navigate("/dashboard/listunresolve");
       // }, 2000);
@@ -227,11 +239,35 @@ const FormComponent = () => {
   //* state ของการเลือกค่ายเกม
   const [campGames, setCampGames] = useState("");
 
+
+
+  const handleUploadImage = (e) => {
+    console.log(e.target.files[0]);
+
+  }
+
+  const props = {
+    name: 'file',
+    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   return (
     <div className="mt-2">
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Form onSubmit={submitForm}>
+        <Form onSubmit={submitForm} encType="multipart/form-data">
 
           <ReporterInput inputValue={inputValue} reporter={reporter} reporterRef={reporterRef} />
 
@@ -244,6 +280,10 @@ const FormComponent = () => {
           />
 
           <DetailInput inputValue={inputValue} detail={detail} />
+
+
+          <PictureInput handleUploadImage={handleUploadImage} inputValue={inputValue} />
+
 
           <GameInput navDropdownItemStyle={navDropdownItemStyle}
             inputValue={inputValue}

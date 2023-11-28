@@ -12,7 +12,7 @@ import CasePending from "../views/allCaseAndPendingCase/CasePending";
 import { useStoreCase, useStoreSetting } from "../service/zustand/storeCase";
 import { storeAuth } from "../service/store/storeZustand";
 import { useSearchParams } from "react-router-dom";
-
+import axios from "axios";
 // import Pagination from "react-paginate";
 import { io } from 'socket.io-client';
 
@@ -21,6 +21,7 @@ const ListCaseUnResolve = () => {
 
   const { user } = useSelector((state) => ({ ...state }))
   const dataUser = storeAuth((state) => state.user)
+
 
   const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase } = useStoreCase()
   const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
@@ -96,14 +97,55 @@ const ListCaseUnResolve = () => {
 
   const textRef = useRef([]);
   //function  handleCopy สำหรับการ copy โดยหลังผ่านไป 3 วิ จะให้ทำการปิด sweetAlert
-  const handleCopy = (e) => {
+
+
+  const token = '6700000221:AAFxM4FjxfSAa29nsVLT6HuJT6asEghHgwk'
+  const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
+  const textToCopy = `${textRef.current.innerText}`;
+  const sendTelegram = () => {
+    chatid.map(async (chatid) => {
+      return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
+        chat_id: chatid,
+        text: textToCopy,
+      });
+    });
+  }
+
+  const handleCopy = async (e, file) => {
+    const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
     e.preventDefault();
-    const textToCopy = textRef.current.innerText;
-    navigator.clipboard.writeText(textToCopy);
-    //toast.success("Copied to clipboard");
+
+    const textToCopy = `${textRef.current.innerText}`;
+    const textSendTg = encodeURIComponent(textRef.current.innerText);
+
+    const base_url = `https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendPhoto`;
+
+    // สร้าง FormData object
+    const formData = new FormData();
+    
+    // เพิ่มไฟล์ภาพเข้าไปใน FormData
+    formData.append('photo', `${import.meta.env.VITE_REACT_APP_IMG}/${file}`);
+    
+    // เพิ่มข้อความ caption เข้าไปใน FormData
+    formData.append('caption', textToCopy);
+    console.log("🚀  file: ListCaseUnResolve.jsx:125  formData:", formData)
+
+    // ส่งไปยังทุก chat ID ด้วยการใช้ FormData
+    await Promise.all(
+      chatid.map((id) => {
+        return axios.post(base_url, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // ตั้งค่า header เป็น multipart form data
+          },
+          params: {
+            chat_id: id,
+          },
+        });
+      })
+    );
     sweetAlert.fire({
       title: "แจ้งเตือน",
-      text: "Copied to clipboard",
+      text: "ส่งเคสสำเร็จ",
       icon: "success",
       didClose: () => {
         setIsModalOpen(false);
@@ -112,21 +154,31 @@ const ListCaseUnResolve = () => {
     setTimeout(() => {
       sweetAlert.close();
     }, 1000);
+
   };
 
   //func สำหรับการแก้ไข สถานะ โดยมีการกำหนดตัวแปร  statusCase เพื่อทำการนำไปลูป
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
-  const handleOnchange = async (e, id) => {
+
+  const handleOnchange = async (e, id, caseId) => {
+    const text = `${caseId} ปิดเคสเรียบร้อยแล้ว ✅`
     try {
       let values = {
         id: id,
         status: e,
-        closeCaseBy: dataUser.username
+        closeCaseBy: dataUser.payLoad.user.username
       };
+
       await changeStatusCase(values)
       notiAll();
       loadData();
 
+      await chatid.map(async (chatid) => {
+        return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
+          chat_id: chatid,
+          text: text,
+        });
+      });
       // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
 
       sweetAlert.fire("แจ้งเตือน", "ทำการเปลี่ยนแปลงสถานะสำเร็จ", "success");
@@ -136,6 +188,9 @@ const ListCaseUnResolve = () => {
     }
 
   };
+
+
+
 
   //* modal
   const [selectedCase, setSelectedCase] = useState(null);
@@ -243,36 +298,58 @@ const ListCaseUnResolve = () => {
 
 
   // func สำหรับ copy สรุปเคส
-  const handleCopy2 = (e) => {
+  const handleCopy2 = async (e) => {
+
     e.preventDefault();
     const textToCopy = textRef.current.innerText;
 
+
+
     // วิธีที่ 1: ใช้ API navigator.clipboard.writeText()
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        //toast.success("Copied to clipboard");
-        sweetAlert.fire({
-          title: "แจ้งเตือน",
-          text: "Copied to clipboard",
-          icon: "success",
-          didClose: () => {
-            setIsModalOpen(false);
-          },
-        });
-        setTimeout(() => {
-          sweetAlert.close();
-        }, 1000);
-      })
-      .catch((error) => {
-        console.log("Error copying to clipboard:", error);
-        //toast.error("Failed to copy to clipboard");
-        sweetAlert.fire({
-          title: "แจ้งเตือน",
-          text: "Failed to copy to clipboard",
-          icon: "error",
-        });
+    const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
+    await chatid.map(async (chatid) => {
+      return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
+        chat_id: chatid,
+        text: textToCopy,
       });
+    });
+    sweetAlert.fire({
+      title: "แจ้งเตือน",
+      text: "ส่งสรุปเคสระหว่างกะสำเร็จ",
+      icon: "success",
+      didClose: () => {
+        setIsModalOpen(false);
+      },
+    });
+    setTimeout(() => {
+      sweetAlert.close();
+      setOpen(false);
+    }, 1000);
+    // navigator.clipboard
+    //   .writeText(textToCopy)
+    //   .then(() => {
+    //     //toast.success("Copied to clipboard");
+    //     sweetAlert.fire({
+    //       title: "แจ้งเตือน",
+    //       text: "Copied to clipboard",
+    //       icon: "success",
+    //       didClose: () => {
+    //         setIsModalOpen(false);
+    //       },
+    //     });
+    //     setTimeout(() => {
+    //       sweetAlert.close();
+    //     }, 1000);
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error copying to clipboard:", error);
+    //     //toast.error("Failed to copy to clipboard");
+    //     sweetAlert.fire({
+    //       title: "แจ้งเตือน",
+    //       text: "Failed to copy to clipboard",
+    //       icon: "error",
+    //     });
+    //   });
   };
 
   // Drawer สำหรับ copy สรุปเคสประจำวัน
@@ -287,7 +364,33 @@ const ListCaseUnResolve = () => {
   let currentTime = moment().locale('th').utcOffset("+07:00").format("LT");
   let eveningTime = moment("20:32 PM", "h:mm A").locale('th');
 
+  ;
+
   // console.log(currentTime);
+
+  const handleSendPhoto = async (e, id) => {
+
+    const textToCopy = textRef.current.innerText;
+    console.log("🚀  file: ListCaseUnResolve.jsx:366  textToCopy:", textToCopy)
+
+    const base_url = `https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendPhoto`
+
+    const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
+
+    await chatid.map((id) => {
+      return axios.post(base_url, {
+
+        "chat_id": id,
+        "photo": "https://css.biosupport.cc/assets/be/v1/images/biogaming-logo.png",
+        "caption": "girl is so cute"
+
+      });
+    })
+
+
+
+
+  }
   return (
     <div className="mt-5">
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -302,6 +405,7 @@ const ListCaseUnResolve = () => {
           showDrawer={showDrawer}
         />
 
+        <button onClick={handleSendPhoto}>ส่งรูปภาพ</button>
         <CasePending
           data={resCasePending}
           search={searchTerm}
@@ -333,6 +437,7 @@ const ListCaseUnResolve = () => {
           setSelectedCase={setSelectedCase}
           editor={data}
           textEmpty={textEmpty}
+          handleSendPhoto={handleSendPhoto}
         />
 
         {resCasePending.length >= 0 ? "" :

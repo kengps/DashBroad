@@ -27,7 +27,7 @@ const schemaCase = mongoose.Schema(
     },
     wallet: {
       type: String,
-      required: true, 
+      required: true,
     },
     editors: {
       type: String,
@@ -35,17 +35,23 @@ const schemaCase = mongoose.Schema(
     },
     recorder: {
       type: String,
-      required: true, 
+      required: true,
     },
     status: {
       type: String,
       default: "รอการแก้ไข",
-      required: true, 
+      required: true,
     },
     closeCaseBy: {
       type: String,
       default: "",
     },
+    // file: {
+    //   data: Buffer,
+    //   contentType: String
+    // },
+    file: String
+
 
   },
   { timestamps: true }

@@ -133,6 +133,7 @@ app.use('/api', userRouter)
 app.use('/api', LoginAuth)
 app.use('/api', editorRouter)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/img', express.static('uploads'))
 
 //start cron
 cronStart.start();

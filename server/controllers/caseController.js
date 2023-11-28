@@ -60,7 +60,7 @@ exports.findCase = async (req, res) => {
 
 exports.allCase = async (req, res) => {
   try {
-    
+
     const cases = await Cases.find({}).exec();
     res.json(cases);
   } catch (error) {
@@ -87,12 +87,14 @@ exports.changeStatus = async (req, res) => {
   // console.log(req.body);
   // console.log(req.params);
 
-  console.log("====================================");
+
   try {
     const cases = await Cases.findOneAndUpdate(
       { _id: req.body.id },
-      { status: req.body.status, closeCaseBy: req.body.closeCase }
+      { $set: { status: req.body.status, closeCaseBy: req.body.closeCaseBy } },
+      { new: true }
     );
+    console.log("🚀  file: caseController.js:97  cases:", cases)
     res.send(cases);
   } catch (error) {
     res.status(400).send("SerVer is Error");
@@ -223,34 +225,41 @@ const generateCase = async () => {
 }
 
 const saveNewCase = async (caseData) => {
-  
+
   const caseId = await generateCase();
   const newCase = new Cases({ ...caseData, caseId });
   await newCase.save();
   return newCase;
+
 }
 
 // ตัวอย่างการใช้งาน
 exports.requestUser = async (req, res) => {
 
 
-  const { reporter, problemDetail, problem, detail, campgame, wallet, recorder ,editors} = req.body;
+  const { reporter, problemDetail, problem, detail, campgame, wallet, recorder, editors } = req.body;
 
+  const data = req.body
+  console.log("🚀  file: caseController.js:241  data:", data)
+
+  console.log(req.file);
   try {
-    const newCase = await saveNewCase({
-      reporter,
-      problem,
-      problemDetail,
-      detail,
-      campgame,
-      wallet,
-      recorder,
-      editors
-    });
+    if (req.file) {
+      // data.file = {
+      //   data: req.file.filename,
+      //   contentType: req.file.mimetype
+      // }
+       data.file = req.file.filename
 
-    res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
+
+    }
+
+    // const newCase = await saveNewCase(data);
+
+
+    // res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
   } catch (error) {
-  
-    res.status(500).send({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล' });
+
+    res.status(500).send({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล', error });
   }
 }
