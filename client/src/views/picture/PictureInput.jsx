@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FilledInput from '@mui/material/FilledInput';
@@ -6,28 +6,11 @@ import FilledInput from '@mui/material/FilledInput';
 
 //ant d
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload } from 'antd';
+import { Button, message, Upload, Image } from 'antd';
 
 
-const PictureInput = ({ handleUploadImage, inputValue }) => {
+const PictureInput = ({ inputValue, imageURLs }) => {
 
-    const props = {
-        name: 'file',
-        action: import.meta.env.VITE_REACT_APP_API,
-        headers: {
-            authorization: 'authorization-text',
-        },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-    };
 
     return (
         <Box
@@ -39,20 +22,20 @@ const PictureInput = ({ handleUploadImage, inputValue }) => {
             autoComplete="off"
         >
 
-            <TextField type='file' name='file' onChange={inputValue("file")} />
+            <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={inputValue("file")} />
 
+            {imageURLs && (
+                imageURLs.map((imageSrc, idx) => (
+                    <Image key={idx} width={50} src={imageSrc} style={{ display: 'block', margin: 'center' }} />
 
-            {/* <Upload.Dragger
-                multiple
-                listType='picture'
-                beforeUpload={(file) => {
-                    console.log(file);
-                    return false
-                }}
-                {...props}>
+                ))
+            )}
 
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload.Dragger> */}
+            {/* {imageURLs.map((imageSrc, idx) => (
+                <Image key={idx} width={50} src={imageSrc} style={{ display: 'block', margin: 'center' }} />
+
+            ))} */}
+
         </Box>
     )
 }

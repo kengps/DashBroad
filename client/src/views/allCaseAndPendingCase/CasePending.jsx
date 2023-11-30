@@ -8,7 +8,8 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import moment from "moment/min/moment-with-locales";
 import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 import { MdDoNotDisturb } from "react-icons/md";
-
+import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
+import ImageIcon from '@mui/icons-material/Image';
 const { TextArea } = Input;
 
 const CasePending = ({ data,
@@ -17,7 +18,7 @@ const CasePending = ({ data,
   ITEM_PER_PAGE,
   statusCase,
   handleOnchange,
-  handleCopy,
+  handleSendMessage,
   showModal,
   handleOk,
   handleCancel,
@@ -50,7 +51,7 @@ const CasePending = ({ data,
   const blob = new Blob([binaryString], { type: "image/png" });
   const imageUrl = URL.createObjectURL(blob);
 
-  console.log("🚀  file: CasePending.jsx:52  imageUrl:", imageUrl)
+  // console.log("🚀  file: CasePending.jsx:52  imageUrl:", imageUrl)
   // // console.log("🚀  file: CasePending.jsx:48  fileData:", fileData)
   const imgPic = data.map((item) => { return item.file })
 
@@ -210,8 +211,8 @@ const CasePending = ({ data,
                           src={`${import.meta.env.VITE_REACT_APP_IMG}/${data.file}`}
                         /> : <Image
                           preview={false}
-                          width={100}
-                          src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
+                          width={70}
+                          src={`${import.meta.env.BASE_URL}noImg2.png`}
                         />
                       }
 
@@ -275,7 +276,7 @@ const CasePending = ({ data,
                   </Button>
 
 
-                  <Button onClick={() => handleSendPhoto(data._id)}>เทสส่งรูปภาพ</Button>
+
                   <Modal
                     title="Send Case"
                     open={isModalOpen}
@@ -292,10 +293,14 @@ const CasePending = ({ data,
                         }}
                       >
                         <div>
-                          <Avatar size={64}
-                            icon={
-                              selectedCase.file ? <img src={`${import.meta.env.VITE_REACT_APP_IMG}/${selectedCase.file}`} /> : "NO"
-                            } />
+                          {selectedCase.file && (
+                            <>
+                              <Avatar size={64}
+                                icon={<img src={`${import.meta.env.VITE_REACT_APP_IMG}/${selectedCase.file}`} />}
+                              />
+                            </>
+                          )}
+
                           <p className="d-block m-0">
                             "<strong>{"[เคส]: "}</strong> {selectedCase.caseId}
                           </p>
@@ -320,7 +325,13 @@ const CasePending = ({ data,
 
                           </p>
                           <p className="d-block m-0 font-weight-bold">
-                            <strong>{"[ค่ายเกม]: "}</strong> {selectedCase.campgame.length === 0 ? <> - </> : <>{selectedCase.campgame}</>}
+                            {selectedCase.campgame && (
+                              <>
+                                <strong> {"[ค่ายเกม]: "}</strong>
+                                {selectedCase.campgame}
+                              </>
+                            )}
+                            {/* <strong>{"[ค่ายเกม]: "}</strong> {selectedCase.campgame.length === 0 ? <> - </> : <>{selectedCase.campgame}</>} */}
                           </p>
                           <p className="d-block m-0">
                             <strong> {"[ผู้ลงเคส]: "}</strong>
@@ -331,13 +342,31 @@ const CasePending = ({ data,
                             {selectedCase.editors.length !== 0 ? selectedCase.editors : "@pr0jectsp"} "
                           </p>
                         </div>
-                        <Button
+
+                        {selectedCase.file 
+                        ? <Button
+                          onClick={(e) => handleSendPhoto(e, selectedCase.file , selectedCase.caseId)}
+                          className="btn-primary float-end"
+                        >
+                          <ImageIcon />
+
+                        </Button> 
+                        :
+                          <Button
+                            onClick={(e) => handleSendMessage(e)}
+                            className="btn-primary float-end"
+                          >
+                            <FormatColorTextIcon />
+
+                          </Button>}
+
+                        {/* <Button
                           onClick={(e) => handleCopy(e, selectedCase.file)}
                           className="btn-primary float-end"
                         >
                           <SendOutlinedIcon />
 
-                        </Button>
+                        </Button> */}
                       </Card>
                     )}
                   </Modal>

@@ -18,6 +18,7 @@ import ReporterInput from "../views/formcase/ReporterInput";
 import WalletInput from "../views/formcase/WalletInput";
 import { storeAuth } from "../service/store/storeZustand";
 
+
 import { useSearchParams } from "react-router-dom";
 import { FilledInput } from '@mui/material';
 import PictureInput from "../views/picture/PictureInput";
@@ -161,14 +162,19 @@ const FormComponent = () => {
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
     // const newFiles = e.target.files[0];
+    console.log(e.target.name);
+    console.log(e.target.value);
+
 
     if (e.target.name === 'file') {
       setValues({ ...values, [name]: e.target.files[0] });
+      setImages([...e.target.files]);
     } else {
       setValues({ ...values, [name]: e.target.value });
       setCampGames(e.target.value);
       setSelectedDetail(e.target.value);
       setIsButtonDisabled(false)
+
     }
 
 
@@ -239,30 +245,26 @@ const FormComponent = () => {
   //* state ของการเลือกค่ายเกม
   const [campGames, setCampGames] = useState("");
 
+  //preview img
+  const [images, setImages] = useState([]);
+  const [imageURLs, setImageURLs] = useState([]);
 
+  useEffect(() => {
+    if (images.length < 1) return;
+    const newImageUrls = [];
+    images.forEach((image) => newImageUrls.push(URL.createObjectURL(image)));
+    setImageURLs(newImageUrls);
+  }, [images]);
 
-  const handleUploadImage = (e) => {
-    console.log(e.target.files[0]);
+  function onImageChange(e) {
 
   }
 
-  const props = {
-    name: 'file',
-    action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  console.log("Images : ", images);
+  console.log("imageURLs : ", imageURLs);
+
+
+
   return (
     <div className="mt-2">
 
@@ -282,7 +284,8 @@ const FormComponent = () => {
           <DetailInput inputValue={inputValue} detail={detail} />
 
 
-          <PictureInput handleUploadImage={handleUploadImage} inputValue={inputValue} />
+          <PictureInput inputValue={inputValue} imageURLs={imageURLs} />
+
 
 
           <GameInput navDropdownItemStyle={navDropdownItemStyle}
