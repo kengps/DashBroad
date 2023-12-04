@@ -40,8 +40,11 @@ const CasePending = ({ data,
   onClose,
   textEmpty,
   handleSendPhoto,
-  open, setSearch, setSelectedCase }) => {
-
+  open, setSearch, setSelectedCase
+  , handleCopyText
+}) => {
+  
+  
   const [userProfileImage, setUserProfileImage] = useState({});
 
 
@@ -109,7 +112,7 @@ const CasePending = ({ data,
   //console.log('ทดสอบ',`${import.meta.env.VITE_REACT_APP_IMG}/${imageUrl2}`);
   const targetDate = moment(); // 24 ตุลาคม 2023
 
-  const formattedDate = targetDate.locale('th').format('lll');
+  const formattedDate = targetDate.locale('th').format('ll เวลา LTS');
 
 
   const currentTime1 = moment();
@@ -260,6 +263,8 @@ const CasePending = ({ data,
                   >
                     ส่งเคส
                   </Button>
+
+
                   <Button
                     className="me-1 btn-change"
                     onClick={() => showModal2(data._id)}
@@ -343,18 +348,33 @@ const CasePending = ({ data,
                           </p>
                         </div>
 
-                        {selectedCase.file 
-                        ? <Button
-                          onClick={(e) => handleSendPhoto(e, selectedCase.file , selectedCase.caseId)}
-                          className="btn-primary float-end"
-                        >
-                          <ImageIcon />
+                        <Button
+                          color=""
+                          onClick={(e) => handleCopyText(e)}
+                          className="float-end btn-copy"
+                          style={{ marginLeft: "2px" }}
 
-                        </Button> 
-                        :
+
+
+                        >
+                          <CopyOutlined />
+
+                        </Button>
+
+                        {selectedCase.file
+                          ? <Button
+                            onClick={(e) => handleSendPhoto(e, selectedCase.file, selectedCase.caseId)}
+                            className="btn-primary float-end"
+                            style={{ marginRight: "2px" }}
+                          >
+                            <ImageIcon />
+
+                          </Button>
+                          :
                           <Button
                             onClick={(e) => handleSendMessage(e)}
                             className="btn-primary float-end"
+                            style={{ marginRight: "2px" }}
                           >
                             <FormatColorTextIcon />
 
@@ -367,6 +387,8 @@ const CasePending = ({ data,
                           <SendOutlinedIcon />
 
                         </Button> */}
+
+
                       </Card>
                     )}
                   </Modal>

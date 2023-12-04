@@ -15,9 +15,30 @@ import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 // import Pagination from "react-paginate";
 import { io } from 'socket.io-client';
+import { getUpdatesChat } from "../common/Telegram/sendAndReply";
+
+
+
 
 
 const ListCaseUnResolve = () => {
+
+  const [offset, setOffset] = useState(732838985);
+  const [lastUpdateId, setLastUpdateId] = useState(null);
+
+  useEffect(() => {
+    // Listen for updates from backend through socket
+    const socket = io('http://localhost:5000');
+    socket.on('updateFromTelegram', (data) => {
+      // Handle updates from backend
+      console.log('Update received from backend:', data);
+    });
+
+    const intervalId = setInterval(() => getUpdatesChat(offset, lastUpdateId, setOffset, setLastUpdateId ,socket), 1000);
+
+    return () => clearInterval(intervalId);
+  }, [offset]);
+
 
   const { user } = useSelector((state) => ({ ...state }))
   const dataUser = storeAuth((state) => state.user)
@@ -27,6 +48,7 @@ const ListCaseUnResolve = () => {
   const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
 
   const { getEditors } = useStoreSetting()
+
 
   const data = useStoreSetting((state) => state.resEditor.resultData);
 
@@ -59,14 +81,6 @@ const ListCaseUnResolve = () => {
   // สร้างตัวแปรมารับค่า จาก search.get แล้วส่งไปยัง Component CasePending SearchCase
   const searchTerm = search.get('search') || '';
   // console.log("🚀  file: ListCaseUnResolve.jsx:61  searchTerm:", searchTerm)
-
-
-
-
-
-
-
-
 
 
   //* state สำหรับ Pagination
@@ -154,7 +168,14 @@ const ListCaseUnResolve = () => {
   //func สำหรับการแก้ไข สถานะ โดยมีการกำหนดตัวแปร  statusCase เพื่อทำการนำไปลูป
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
 
+
+
+  const closeCaseByBot = () => {
+
+  }
+
   const handleOnchange = async (e, id, caseId) => {
+
     const text = `${caseId} ปิดเคสเรียบร้อยแล้ว ✅`
     try {
       let values = {
@@ -174,6 +195,7 @@ const ListCaseUnResolve = () => {
         });
       });
       // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
+
 
       sweetAlert.fire("แจ้งเตือน", "ทำการเปลี่ยนแปลงสถานะสำเร็จ", "success");
       // toast.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ")
@@ -259,6 +281,7 @@ const ListCaseUnResolve = () => {
 
   // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
   const handleClick = async (id) => {
+    console.log("🚀  file: ListCaseUnResolve.jsx:271  id:", id)
     //todo หากกดปุ่มลบ จะให้ปุ่มยืนยันการลบขึ้นมา
     try {
       const result = await sweetAlert.fire({
@@ -375,7 +398,7 @@ const ListCaseUnResolve = () => {
 
       });
 
-      console.log(response.data.result);
+      // console.log(response.data.result);
     }));
 
 
@@ -391,7 +414,188 @@ const ListCaseUnResolve = () => {
     setTimeout(() => {
       sweetAlert.close();
     }, 1000);
+
   }
+  //closeCaseByBot
+
+
+  // const [offset, setOffset] = useState(732838985);
+  // console.log("🚀  file: ListCaseUnResolve.jsx:410  offset:", offset)
+  // const [lastUpdateId, setLastUpdateId] = useState(null);
+
+  const getUpdates = async () => {
+    try {
+      const base_url = "https://api.telegram.org/bot6447136137:AAH--dlGcGoJfU7q4bwaRzRKYVuln2mmoNs/getUpdates";
+
+      const response = await axios.get(base_url, { params: { offset } });
+      const result = response.data;
+
+
+      if (result.ok) {
+        const updates = result.result;
+
+        updates.forEach(update => {
+
+          console.log("🚀  file: ListCaseUnResolve.jsx:440  update:", update)
+          const message = update.message;
+          const chatId = message.chat.id;
+          const messageId = message.message_id;
+          const updateId = update.update_id;
+
+          console.log("updateId:", updateId, "lastUpdateId:", lastUpdateId);
+          if (updateId > lastUpdateId) {
+            setLastUpdateId(updateId);
+          }
+
+          if (message.text.includes('แก้ไขรายการ')) {
+            sendReplyMessage(chatId, messageId);
+            console.log(message.text, "มีคำนี้");
+          } else {
+            console.log(message.text, "ไม่มีคำนี้");
+          }
+        });
+
+        // อัปเดต offset โดยใช้ update_id ของข้อมูลล่าสุด
+        if (updates.length > 0) {
+          const latestUpdateId = updates[updates.length - 1].update_id;
+          console.log("🚀  file: ListCaseUnResolve.jsx:446  latestUpdateId:", latestUpdateId)
+          setOffset(latestUpdateId + 1);
+          socket.emit('telegramUpdate', { updates });
+        }
+      }
+    } catch (error) {
+      console.log('ไม่มีแชทใหม่');
+    }
+  };
+
+  //send reply
+  const sendReplyMessage = async (chatid, message_id) => {
+    console.log("🚀  file: ListCaseUnResolve.jsx:410  message_id:", message_id)
+
+    await axios.post(`https://api.telegram.org/bot6447136137:AAH--dlGcGoJfU7q4bwaRzRKYVuln2mmoNs/sendMessage`, {
+      chat_id: chatid,
+      text: "BOT : ขอบคุณครับ",
+      reply_to_message_id: message_id,
+    })
+  }
+
+  /* The above code is using the `useEffect` hook in React to set up an interval that calls the
+  `getUpdates` function every 1000 milliseconds (1 second). The interval is started when the
+  component is mounted or when the `offset` variable changes. The `useEffect` hook also returns a
+  cleanup function that clears the interval when the component is unmounted or when the `offset`
+  variable changes. */
+
+  // useEffect(() => {
+  //   // Listen for updates from backend through socket
+  //   const socket = io('http://localhost:5000');
+  //   socket.on('updateFromTelegram', (data) => {
+  //     // Handle updates from backend
+  //     console.log('Update received from backend:', data);
+  //   });
+
+  //   const intervalId = setInterval(getUpdates, 1000);
+
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     socket.disconnect();
+  //   };
+  // }, [offset]);
+
+
+  //
+  // func สำหรับ copy สรุปเคส
+  const handleCopyText = async (e) => {
+    // const textCheck = "แก้ไขรายการและปรับยอดให้แล้วนะครับ"
+    // const findText = "แก้ไขรายการ"
+    // if (textCheck.indexOf(findText) !== -1) {
+    //   findText.length !== 0 ? console.log(findText, "indexOf true") : console.log(findText, "กรุณากรอกข้อมูล");
+    // } else {
+    //   console.log(findText, "indexOf false");
+
+    // }
+    // if (textCheck.includes(findText)) {
+    //   findText.length !== 0 ? console.log(findText, "includes true") : console.log(findText, "กรุณากรอกข้อมูล");
+    // } else {
+    //   console.log(findText, "includes false");
+    // }
+
+
+    const base_url = "https://api.telegram.org/bot6447136137:AAH--dlGcGoJfU7q4bwaRzRKYVuln2mmoNs/getUpdates"
+
+    const parameters = {
+      "offset": "782380398"
+    }
+    console.log("🚀  file: ListCaseUnResolve.jsx:452  offset:", offset)
+    await axios.get(base_url, parameters).then((response => {
+      console.log("🚀  file: ListCaseUnResolve.jsx:452  response:", response)
+
+
+      const result = response.data;
+
+      if (result.ok) {
+        result.result.forEach(update => {
+          console.log("🚀  file: ListCaseUnResolve.jsx:461  update:", update)
+          const message = update.message;
+          const chatid = message.chat.id
+          const message_id = message.message_id
+          console.log("🚀  file: ListCaseUnResolve.jsx:414  message:", message)
+          if (message.text.includes('แก้ไขรายการ')) {
+            sendReplyMessage(chatid, message_id);
+            console.log(message.text, "มีคำนี้")
+          } else {
+            console.log(message.text, "ไม่มีคำนี้")
+
+          }
+          // setOffset(update.update_id + 1)
+          // if (message && ["test", "hello"].includes(message.text.toLowerCase())) {
+          //   console.log("ขอบคุณครับ")
+
+          //   // sendReply(message.chat.id, "ขอบคุณครับ");
+          // }
+          // if (message && ["แก้ไขเรียบร้อยแล้ว", "hello"].includes(message.text.toLowerCase())) {
+          //   sendReply(message.chat.id, "ขอบคุณครับ");
+          // } else if (message && ["hi", "hello"].includes(message.text.toLowerCase())) {
+          //   sendReply(message.chat.id, "ขอบคุณครับผม");
+          // }
+
+          // // Update the offset to avoid processing the same message again
+          // setOffset(update.update_id + 1);
+        });
+      }
+
+    })).catch(err => console.log(err))
+
+
+
+    e.preventDefault();
+    const textToCopy = textRef.current.innerText;
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        //toast.success("Copied to clipboard");
+        sweetAlert.fire({
+          title: "แจ้งเตือน",
+          text: "Copied to clipboard",
+          icon: "success",
+          didClose: () => {
+            setIsModalOpen(false);
+          },
+        });
+        setTimeout(() => {
+          sweetAlert.close();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log("Error copying to clipboard:", error);
+        //toast.error("Failed to copy to clipboard");
+        sweetAlert.fire({
+          title: "แจ้งเตือน",
+          text: "Failed to copy to clipboard",
+          icon: "error",
+        });
+      });
+  };
+
 
   // console.log(currentTime);
   return (
@@ -409,6 +613,7 @@ const ListCaseUnResolve = () => {
         />
 
         <CasePending
+          handleCopyText={handleCopyText}
           handleSendPhoto={handleSendPhoto}
           data={resCasePending}
           search={searchTerm}

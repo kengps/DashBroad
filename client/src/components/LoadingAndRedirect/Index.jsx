@@ -9,7 +9,7 @@ const IndexRouter = ({ children }) => {
     //const { user } = useSelector((state) => ({ ...state }));
 
   const { isAuthenticated, user } = storeAuth();
-  console.log("🚀  file: Index.jsx:12  usercdd:", user)
+  // console.log("🚀  file: Index.jsx:12  usercdd:", user)
 
 
 

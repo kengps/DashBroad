@@ -35,7 +35,21 @@ const FormComponent = () => {
   const dataEditor = useStoreSetting((state) => state.resEditor.resultData);
 
   const nameEditor = dataEditor ? dataEditor.filter((item) => item.select === true) : []
-  const editorSelect = nameEditor.map((item) => { return item.username })
+  const editorSelect = nameEditor.map((item) => { return item.username }).join();
+
+
+
+  const editorSelect3 = nameEditor.map((item) => { return item.username }).join();
+ 
+
+
+
+
+
+
+
+
+
 
   const editorSelect2 = editorSelect.length > 0 ? nameEditor[0].username : '';
 
@@ -75,7 +89,7 @@ const FormComponent = () => {
       return; // Skip logging during the initial render
     }
 
-    console.log("🚀  file: FormComponent.jsx:60  loading:", loading);
+
   }, [loading]);
 
 
@@ -131,7 +145,7 @@ const FormComponent = () => {
     file: "",
     campgame: "",
     wallet: "",
-    editors: editorSelect2,
+    editors: editorSelect,
     recorder: getUser,
   });
 
@@ -161,10 +175,6 @@ const FormComponent = () => {
 
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
-    // const newFiles = e.target.files[0];
-    console.log(e.target.name);
-    console.log(e.target.value);
-
 
     if (e.target.name === 'file') {
       setValues({ ...values, [name]: e.target.files[0] });
@@ -198,6 +208,7 @@ const FormComponent = () => {
 
           formData.append(key, values[key]);
         }
+        
         await createCase(formData)
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
@@ -224,7 +235,6 @@ const FormComponent = () => {
       //   navigate("/dashboard/listunresolve");
       // }, 2000);
     } catch (error) {
-
       console.log('error Message', error);
     }
   };
@@ -255,13 +265,6 @@ const FormComponent = () => {
     images.forEach((image) => newImageUrls.push(URL.createObjectURL(image)));
     setImageURLs(newImageUrls);
   }, [images]);
-
-  function onImageChange(e) {
-
-  }
-
-  console.log("Images : ", images);
-  console.log("imageURLs : ", imageURLs);
 
 
 
@@ -305,7 +308,7 @@ const FormComponent = () => {
           />
 
           <Input
-            //type="hidden"
+            type="hidden"
             defaultValue={editorSelect}
             value={editorSelect}
             //onChange={inputValue("editors")}

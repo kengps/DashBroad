@@ -32,7 +32,9 @@ const MainPage = () => {
             <SideMenu />
             <PageContent />
           </Space>
+
           <AppFooter />
+
         </div>
       ),
     },

@@ -75,6 +75,10 @@
   background-color: #ffc107;
   color: white;
 }
+.btn-copy {
+  background-color : #ffc107;
+  color: white;
+}
 .btn-change:hover {
   color: white;
 }

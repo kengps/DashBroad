@@ -132,7 +132,7 @@ const AppHeader = () => {
         onCancel={handleCancel}
       >
         <InputGroup>
-          <InputGroup.Text>รหัสผ่านใหม่</InputGroup.Text>
+          <InputGroup.Text>รหัสผ่านใหม่นะ</InputGroup.Text>
           <input
             type="text"
             name="password"

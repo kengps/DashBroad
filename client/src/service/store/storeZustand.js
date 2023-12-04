@@ -48,7 +48,7 @@ const store = (set) => ({
         try {
             if (idToken) {
                await currentUser(idToken).then((res) => {  
-                    console.log("🚀  file: storeZustand.js:51  res:", res)
+                    // console.log("🚀  file: storeZustand.js:51  res:", res)
                     set({
                         isAuthenticated: true,
                         user: {

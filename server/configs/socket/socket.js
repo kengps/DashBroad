@@ -15,6 +15,10 @@ const setupSocket = (httpServer) => {
 
         // Emit a welcome message to the connected client
         socket.emit('hello', 'world');
+        socket.on('telegramUpdate', (data) => {
+            console.log("🚀  file: socket.js:19  data:", data)
+            io.emit('updateFromTelegram', data);
+        });
 
         // Listen for the "newCase" event emitted from the backend
         socket.on('newCase', () => {
