@@ -1,5 +1,14 @@
 const mongoose = require("mongoose");
 
+
+
+
+const messageIdSchema = mongoose.Schema({
+  messageId: {
+    type: Number,
+  }
+
+});
 const schemaCase = mongoose.Schema(
   {
     caseId: {
@@ -31,7 +40,6 @@ const schemaCase = mongoose.Schema(
     },
     editors: {
       type: String,
-      default: "@pr0jectsp",
     },
     recorder: {
       type: String,
@@ -40,17 +48,14 @@ const schemaCase = mongoose.Schema(
     status: {
       type: String,
       default: "รอการแก้ไข",
-      required: true,
     },
     closeCaseBy: {
       type: String,
       default: "",
     },
-    // file: {
-    //   data: Buffer,
-    //   contentType: String
-    // },
-    file: String
+    file: String,
+
+    messageId: [messageIdSchema],
 
 
   },

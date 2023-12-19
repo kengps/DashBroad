@@ -23,8 +23,9 @@ import { getUpdatesChat } from "../common/Telegram/sendAndReply";
 
 const ListCaseUnResolve = () => {
 
-  const [offset, setOffset] = useState(732838985);
+  const [offset, setOffset] = useState(null);
   const [lastUpdateId, setLastUpdateId] = useState(null);
+  const [messageId, setMessageId] = useState('');
 
   useEffect(() => {
     // Listen for updates from backend through socket
@@ -34,7 +35,7 @@ const ListCaseUnResolve = () => {
       console.log('Update received from backend:', data);
     });
 
-    const intervalId = setInterval(() => getUpdatesChat(offset, lastUpdateId, setOffset, setLastUpdateId ,socket), 1000);
+    const intervalId = setInterval(() => getUpdatesChat(offset, lastUpdateId, setOffset, setLastUpdateId, socket), 1000);
 
     return () => clearInterval(intervalId);
   }, [offset]);
@@ -44,7 +45,7 @@ const ListCaseUnResolve = () => {
   const dataUser = storeAuth((state) => state.user)
 
 
-  const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase } = useStoreCase()
+  const { listCasePending, changeStatusCase, changeDetailCase, DeleteCase, updateMessageId } = useStoreCase()
   const { resCasePending, resChangeStatus, resChangeDetailCase } = useStoreCase()
 
   const { getEditors } = useStoreSetting()
@@ -125,43 +126,49 @@ const ListCaseUnResolve = () => {
     });
   }
 
-  const handleSendMessage = async (e) => {
-
-    const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
-    e.preventDefault();
-
-    const textToCopy = `${textRef.current.innerText}`;
-    const textSendTg = encodeURIComponent(textRef.current.innerText);
-
-    // navigator.clipboard.writeText(textToCopy);
-    // //toast.success("Copied to clipboard");
+  const handleSendMessage = async (e, file, id) => {
+    try {
 
 
-    // ใช้ Promise.all เพื่อรอให้ทุก sendMessage เสร็จสิ้น
+      const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
+      e.preventDefault();
 
-    // const sendMessagePromises = chatid.map(async (chatid) => {
-    //   return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
-    //     chat_id: chatid,
-    //     text: textToCopy,
-    //   });
-    // });
-    await chatid.map(async (chatid) => {
-      return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
-        chat_id: chatid,
-        text: textToCopy,
+      const textToCopy = `${textRef.current.innerText}`;
+      const textSendTg = encodeURIComponent(textRef.current.innerText);
+
+      await chatid.map(async (chatid) => {
+        return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
+          chat_id: chatid,
+          text: textToCopy,
+        }).then((res) => {
+
+          const messageId = res.data.result.message_id
+          console.log("🚀  file: ListCaseUnResolve.jsx:145  messageId:", messageId)
+          const value = {
+            id: id,
+            messageId: messageId
+          }
+          updateMessageId(value)
+
+
+        });
       });
-    });
-    sweetAlert.fire({
-      title: "แจ้งเตือน",
-      text: "ส่งเคสสำเร็จ",
-      icon: "success",
-      didClose: () => {
-        setIsModalOpen(false);
-      },
-    });
-    setTimeout(() => {
-      sweetAlert.close();
-    }, 1000);
+
+      sweetAlert.fire({
+        title: "แจ้งเตือน",
+        text: "ส่งเคสสำเร็จ",
+        icon: "success",
+        didClose: () => {
+          setIsModalOpen(false);
+        },
+      });
+      setTimeout(() => {
+        sweetAlert.close();
+      }, 1000);
+    } catch (error) {
+      console.log("🚀  file: ListCaseUnResolve.jsx:169  error:", error)
+
+    }
 
   };
 
@@ -169,29 +176,39 @@ const ListCaseUnResolve = () => {
   const statusCase = ["รอการแก้ไข", "แก้ไขสำเร็จ"];
 
 
+  const handleOnchange = async (e, id, caseId, messageId) => {
 
-  const closeCaseByBot = () => {
+    const user = dataUser.payLoad.user.username
 
-  }
+    let messageIds, _id;
 
-  const handleOnchange = async (e, id, caseId) => {
+    messageId.forEach(item => {
 
-    const text = `${caseId} ปิดเคสเรียบร้อยแล้ว ✅`
+      // ดึงค่า messageId และ _id ออกมา
+      messageIds = item.messageId;
+      _id = item._id;
+    });
+
+
     try {
       let values = {
         id: id,
         status: e,
-        closeCaseBy: dataUser.payLoad.user.username
       };
 
       await changeStatusCase(values)
       notiAll();
       loadData();
 
+
+      const text = `[${user.split('@')[0].toUpperCase()}] : ${caseId} ปิดเคสเรียบร้อยแล้ว ขอบคุณครับผม 🙏`
+
       await chatid.map(async (chatid) => {
         return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
           chat_id: chatid,
           text: text,
+          reply_to_message_id: messageIds
+
         });
       });
       // message.success("ทำการเปลี่ยนแปลงสถานะสำเร็จ");
@@ -208,8 +225,10 @@ const ListCaseUnResolve = () => {
 
 
 
+
   //* modal
   const [selectedCase, setSelectedCase] = useState(null);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -281,7 +300,7 @@ const ListCaseUnResolve = () => {
 
   // function สำหรับการ ยืนยันการลบข้อมูล จะรับแค่ id มาอย่างเดียว
   const handleClick = async (id) => {
-    console.log("🚀  file: ListCaseUnResolve.jsx:271  id:", id)
+
     //todo หากกดปุ่มลบ จะให้ปุ่มยืนยันการลบขึ้นมา
     try {
       const result = await sweetAlert.fire({
@@ -436,13 +455,12 @@ const ListCaseUnResolve = () => {
 
         updates.forEach(update => {
 
-          console.log("🚀  file: ListCaseUnResolve.jsx:440  update:", update)
           const message = update.message;
           const chatId = message.chat.id;
           const messageId = message.message_id;
           const updateId = update.update_id;
 
-          console.log("updateId:", updateId, "lastUpdateId:", lastUpdateId);
+
           if (updateId > lastUpdateId) {
             setLastUpdateId(updateId);
           }
@@ -505,67 +523,6 @@ const ListCaseUnResolve = () => {
   //
   // func สำหรับ copy สรุปเคส
   const handleCopyText = async (e) => {
-    // const textCheck = "แก้ไขรายการและปรับยอดให้แล้วนะครับ"
-    // const findText = "แก้ไขรายการ"
-    // if (textCheck.indexOf(findText) !== -1) {
-    //   findText.length !== 0 ? console.log(findText, "indexOf true") : console.log(findText, "กรุณากรอกข้อมูล");
-    // } else {
-    //   console.log(findText, "indexOf false");
-
-    // }
-    // if (textCheck.includes(findText)) {
-    //   findText.length !== 0 ? console.log(findText, "includes true") : console.log(findText, "กรุณากรอกข้อมูล");
-    // } else {
-    //   console.log(findText, "includes false");
-    // }
-
-
-    const base_url = "https://api.telegram.org/bot6447136137:AAH--dlGcGoJfU7q4bwaRzRKYVuln2mmoNs/getUpdates"
-
-    const parameters = {
-      "offset": "782380398"
-    }
-    console.log("🚀  file: ListCaseUnResolve.jsx:452  offset:", offset)
-    await axios.get(base_url, parameters).then((response => {
-      console.log("🚀  file: ListCaseUnResolve.jsx:452  response:", response)
-
-
-      const result = response.data;
-
-      if (result.ok) {
-        result.result.forEach(update => {
-          console.log("🚀  file: ListCaseUnResolve.jsx:461  update:", update)
-          const message = update.message;
-          const chatid = message.chat.id
-          const message_id = message.message_id
-          console.log("🚀  file: ListCaseUnResolve.jsx:414  message:", message)
-          if (message.text.includes('แก้ไขรายการ')) {
-            sendReplyMessage(chatid, message_id);
-            console.log(message.text, "มีคำนี้")
-          } else {
-            console.log(message.text, "ไม่มีคำนี้")
-
-          }
-          // setOffset(update.update_id + 1)
-          // if (message && ["test", "hello"].includes(message.text.toLowerCase())) {
-          //   console.log("ขอบคุณครับ")
-
-          //   // sendReply(message.chat.id, "ขอบคุณครับ");
-          // }
-          // if (message && ["แก้ไขเรียบร้อยแล้ว", "hello"].includes(message.text.toLowerCase())) {
-          //   sendReply(message.chat.id, "ขอบคุณครับ");
-          // } else if (message && ["hi", "hello"].includes(message.text.toLowerCase())) {
-          //   sendReply(message.chat.id, "ขอบคุณครับผม");
-          // }
-
-          // // Update the offset to avoid processing the same message again
-          // setOffset(update.update_id + 1);
-        });
-      }
-
-    })).catch(err => console.log(err))
-
-
 
     e.preventDefault();
     const textToCopy = textRef.current.innerText;
@@ -597,6 +554,12 @@ const ListCaseUnResolve = () => {
   };
 
 
+  const notiBot = (e, id,) => {
+    // console.log("🚀  file: ListCaseUnResolve.jsx:525  id:", id)
+
+    // console.log('messageId', messageId);
+
+  }
   // console.log(currentTime);
   return (
     <div className="mt-5">
@@ -645,6 +608,7 @@ const ListCaseUnResolve = () => {
           setSelectedCase={setSelectedCase}
           editor={data}
           textEmpty={textEmpty}
+          notiBot={notiBot}
         />
 
         {resCasePending.length >= 0 ? "" :

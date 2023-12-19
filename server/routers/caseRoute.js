@@ -1,5 +1,5 @@
 const express = require('express');
-const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail } = require('../controllers/caseController');
+const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail,updateMessageId } = require('../controllers/caseController');
 const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2, typeData, getTypeData,deleteTypeData } = require('../controllers/detailCaseForm');
 const { upload } = require('../middleware/uploadFile');
 
@@ -23,6 +23,7 @@ router.get('/listcase',allCase)
 router.get('/findcase/:id', findCase)
 
 
+
 // update case
 /**
  * @swagger
@@ -38,6 +39,11 @@ router.put('/change-detail/:id', updateDetail)
 
 router.post('/change-status', changeStatus)
 
+
+
+
+
+router.post('/updateMessageId', updateMessageId)
 // delete case
 /**
  * @swagger

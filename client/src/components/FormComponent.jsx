@@ -35,21 +35,14 @@ const FormComponent = () => {
   const dataEditor = useStoreSetting((state) => state.resEditor.resultData);
 
   const nameEditor = dataEditor ? dataEditor.filter((item) => item.select === true) : []
+
+
   const editorSelect = nameEditor.map((item) => { return item.username }).join();
+  console.log("🚀  file: FormComponent.jsx:41  editorSelect:", editorSelect)
 
 
 
   const editorSelect3 = nameEditor.map((item) => { return item.username }).join();
- 
-
-
-
-
-
-
-
-
-
 
   const editorSelect2 = editorSelect.length > 0 ? nameEditor[0].username : '';
 
@@ -157,7 +150,7 @@ const FormComponent = () => {
     campgame,
     wallet,
     recorder,
-    // editors
+    editors
   } = values;
 
   const timestamps = moment().format("LLL"); // June 26, 2023 4:36 PM
@@ -175,10 +168,16 @@ const FormComponent = () => {
 
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
-
+    console.log('d', e.target.files);
+    console.log('d', e.target.name);
     if (e.target.name === 'file') {
-      setValues({ ...values, [name]: e.target.files[0] });
-      setImages([...e.target.files]);
+      if (e.target.files.length === 0) {
+        setImageURLs("");
+      } else {
+        setValues({ ...values, [name]: e.target.files[0] });
+        setImages([...e.target.files]);
+      }
+
     } else {
       setValues({ ...values, [name]: e.target.value });
       setCampGames(e.target.value);
@@ -208,7 +207,7 @@ const FormComponent = () => {
 
           formData.append(key, values[key]);
         }
-        
+
         await createCase(formData)
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));

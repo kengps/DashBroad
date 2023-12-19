@@ -41,10 +41,11 @@ const CasePending = ({ data,
   textEmpty,
   handleSendPhoto,
   open, setSearch, setSelectedCase
-  , handleCopyText
+  , handleCopyText,
+  notiBot
 }) => {
-  
-  
+
+
   const [userProfileImage, setUserProfileImage] = useState({});
 
 
@@ -111,6 +112,8 @@ const CasePending = ({ data,
 
   //console.log('ทดสอบ',`${import.meta.env.VITE_REACT_APP_IMG}/${imageUrl2}`);
   const targetDate = moment(); // 24 ตุลาคม 2023
+
+
 
   const formattedDate = targetDate.locale('th').format('ll เวลา LTS');
 
@@ -239,7 +242,7 @@ const CasePending = ({ data,
                   <Select
                     style={{ width: "100%" }}
                     value={data.status}
-                    onChange={(e) => handleOnchange(e, data._id, data.caseId)}
+                    onChange={(e) => handleOnchange(e, data._id, data.caseId, data.messageId) }
                   >
                     {statusCase.map((item, index) => (
                       <Select.Option key={index} value={item}>
@@ -305,9 +308,9 @@ const CasePending = ({ data,
                               />
                             </>
                           )}
-
+                         
                           <p className="d-block m-0">
-                            "<strong>{"[เคส]: "}</strong> {selectedCase.caseId}
+                            <strong>{"[เคส]: "}</strong> {selectedCase.caseId}
                           </p>
                           <p className="d-block m-0">
                             <strong>{"[ผู้แจ้งปัญหา]:"} </strong>
@@ -340,11 +343,11 @@ const CasePending = ({ data,
                           </p>
                           <p className="d-block m-0">
                             <strong> {"[ผู้ลงเคส]: "}</strong>
-                            {selectedCase.recorder}
+                            {selectedCase.recorder.split('@')[0]}
                           </p>
                           <p className="d-block m-0">
                             <strong> {"[ผู้แก้ไข]: "} </strong>
-                            {selectedCase.editors.length !== 0 ? selectedCase.editors : "@pr0jectsp"} "
+                            {selectedCase.editors.length !== 0 ? selectedCase.editors : "@pr0jectsp"}
                           </p>
                         </div>
 
@@ -372,7 +375,10 @@ const CasePending = ({ data,
                           </Button>
                           :
                           <Button
-                            onClick={(e) => handleSendMessage(e)}
+                            onClick={(e) => {
+                              handleSendMessage(e ,selectedCase.file,selectedCase._id)
+                              notiBot(e,selectedCase._id)
+                            }}
                             className="btn-primary float-end"
                             style={{ marginRight: "2px" }}
                           >
@@ -423,7 +429,7 @@ const CasePending = ({ data,
               <p>
 
 
-                {isMorning ? <p>🌞 สรุปเคสค้างวันที่ {formattedDate} {timeOfDay} 🌞</p> : <p>🌜 สรุปเคสค้างวันที่ {formattedDate}  {timeOfDay} 🌛</p>}
+                {isMorning ? <p>🌞 เคสค้างประจำวันที่ {formattedDate} {timeOfDay} 🌞</p> : <p>🌜 สรุปเคสค้างวันที่ {formattedDate}  {timeOfDay} 🌛</p>}
               </p>
               <p>
                 <p>
@@ -443,6 +449,7 @@ const CasePending = ({ data,
                   </p>
                 </p>
               </p>
+              {/* <p>ส่งเคสโดย...{user}</p> */}
               {/* <div style={{ textAlign: 'center' }}>
                 <p>𝔹𝕀𝕆𝔾𝔸𝕄𝕀ℕ𝔾</p>
               </div> */}

@@ -173,6 +173,18 @@ export const useStoreCase = create((set) => ({
 
     }
   },
+  updateMessageId: async (value) => {
+   
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}/updateMessageId`,
+        value
+      );
+      set({ resChangStatus: response.data })
+    } catch (error) {
+
+    }
+  },
   resChangeDetailCase: [],
   changeDetailCase: async (id, value) => {
     try {

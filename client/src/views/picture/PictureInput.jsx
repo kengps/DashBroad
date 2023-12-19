@@ -2,14 +2,20 @@ import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FilledInput from '@mui/material/FilledInput';
-
+import {
+    InputLabel, FormControl
+} from "@mui/material";
 
 //ant d
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload, Image } from 'antd';
-
+import { Button, message, Upload, Image, Modal } from 'antd';
+import { Form, InputGroup, FormGroup, FormLabel } from "react-bootstrap";
 
 const PictureInput = ({ inputValue, imageURLs }) => {
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
+
     const props = {
         name: 'file',
         action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
@@ -17,20 +23,42 @@ const PictureInput = ({ inputValue, imageURLs }) => {
             authorization: 'authorization-text',
         },
         onChange(info) {
-         
+
             if (info.file.status !== 'uploading') {
-                console.log('ไม่เท่ากับ uploading',info.file, info.fileList);
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
-                console.log('เท่ากับ done');
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
-                console.log('= error');
             }
         },
     };
 
+    const getBase64 = (file) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+
+
+    const handleCancel = () => setPreviewOpen(false);
+
+    const handlePreview = async (file) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj);
+        }
+        setPreviewImage(file.url || file.preview);
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    };
+
+
+    const handleDeletePic = (e) => {
+        e.preventdefault()
+        console.log('444');
+    }
     return (
         <Box
             component="form"
@@ -45,28 +73,58 @@ const PictureInput = ({ inputValue, imageURLs }) => {
 
             {imageURLs && (
                 imageURLs.map((imageSrc, idx) => (
-                    <Image key={idx} width={50} src={imageSrc} style={{ display: 'block', margin: 'center' }} />
+
+                    <>
+                        <div>
+                            <InputGroup className="mt-3" >
+                                <InputGroup.Text
+                                    className=""
+                                    style={{
+                                        fontSize: "18px",
+                                        fontFamily: "Times New Roman",
+                                        height: "2.5rem",
+                                    }}
+                                >
+                                    ตัวอย่างรูปภาพ
+                                </InputGroup.Text>
+                                <div style={{ display: 'block', margin: 'center', marginLeft: '20px' }} >
+                                    <Image key={idx} width={50} src={imageSrc} />
+                                </div>
+                            </InputGroup >
+                        </div>
+
+                    </>
 
                 ))
             )}
+
             {/* <Upload.Dragger
                 {...props}
                 accept='image/*'
                 maxCount={1}
-                listType='picture'
+                listType='picture-card'
                 beforeUpload={(file) => {
-                    console.log('file', file);
-                    return true
+                    inputValue("file")({ target: { name: 'file', files: [file] } });
+                    return false; // Prevent default upload behavior
                 }}
                 progress={{
                     strokeWidth: 3,
                     strokeColor: { '0%': '#f0f', '100%': '#ff0' },
                     // style: { top: 12 }
                 }}
-               
+                onPreview={handlePreview}
             >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload.Dragger> */}
+            </Upload.Dragger>
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                <img
+                    alt="example"
+                    style={{
+                        width: '100%',
+                    }}
+                    src={previewImage}
+                />
+            </Modal> */}
 
         </Box >
     )

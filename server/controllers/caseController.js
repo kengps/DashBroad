@@ -249,17 +249,40 @@ exports.requestUser = async (req, res) => {
       //   data: req.file.filename,
       //   contentType: req.file.mimetype
       // }
-       data.file = req.file.filename
+      data.file = req.file.filename
 
 
     }
+    console.log("🚀  file: caseController.js:241  data:", data)
 
     const newCase = await saveNewCase(data);
+    console.log("🚀  file: caseController.js:258  newCase:", newCase)
 
 
     res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
   } catch (error) {
+    console.log("🚀  file: caseController.js:263  error:", error)
 
     res.status(500).send({ message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล', error });
   }
+}
+
+
+exports.updateMessageId = async (req, res) => {
+  const { id, messageId } = req.body;
+
+  try {
+    const detailNew = await Cases.findOneAndUpdate(
+      { _id: id },
+      { $set: { messageId: { messageId: messageId } } },
+      { new: true }
+    ).exec();
+
+    res.json(detailNew);
+  } catch (error) {
+    console.error("Error updating messageId:", error);
+    res.status(400).send("Server error");
+  }
+
+
 }
