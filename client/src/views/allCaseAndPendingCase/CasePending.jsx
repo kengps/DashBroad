@@ -441,9 +441,7 @@ const CasePending = ({ data,
                     {pendingCases.map((item, index) => (
                       <p key={index}>
                         {index + 1}. {item.caseId} -{" "}
-                        {item.status === "รอการแก้ไข"
-                          ? "กำลังดำเนินการ"
-                          : "รอการตรวจสอบ"}
+                        {item.status }
                       </p>
                     ))}
                   </p>

@@ -26,6 +26,7 @@ const { swaggerSpec, swaggerUi } = require('./configs/swagger/swagger');
 
 //cron
 const cronStart = require('./services/cron');
+const cronSendCase = require('./services/cron_sendCase');
 //socket
 const setupSocket = require('./configs/socket/socket');
 
@@ -137,7 +138,7 @@ app.use('/img', express.static('uploads'))
 
 //start cron
 cronStart.start();
-
+cronSendCase.start();
 //start setupSocket
 setupSocket(http);
 
