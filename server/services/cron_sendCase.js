@@ -4,7 +4,7 @@ const Cases = require('../models/caseModel')
 const moment = require("moment");
 
 
-const cronSendCase = new cron('30 9,20 * * *', async () => {
+const cronSendCase = new cron('30 8,20 * * *', async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" })
 
