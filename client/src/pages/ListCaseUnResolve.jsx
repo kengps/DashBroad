@@ -323,8 +323,27 @@ const ListCaseUnResolve = () => {
 
   // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
+    
     setTextEmpty(false)
     setValues({ ...values, [event.target.name]: event.target.value });
+    console.log("🚀  file: ListCaseUnResolve.jsx:329  event.target.:", event.target.name)
+    if (event.target.name === 'file') {
+      if (event.target.files.length === 0) {
+        // setImageURLs("");
+        console.log('ไม่ใส่รูปนะ');
+      } else {
+        setValues({ ...values, [event.target.name]: event.target.files[0] });
+        console.log('มีรูปนะ');
+        // setImages([...e.target.files]);
+      }
+
+    } else {
+      setValues({ ...values, [event.target.name]: event.target.value });
+      // setCampGames(e.target.value);
+      // setSelectedDetail(e.target.value);
+      setIsButtonDisabled(false)
+
+    }
   };
 
 

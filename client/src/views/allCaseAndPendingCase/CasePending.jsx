@@ -10,7 +10,10 @@ import { useQueryParam, NumberParam, StringParam } from 'use-query-params';
 import { MdDoNotDisturb } from "react-icons/md";
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import ImageIcon from '@mui/icons-material/Image';
+import TextField from '@mui/material/TextField';
+import PictureInput from "../picture/PictureInput";
 const { TextArea } = Input;
+
 
 const CasePending = ({ data,
   search,
@@ -145,6 +148,45 @@ const CasePending = ({ data,
 
   //   return () => clearInterval(intervalId);
   // }, [])
+  const [values, setValues] = useState({
+
+    file: "",
+
+  });
+
+  const inputValue = (name) => (e) => {
+    console.log('d', e.target.files);
+    console.log('d', e.target.name);
+    if (e.target.name === 'file') {
+      if (e.target.files.length === 0) {
+        setImageURLs("");
+      } else {
+        setValues({ ...values, [name]: e.target.files[0] });
+        setImages([...e.target.files]);
+      }
+
+    } else {
+      setValues({ ...values, [name]: e.target.value });
+
+      setIsButtonDisabled(false)
+
+    }
+
+
+  };
+
+  //preview img
+  const [images, setImages] = useState([]);
+  const [imageURLs, setImageURLs] = useState([]);
+
+  useEffect(() => {
+    if (images.length < 1) return;
+    const newImageUrls = [];
+    images.forEach((image) => newImageUrls.push(URL.createObjectURL(image)));
+    setImageURLs(newImageUrls);
+  }, [images]);
+
+
 
   return (
 
@@ -242,7 +284,7 @@ const CasePending = ({ data,
                   <Select
                     style={{ width: "100%" }}
                     value={data.status}
-                    onChange={(e) => handleOnchange(e, data._id, data.caseId, data.messageId) }
+                    onChange={(e) => handleOnchange(e, data._id, data.caseId, data.messageId)}
                   >
                     {statusCase.map((item, index) => (
                       <Select.Option key={index} value={item}>
@@ -308,7 +350,7 @@ const CasePending = ({ data,
                               />
                             </>
                           )}
-                         
+
                           <p className="d-block m-0">
                             <strong>{"[เคส]: "}</strong> {selectedCase.caseId}
                           </p>
@@ -376,8 +418,8 @@ const CasePending = ({ data,
                           :
                           <Button
                             onClick={(e) => {
-                              handleSendMessage(e ,selectedCase.file,selectedCase._id)
-                              notiBot(e,selectedCase._id)
+                              handleSendMessage(e, selectedCase.file, selectedCase._id)
+                              notiBot(e, selectedCase._id)
                             }}
                             className="btn-primary float-end"
                             style={{ marginRight: "2px" }}
@@ -414,6 +456,11 @@ const CasePending = ({ data,
                       onChange={handleChangeDetail}
                     />
                     {textEmpty && (<span style={{ color: 'red' }}>กรุณากรอกรายละเอียด</span>)}
+
+                    <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={handleChangeDetail}
+                    // onChange={inputValue("file")} 
+                    />
+                    {/* <PictureInput inputValue={handleChangeDetail} imageURLs={imageURLs} /> */}
                   </Modal>
                 </td>
               </tr>
@@ -441,7 +488,7 @@ const CasePending = ({ data,
                     {pendingCases.map((item, index) => (
                       <p key={index}>
                         {index + 1}. {item.caseId} -{" "}
-                        {item.status }
+                        {item.status}
                       </p>
                     ))}
                   </p>
