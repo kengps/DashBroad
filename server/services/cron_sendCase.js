@@ -1,4 +1,4 @@
-const cron = require('cron').CronJob;
+const cron = require('node-cron');
 const axios = require('axios');
 const Cases = require('../models/caseModel')
 const moment = require("moment");
@@ -49,12 +49,18 @@ const resultTotal = async () => {
 
     await sendTelegramMessage(msg);
 }
-const cronSendCaseMorning = new cron('30 20 * * *', () => {
+const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
     resultTotal()
+    console.log('cronSendCaseMorning start...');
+}, {
+    timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
 });
 
-const cronSendCaseEvening = new cron('30 8 * * *', async () => {
+const cronSendCaseEvening = new cron.schedule('30 8 * * *', async () => {
     resultTotal()
+    console.log('cronSendCaseEvening start...');
+}, {
+    timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
 });
 
 
