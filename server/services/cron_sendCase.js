@@ -53,6 +53,7 @@ const cronSendCaseMorning = new cron.schedule('* * * * *', () => {
     resultTotal()
     console.log('cronSendCaseMorning start...');
 }, {
+    scheduled: true,
     timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
 });
 
@@ -60,6 +61,7 @@ const cronSendCaseEvening = new cron.schedule('30 8 * * *', async () => {
     resultTotal()
     console.log('cronSendCaseEvening start...');
 }, {
+    scheduled: true,
     timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
 });
 
