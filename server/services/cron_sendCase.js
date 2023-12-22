@@ -41,13 +41,22 @@ const generateSummaryMessage = (data, currentTime1) => {
     return msg;
 };
 
-const cronSendCase = new cron('30 8,20 * * *', async () => {
+const resultTotal = async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" });
-    
+
     const msg = generateSummaryMessage(data, moment());
 
     await sendTelegramMessage(msg);
+}
+const cronSendCaseMorning = new cron('30 20 * * *', () => {
+    resultTotal()
 });
 
-module.exports = cronSendCase;
+const cronSendCaseEvening = new cron('30 8 * * *', async () => {
+    resultTotal()
+});
+
+
+
+module.exports = { cronSendCaseMorning, cronSendCaseEvening };
