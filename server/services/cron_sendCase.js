@@ -49,7 +49,7 @@ const resultTotal = async () => {
 
     await sendTelegramMessage(msg);
 }
-const cronSendCaseMorning = new cron.schedule('* * * * *', () => {
+const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
     resultTotal()
     console.log('cronSendCaseMorning start...');
 }, {
