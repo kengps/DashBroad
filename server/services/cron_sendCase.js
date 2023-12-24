@@ -4,12 +4,13 @@ const Cases = require('../models/caseModel')
 const moment = require("moment");
 const momentTz = require("moment-timezone");
 const sendTelegramMessage = async (text) => {
-    console.log("🚀  file: cron_sendCase.js:7  text:", text)
+    
     try {
         await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
             chat_id: `${process.env.TELEGRAM_CHATID_GROUB}`,
             text: text,
         });
+        console.log('ส่งเคสสำเร็จ');
     } catch (error) {
         console.error('Error sending message:', error.message);
     }
