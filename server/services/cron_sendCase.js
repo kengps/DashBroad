@@ -27,7 +27,7 @@ const generateSummaryMessage = (data, currentTime1) => {
     }
 
     const formattedDate = currentTime1.locale('th').format('ll');
-   const formattedTime = moment().tz('Asia/Bangkok').format('HH:mm');
+   const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
     console.log("🚀  file: cron_sendCase.js:31  formattedTime:", formattedTime)
    
     
