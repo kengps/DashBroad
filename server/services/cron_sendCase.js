@@ -4,6 +4,7 @@ const Cases = require('../models/caseModel')
 const moment = require("moment");
 
 const sendTelegramMessage = async (text) => {
+    console.log("🚀  file: cron_sendCase.js:7  text:", text)
     try {
         await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
             chat_id: `${process.env.TELEGRAM_CHATID_GROUB}`,
@@ -15,6 +16,8 @@ const sendTelegramMessage = async (text) => {
 };
 
 const generateSummaryMessage = (data, currentTime1) => {
+    
+    const timeStamp = currentTime1.locale('th').format('lll')
     const isMorning = currentTime1.isBetween(moment('09:35', 'HH:mm'), moment('20:35', 'HH:mm'));
     const timeOfDay = isMorning ? '(กะเช้า 🌞)' : '(กะดึก 🌛)';
 
@@ -23,11 +26,14 @@ const generateSummaryMessage = (data, currentTime1) => {
         currentTime1.subtract(1, 'day');
     }
 
-    const formattedDate = currentTime1.locale('th').format('lll');
+    const formattedDate = currentTime1.locale('th').format('ll');
+    const formattedTime = currentTime1.locale('th').format('LT');
+   
+    
 
     let msg = "";
     if (data.length === 0) {
-        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} ${timeOfDay} \n\n`;
+        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} เวลา ${formattedTime} ${timeOfDay} \n\n`;
         msg += "- ไม่มีรายการค้าง";
     } else {
         msg = ` สรุปการทำงานประจำวันที่ ${formattedDate}  ${timeOfDay}\n\n`;
@@ -45,13 +51,13 @@ const resultTotal = async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" });
 
-    const currentTime1 = moment().tz('Asia/Bangkok');
-    const msg = generateSummaryMessage(data, currentTime1);
-  
+    
+    const msg = generateSummaryMessage(data, moment());
+    console.log("🚀  file: cron_sendCase.js:53  msg:", msg)
 
     await sendTelegramMessage(msg);
 }
-const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
+const cronSendCaseMorning = new cron.schedule('* * * * *', () => {
     resultTotal()
     console.log('cronSendCaseMorning start...');
 }, {
