@@ -45,7 +45,9 @@ const resultTotal = async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" });
 
-    const msg = generateSummaryMessage(data, moment());
+    const currentTime1 = moment().tz('Asia/Bangkok');
+    const msg = generateSummaryMessage(data, currentTime1);
+  
 
     await sendTelegramMessage(msg);
 }
