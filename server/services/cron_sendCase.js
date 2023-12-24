@@ -28,7 +28,7 @@ const generateSummaryMessage = (data, currentTime1) => {
 
     const formattedDate = currentTime1.locale('th').format('ll');
    const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
-    console.log("🚀  file: cron_sendCase.js:31  formattedTime:", formattedTime)
+  
    
     
 
@@ -54,7 +54,7 @@ const resultTotal = async () => {
 
     
     const msg = generateSummaryMessage(data, moment());
-    console.log("🚀  file: cron_sendCase.js:53  msg:", msg)
+   
 
     await sendTelegramMessage(msg);
 }
