@@ -4,7 +4,6 @@ const Cases = require('../models/caseModel')
 const moment = require("moment");
 const momentTz = require("moment-timezone");
 const sendTelegramMessage = async (text) => {
-    
     try {
         await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`, {
             chat_id: `${process.env.TELEGRAM_CHATID_GROUB}`,
@@ -17,7 +16,7 @@ const sendTelegramMessage = async (text) => {
 };
 
 const generateSummaryMessage = (data, currentTime1) => {
-    
+
     const timeStamp = currentTime1.locale('th').format('lll')
     const isMorning = currentTime1.isBetween(moment('09:35', 'HH:mm'), moment('20:35', 'HH:mm'));
     const timeOfDay = isMorning ? '(กะเช้า 🌞)' : '(กะดึก 🌛)';
@@ -28,10 +27,10 @@ const generateSummaryMessage = (data, currentTime1) => {
     }
 
     const formattedDate = currentTime1.locale('th').format('ll');
-   const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
-  
-   
-    
+    const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
+
+
+
 
     let msg = "";
     if (data.length === 0) {
@@ -53,13 +52,13 @@ const resultTotal = async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" });
 
-    
+
     const msg = generateSummaryMessage(data, moment());
-   
+
 
     await sendTelegramMessage(msg);
 }
-const cronSendCaseMorning = new cron.schedule('* * * * *', () => {
+const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
     resultTotal()
     console.log('cronSendCaseMorning start...');
 }, {
