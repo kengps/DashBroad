@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const Cases = require('../models/caseModel')
 const moment = require("moment");
-
+const momentTz = require("moment-timezone");
 const sendTelegramMessage = async (text) => {
     console.log("🚀  file: cron_sendCase.js:7  text:", text)
     try {
@@ -27,13 +27,14 @@ const generateSummaryMessage = (data, currentTime1) => {
     }
 
     const formattedDate = currentTime1.locale('th').format('ll');
-    const formattedTime = moment().tz('Asia/Bangkok').format('LT');
+   const formattedTime = moment().tz('Asia/Bangkok').format('HH:mm');
+    console.log("🚀  file: cron_sendCase.js:31  formattedTime:", formattedTime)
    
     
 
     let msg = "";
     if (data.length === 0) {
-        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} เวลา ${formattedTime} ${timeOfDay} \n\n`;
+        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} เวลา ${formattedTime} น. ${timeOfDay} \n\n`;
         msg += "- ไม่มีรายการค้าง";
     } else {
         msg = ` สรุปการทำงานประจำวันที่ ${formattedDate}  ${timeOfDay}\n\n`;
