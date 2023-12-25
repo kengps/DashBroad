@@ -19,22 +19,23 @@ const generateSummaryMessage = (data, currentTime1) => {
 
     const timeStamp = currentTime1.locale('th').format('lll')
     const isMorning = currentTime1.isBetween(moment('09:35', 'HH:mm'), moment('20:35', 'HH:mm'));
-    const timeOfDay = isMorning ? '(กะเช้า 🌞)' : '(กะดึก 🌛)';
+    const timeOfDay = isMorning ? '( กะเช้า )' : '( กะดึก )';
 
     // ลบวันที่ 1 วัน ถ้าเป็นกะดึก
     if (!isMorning) {
         currentTime1.subtract(1, 'day');
     }
 
-    const formattedDate = currentTime1.locale('th').format('ll');
+    const formattedDate = currentTime1.clone().add(543, 'years').locale('th').format('ll');
     const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
+    const timeInWork = momentTz().tz('Asia/Bangkok').subtract(12, 'hours').format('HH:mm');
 
 
 
 
     let msg = "";
     if (data.length === 0) {
-        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} เวลา ${formattedTime} น. ${timeOfDay} \n\n`;
+        msg = ` สรุปการทำงานประจำวันที่ ${formattedDate} เวลา ${timeInWork} - ${formattedTime} น. ${timeOfDay} \n\n`;
         msg += "- ไม่มีรายการค้าง";
     } else {
         msg = ` สรุปการทำงานประจำวันที่ ${formattedDate}  ${timeOfDay}\n\n`;
