@@ -273,10 +273,8 @@ exports.requestUser = async (req, res) => {
     console.log("🚀  file: caseController.js:241  data:", data)
 
     const newCase = await saveNewCase(data);
-    console.log("🚀  file: caseController.js:258  newCase:", newCase)
-
-
-    // res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
+    res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
+    
   } catch (error) {
     console.log("🚀  file: caseController.js:263  error:", error)
 

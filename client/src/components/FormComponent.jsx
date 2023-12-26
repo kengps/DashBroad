@@ -215,6 +215,7 @@ const FormComponent = () => {
 
 
         SweetAlert.fire("แจ้งเตือน", 'บันทึกข้อมูลสำเร็จ', "success");
+        
         setTimeout(() => {
           navigate("/dashboard/listunresolve");
         }, 2000);
