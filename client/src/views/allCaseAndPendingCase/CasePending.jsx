@@ -12,6 +12,8 @@ import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import ImageIcon from '@mui/icons-material/Image';
 import TextField from '@mui/material/TextField';
 import PictureInput from "../picture/PictureInput";
+import EditFromCase from "../FromEdit/EditFromCase";
+
 const { TextArea } = Input;
 
 
@@ -45,7 +47,9 @@ const CasePending = ({ data,
   handleSendPhoto,
   open, setSearch, setSelectedCase
   , handleCopyText,
-  notiBot
+  notiBot,
+  onChangeCheckBox,
+  notDetail
 }) => {
 
 
@@ -252,19 +256,22 @@ const CasePending = ({ data,
                 <td>
 
                   <Space direction="vertical" size={16}>
-                    <Space wrap size={16}>
-                      {
-                        data.file ? <Image
+                    <Space direction="horizontal" size={16}>
+                      {data.file ? (
+                        <Image
                           width={100}
                           src={`${import.meta.env.VITE_REACT_APP_IMG}/${data.file}`}
-                        /> : <Image
-                          preview={false}
-                          width={70}
-                          src={`${import.meta.env.BASE_URL}noImg2.png`}
                         />
-                      }
+                      ) : (
+                        <>
+                          <Image
+                            preview={false}
+                            width={70}
+                            src={`${import.meta.env.BASE_URL}noImg2.png`}
+                          />
 
-
+                        </>
+                      )}
                     </Space>
                   </Space>
 
@@ -441,12 +448,16 @@ const CasePending = ({ data,
                     )}
                   </Modal>
                   <Modal
-                    title="Basic Modal2"
+                    encType="multipart/form-data"
+                    title="แก้ไขรายละเอียด"
                     open={isModalOpen2}
                     onOk={handleOk2}
                     onCancel={handleCancel2}
+
                   >
-                    <InputGroup>
+                    <EditFromCase handleChangeDetail={handleChangeDetail} handleOk2={handleOk2} textEmpty={textEmpty} onChangeCheckBox={onChangeCheckBox} data={data} notDetail={notDetail}/>
+                   
+                    {/*   <InputGroup>
                       <InputGroup.Text>รายละเอียด</InputGroup.Text>
                     </InputGroup>
                     <TextArea
@@ -455,12 +466,12 @@ const CasePending = ({ data,
                       name="detail"
                       onChange={handleChangeDetail}
                     />
-                    {textEmpty && (<span style={{ color: 'red' }}>กรุณากรอกรายละเอียด</span>)}
+                    
 
                     <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={handleChangeDetail}
                     // onChange={inputValue("file")} 
                     />
-                    {/* <PictureInput inputValue={handleChangeDetail} imageURLs={imageURLs} /> */}
+                    <PictureInput inputValue={handleChangeDetail} imageURLs={imageURLs} /> */}
                   </Modal>
                 </td>
               </tr>

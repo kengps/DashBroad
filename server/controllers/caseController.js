@@ -114,20 +114,37 @@ exports.changeStatus = async (req, res) => {
 
 exports.updateDetail = async (req, res) => {
   try {
-    const { id, detail } = req.body.values;
-    //console.log('ข้อมูลที่ส่งมาจาก client','>> ID',id,'>> Detail', detail);
+    const { id, detail } = req.body;
+    const data = req.body;
+
+    if (req.file) {
+      data.file = req.file.filename;
+    }
+
+    let updateFields = {};
+
+    if (detail !== undefined && detail !== '') {
+      updateFields.detail = detail;
+    }
+
+    if (data.file !== undefined && data.file !== '') {
+      updateFields.file = data.file;
+    }
 
     const detailNew = await Cases.findOneAndUpdate(
-      { _id: id }, // ตัวที่ค้นหา
-      { detail }, // ตัวที่ต้องการให้ update
+      { _id: id },
+      { $set: updateFields },
       { new: true }
     ).exec();
+
     res.json(detailNew);
   } catch (error) {
-    // console.log("เกิดข้อผิดพลาด", error);
-    res.status(400).json({ error: "Server isError" });
+    console.error("Error updating detail:", error);
+    res.status(400).json({ error: "Server error" });
   }
 };
+
+
 
 exports.updateCaseDetail = (req, res) => {
   console.log(req.body);
@@ -242,7 +259,7 @@ exports.requestUser = async (req, res) => {
   const data = req.body
   console.log("🚀  file: caseController.js:241  data:", data)
 
-  console.log(req.file);
+  console.log('fff', req.file);
   try {
     if (req.file) {
       // data.file = {
@@ -259,7 +276,7 @@ exports.requestUser = async (req, res) => {
     console.log("🚀  file: caseController.js:258  newCase:", newCase)
 
 
-    res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
+    // res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
   } catch (error) {
     console.log("🚀  file: caseController.js:263  error:", error)
 

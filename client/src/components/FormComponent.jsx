@@ -168,8 +168,8 @@ const FormComponent = () => {
 
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
-    console.log('d', e.target.files);
-    console.log('d', e.target.name);
+  console.log("🚀  file: FormComponent.jsx:171  name:", name)
+  
     if (e.target.name === 'file') {
       if (e.target.files.length === 0) {
         setImageURLs("");

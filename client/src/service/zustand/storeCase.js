@@ -174,7 +174,7 @@ export const useStoreCase = create((set) => ({
     }
   },
   updateMessageId: async (value) => {
-   
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API}/updateMessageId`,
@@ -187,10 +187,16 @@ export const useStoreCase = create((set) => ({
   },
   resChangeDetailCase: [],
   changeDetailCase: async (id, value) => {
+    console.log("🚀  file: storeCase.js:190  value:", value)
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_REACT_APP_API}/change-detail/${id}`,
-        value
+        value,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       set({ resChangeDetailCase: response.data })
     } catch (error) {

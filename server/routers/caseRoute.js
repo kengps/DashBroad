@@ -35,7 +35,7 @@ router.get('/findcase/:id', findCase)
 */
 router.put('/change-status/:id', updateCase)
 
-router.put('/change-detail/:id', updateDetail)
+router.put('/change-detail/:id',upload, updateDetail)
 
 router.post('/change-status', changeStatus)
 

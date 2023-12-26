@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads');
     },
     filename: function (req, file, cb) {
-        console.log("🚀  file: uploadFile.js:12  file:", file)
+    
         
         const fileExtension = file.originalname.split('.').pop();
       

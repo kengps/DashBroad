@@ -26,6 +26,7 @@ const ListCaseUnResolve = () => {
   const [offset, setOffset] = useState(null);
   const [lastUpdateId, setLastUpdateId] = useState(null);
   const [messageId, setMessageId] = useState('');
+  const [notDetail, setNotDetail] = useState(false)
 
   useEffect(() => {
     // Listen for updates from backend through socket
@@ -72,6 +73,7 @@ const ListCaseUnResolve = () => {
   const [values, setValues] = useState({
     id: "",
     detail: "",
+    file: ""
   });
 
 
@@ -253,20 +255,40 @@ const ListCaseUnResolve = () => {
   };
 
   const handleOk2 = async () => {
+    console.log(values);
+    console.log('notDetail', notDetail);
 
-    const id = values.id;
-    if (values.detail === '') {
+    if (notDetail) {
+      setTextEmpty(false)
+    } else if (values.detail === '') {
       setTextEmpty(true)
       return
     }
-    await changeDetailCase(id, { values })
 
-    swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
-    loadData();
-    setValues({ detail: "" });
-    setIsModalOpen2(false);
+
+    const formData = new FormData();
+
+    const id = values.id;
+    for (let key in values) {
+
+      formData.append(key, values[key]);
+    }
+    console.log("🚀  file: ListCaseUnResolve.jsx:264  formData:", formData)
+    try {
+
+      await changeDetailCase(id, formData);
+
+      setValues({ detail: "" });
+
+      swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
+      loadData();
+      setIsModalOpen2(false);
+    } catch (error) {
+      console.error('Error changing detail:', error.message);
+    }
   };
   const handleCancel2 = () => {
+    setValues("");
     setTextEmpty(false)
     setIsModalOpen2(false);
   };
@@ -323,26 +345,13 @@ const ListCaseUnResolve = () => {
 
   // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
-    
-    setTextEmpty(false)
-    setValues({ ...values, [event.target.name]: event.target.value });
-    console.log("🚀  file: ListCaseUnResolve.jsx:329  event.target.:", event.target.name)
-    if (event.target.name === 'file') {
-      if (event.target.files.length === 0) {
-        // setImageURLs("");
-        console.log('ไม่ใส่รูปนะ');
-      } else {
-        setValues({ ...values, [event.target.name]: event.target.files[0] });
-        console.log('มีรูปนะ');
-        // setImages([...e.target.files]);
-      }
-
+    event.preventDefault()
+    console.log(event.currentTarget.value);
+    if (event.currentTarget.name === 'file') {
+      const file = event.currentTarget.files[0];
+      setValues({ ...values, [event.currentTarget.name]: file });
     } else {
-      setValues({ ...values, [event.target.name]: event.target.value });
-      // setCampGames(e.target.value);
-      // setSelectedDetail(e.target.value);
-      setIsButtonDisabled(false)
-
+      setValues({ ...values, [event.currentTarget.name]: event.currentTarget.value });
     }
   };
 
@@ -572,6 +581,15 @@ const ListCaseUnResolve = () => {
       });
   };
 
+  const onChangeCheckBox = (e) => {
+
+    if (e.target.checked === true) {
+
+      setNotDetail(true)
+    } else {
+      setNotDetail(false)
+    }
+  }
 
   const notiBot = (e, id,) => {
     // console.log("🚀  file: ListCaseUnResolve.jsx:525  id:", id)
@@ -595,6 +613,7 @@ const ListCaseUnResolve = () => {
         />
 
         <CasePending
+
           handleCopyText={handleCopyText}
           handleSendPhoto={handleSendPhoto}
           data={resCasePending}
@@ -628,6 +647,8 @@ const ListCaseUnResolve = () => {
           editor={data}
           textEmpty={textEmpty}
           notiBot={notiBot}
+          onChangeCheckBox={onChangeCheckBox}
+          notDetail={notDetail}
         />
 
         {resCasePending.length >= 0 ? "" :
