@@ -274,7 +274,7 @@ exports.requestUser = async (req, res) => {
 
     const newCase = await saveNewCase(data);
     res.send({ message: 'ทำการบันทึกข้อมูลสำเร็จ!!!', cases: newCase });
-    
+
   } catch (error) {
     console.log("🚀  file: caseController.js:263  error:", error)
 
@@ -285,6 +285,7 @@ exports.requestUser = async (req, res) => {
 
 exports.updateMessageId = async (req, res) => {
   const { id, messageId } = req.body;
+  console.log(req.body.messageId);
 
   try {
     const detailNew = await Cases.findOneAndUpdate(
@@ -294,6 +295,8 @@ exports.updateMessageId = async (req, res) => {
     ).exec();
 
     res.json(detailNew);
+    console.log("🚀  file: caseController.js:297  detailNew:", detailNew)
+
   } catch (error) {
     console.error("Error updating messageId:", error);
     res.status(400).send("Server error");

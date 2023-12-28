@@ -77,7 +77,7 @@ const AppHeader = () => {
     .then((res) => {
       swal.fire('แจ้งเตือน','ทำการเปลี่ยนรหัสผ่านสำเร็จ', 'success')
       setValues('')
-      console.log('ง/ง',res);
+    
     })
     .catch((err) => {
       console.log(err);

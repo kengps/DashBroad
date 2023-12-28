@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, InputGroup, FormGroup, FormLabel } from "react-bootstrap";
 import { useStore } from "../../service/zustand/storeCase";
 
+import { Space } from "antd";
 
 const navDropdownItemStyle = {
     display: "flex",
@@ -9,7 +10,7 @@ const navDropdownItemStyle = {
     gap: "1px",
 };
 
-const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newProbType2 }) => {
+const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newProbType2, textEmpty }) => {
 
     const data = useStore((state) => state.typesName)
     // console.log("➡️  file: ProblemInput.jsx:15  data:", data)
@@ -59,88 +60,59 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
 
     return (
         <div className="mt-3">
-            <InputGroup className="mt-3" style={navDropdownItemStyle}>
-                <InputGroup.Text
-                    className=""
-                    style={{
-                        fontSize: "18px",
-                        fontFamily: "Times New Roman",
-                        height: "2.35rem",
-                    }}
-                >
-                    ประเภทปัญหา
-                </InputGroup.Text>
-                <Form.Select
-                    aria-label="test"
-                    value={selectedOption}
-                    //onChange={handleChange}
-                    onChange={(e) => {
-                        handleChange(e);
-                        inputValue("problem")(e);
-                        newProbTypeChange(e);
-                    }}
-                >
-                    <option key={9999} value="">
-                        --กรุณาเลือกประเภทปัญหา--
-                    </option>
-                    {newProbType.map((item, index) => (
-                        <option key={index} value={item.name}>
-                            {item}
-                        </option>
-                    ))}
-                </Form.Select>
+            <Space direction="horizontal" size={16}>
 
-                {/* {selectedOption === newProbType[0] && (
+                <InputGroup className="mt-3" style={navDropdownItemStyle}>
+                    <InputGroup.Text
+                        className=""
+                        style={{
+                            fontSize: "18px",
+                            fontFamily: "Times New Roman",
+                            height: "2.35rem",
+                        }}
+                    >
+                        ประเภทปัญหา
+                    </InputGroup.Text>
                     <Form.Select
                         aria-label="test"
-                        value={values.problemDetail}
-                        //onChange={handleChangeDetail}
-                        onChange={inputValue("problemDetail")}
+                        value={selectedOption}
+                        //onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e);
+                            inputValue("problem")(e);
+                            newProbTypeChange(e);
+                        }}
                     >
                         <option key={9999} value="">
-                            --กรุณาเลือกรายละเอียดปัญหา--
+                            --กรุณาเลือกประเภทปัญหา--
                         </option>
-                        {problemTypeDetail.map((items, index) => (
-                            <option key={index}>{items}</option>
-                        ))}
-                    </Form.Select>
-                )}
-                {selectedOption === newProbType[1] && (
-                    <Form.Select
-                        aria-label="test"
-                        value={values.problemDetail}
-                        //onChange={handleChangeDetail}
-                        onChange={inputValue("problemDetail")}
-                    >
-                        <option key={9999} value="">
-                            --กรุณาเลือกรายละเอียดปัญหา--
-                        </option>
-                        {problemTypeDetailLSM.map((items, index) => (
-                            <option value={items.name} key={index}>
-                                {items}
+                        {newProbType.map((item, index) => (
+                            <option key={index} value={item.name}>
+                                {item}
                             </option>
                         ))}
                     </Form.Select>
-                )} */}
 
-                {dataDetail.length === 0 ? <></> :
-                    <Form.Select
-                        aria-label="test"
-                        value={values.problemDetail}
-                        onChange={inputValue("problemDetail")}
-                    >
-                        <option key={9999} value="">
-                            -รายละเอียดปัญหา-
-                        </option>
-                        {dataDetail.map((items, index) => (
-                            <option value={items.name} key={index}>
-                                {items}
+                    {dataDetail.length === 0 ? <></> :
+                        <Form.Select
+                            aria-label="test"
+                            value={values.problemDetail}
+                            onChange={inputValue("problemDetail")}
+                        >
+                            <option key={9999} value="">
+                                -รายละเอียดปัญหา-
                             </option>
-                        ))}
-                    </Form.Select>
-                }
+                            {dataDetail.map((items, index) => (
+                                <option value={items.name} key={index}>
+                                    {items}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    }
 
-            </InputGroup>
+                </InputGroup>
+                {selectedOption.length  === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}>* โปรดระบุ</span>) : ''}
+            </Space>
         </div>
 
     )

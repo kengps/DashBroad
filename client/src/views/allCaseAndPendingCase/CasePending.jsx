@@ -415,7 +415,7 @@ const CasePending = ({ data,
 
                         {selectedCase.file
                           ? <Button
-                            onClick={(e) => handleSendPhoto(e, selectedCase.file, selectedCase.caseId)}
+                            onClick={(e) => handleSendPhoto(e, selectedCase.file)}
                             className="btn-primary float-end"
                             style={{ marginRight: "2px" }}
                           >
@@ -457,21 +457,6 @@ const CasePending = ({ data,
                   >
                     <EditFromCase handleChangeDetail={handleChangeDetail} handleOk2={handleOk2} textEmpty={textEmpty} onChangeCheckBox={onChangeCheckBox} data={data} notDetail={notDetail}/>
                    
-                    {/*   <InputGroup>
-                      <InputGroup.Text>รายละเอียด</InputGroup.Text>
-                    </InputGroup>
-                    <TextArea
-                      rows={5}
-                      type="text"
-                      name="detail"
-                      onChange={handleChangeDetail}
-                    />
-                    
-
-                    <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={handleChangeDetail}
-                    // onChange={inputValue("file")} 
-                    />
-                    <PictureInput inputValue={handleChangeDetail} imageURLs={imageURLs} /> */}
                   </Modal>
                 </td>
               </tr>

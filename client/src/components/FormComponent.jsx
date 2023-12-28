@@ -38,7 +38,7 @@ const FormComponent = () => {
 
 
   const editorSelect = nameEditor.map((item) => { return item.username }).join();
-  console.log("🚀  file: FormComponent.jsx:41  editorSelect:", editorSelect)
+  
 
 
 
@@ -48,7 +48,7 @@ const FormComponent = () => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-
+  const [textEmpty, setTextEmpty] = useState(false)
 
 
 
@@ -168,8 +168,8 @@ const FormComponent = () => {
 
   const reporterRef = useRef();
   const inputValue = (name) => (e) => {
-  console.log("🚀  file: FormComponent.jsx:171  name:", name)
-  
+    console.log("🚀  file: FormComponent.jsx:171  name:", name)
+
     if (e.target.name === 'file') {
       if (e.target.files.length === 0) {
         setImageURLs("");
@@ -195,12 +195,22 @@ const FormComponent = () => {
 
     try {
 
+
+      const { wallet, reporter, problemDetail, problem, detail, campgame } = values
+
+      const result = { wallet, reporter, problemDetail, problem, detail, campgame }
+
+      const hasEmptyField = Object.values(result).some((value) => value === "");
+
       // ไม่ฟรีแล้ว
       //await axios.post("https://sheet.best/api/sheets/490e1f2e-21aa-4b61-9d12-a52da3780268", caseDataForExcel);
 
       // const res = await createCase(values)
-      if (values) {
 
+      if (hasEmptyField) {
+        setTextEmpty(true);
+        // SweetAlert.fire("แจ้งเตือน", 'กรุณาระบุข้อมูลให้ครบถ้วน', 'warning');
+      } else {
         const formData = new FormData();
 
         for (let key in values) {
@@ -212,10 +222,8 @@ const FormComponent = () => {
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
 
-
-
         SweetAlert.fire("แจ้งเตือน", 'บันทึกข้อมูลสำเร็จ', "success");
-        
+
         setTimeout(() => {
           navigate("/dashboard/listunresolve");
         }, 2000);
@@ -274,7 +282,7 @@ const FormComponent = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Form onSubmit={submitForm} encType="multipart/form-data">
 
-          <ReporterInput inputValue={inputValue} reporter={reporter} reporterRef={reporterRef} />
+          <ReporterInput inputValue={inputValue} reporter={reporter} reporterRef={reporterRef} textEmpty={textEmpty} />
 
           <ProblemInput
             selectedOption={selectedOption}
@@ -282,9 +290,10 @@ const FormComponent = () => {
             handleChange={handleChange}
             values={values}
             newProbType2={newProbType2}
+            textEmpty={textEmpty}
           />
 
-          <DetailInput inputValue={inputValue} detail={detail} />
+          <DetailInput inputValue={inputValue} detail={detail} textEmpty={textEmpty} />
 
 
           <PictureInput inputValue={inputValue} imageURLs={imageURLs} />
@@ -298,6 +307,7 @@ const FormComponent = () => {
             data={data2}
             selectedOption={selectedOption}
             newProbType={newProbType}
+
           />
 
           <WalletInput navDropdownItemStyle={navDropdownItemStyle}
@@ -305,6 +315,7 @@ const FormComponent = () => {
             wallet={wallet}
             typeProb={typeProb}
             data={data2}
+            textEmpty={textEmpty}
           />
 
           <Input

@@ -145,7 +145,7 @@ const ListCaseUnResolve = () => {
         }).then((res) => {
 
           const messageId = res.data.result.message_id
-          console.log("🚀  file: ListCaseUnResolve.jsx:145  messageId:", messageId)
+
           const value = {
             id: id,
             messageId: messageId
@@ -255,38 +255,70 @@ const ListCaseUnResolve = () => {
   };
 
   const handleOk2 = async () => {
-    console.log(values);
-    console.log('notDetail', notDetail);
-
     if (notDetail) {
-      setTextEmpty(false)
+      setTextEmpty(false);
     } else if (values.detail === '') {
-      setTextEmpty(true)
-      return
+      setTextEmpty(true);
+      return;
     }
-
 
     const formData = new FormData();
-
     const id = values.id;
-    for (let key in values) {
 
+    for (let key in values) {
       formData.append(key, values[key]);
     }
-    console.log("🚀  file: ListCaseUnResolve.jsx:264  formData:", formData)
+
+
+
     try {
+      const res = await changeDetailCase(id, formData)
 
-      await changeDetailCase(id, formData);
+      if (res) {
+        swal.fire('แจ้งเตือน', 'ทำการแก้ไขรายละเอียดสำเร็จ', 'success');
+        setValues(Object.fromEntries(Object.keys(values).map((key) => [key, ''])));
+        setIsModalOpen2(false);
+        loadData();
+      }
 
-      setValues({ detail: "" });
 
-      swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
-      loadData();
-      setIsModalOpen2(false);
     } catch (error) {
       console.error('Error changing detail:', error.message);
     }
   };
+
+  // const handleOk2 = async () => {
+
+  //   if (notDetail) {
+  //     setTextEmpty(false)
+  //   } else if (values.detail === '') {
+  //     setTextEmpty(true)
+  //     return
+  //   }
+
+
+  //   const formData = new FormData();
+
+  //   const id = values.id;
+  //   for (let key in values) {
+
+  //     formData.append(key, values[key]);
+  //   }
+  //   console.log("🚀  file: ListCaseUnResolve.jsx:264  formData:", formData)
+  //   try {
+
+  //     await changeDetailCase(id, formData);
+
+  //     swal.fire("แจ้งเตือน", "ทำการแก้ไขรายละเอียดสำเร็จ", "success");
+  //     setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
+  //     setIsModalOpen2(false);
+  //     loadData();
+
+  //   } catch (error) {
+  //     console.error('Error changing detail:', error.message);
+  //   }
+  // };
+
   const handleCancel2 = () => {
     setValues("");
     setTextEmpty(false)
@@ -346,7 +378,7 @@ const ListCaseUnResolve = () => {
   // func สำหรับการแก้ไชรายละเอียด
   const handleChangeDetail = (event) => {
     event.preventDefault()
-    console.log(event.currentTarget.value);
+
     if (event.currentTarget.name === 'file') {
       const file = event.currentTarget.files[0];
       setValues({ ...values, [event.currentTarget.name]: file });
@@ -388,31 +420,6 @@ const ListCaseUnResolve = () => {
       sweetAlert.close();
       setOpen(false);
     }, 1000);
-    // navigator.clipboard
-    //   .writeText(textToCopy)
-    //   .then(() => {
-    //     //toast.success("Copied to clipboard");
-    //     sweetAlert.fire({
-    //       title: "แจ้งเตือน",
-    //       text: "Copied to clipboard",
-    //       icon: "success",
-    //       didClose: () => {
-    //         setIsModalOpen(false);
-    //       },
-    //     });
-    //     setTimeout(() => {
-    //       sweetAlert.close();
-    //     }, 1000);
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error copying to clipboard:", error);
-    //     //toast.error("Failed to copy to clipboard");
-    //     sweetAlert.fire({
-    //       title: "แจ้งเตือน",
-    //       text: "Failed to copy to clipboard",
-    //       icon: "error",
-    //     });
-    //   });
   };
 
   // Drawer สำหรับ copy สรุปเคสประจำวัน
@@ -429,6 +436,7 @@ const ListCaseUnResolve = () => {
 
 
   const handleSendPhoto = async (e, file) => {
+    event.preventDefault()
 
     const textToCopy = textRef.current.innerText;
     const base_url = `https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendPhoto`
@@ -438,12 +446,21 @@ const ListCaseUnResolve = () => {
 
 
     await Promise.all(chatid.map(async (id) => {
-      const response = await axios.post(base_url, {
+      await axios.post(base_url, {
         chat_id: id,
         photo: `${import.meta.env.VITE_REACT_APP_IMG}/${file}`,
         caption: textToCopy
 
-      });
+      }).then((res) => {
+        const messageId = res.data.result.message_id
+        console.log("🚀  file: ListCaseUnResolve.jsx:145  messageId:", messageId)
+        const value = {
+          id: id,
+          messageId: messageId
+        }
+        updateMessageId(value)
+
+      }).catch(err => console.log(err));
 
       // console.log(response.data.result);
     }));
