@@ -199,6 +199,7 @@ export const useStoreCase = create((set) => ({
         }
       );
       set({ resChangeDetailCase: response.data })
+      return response
     } catch (error) {
 
     }

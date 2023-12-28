@@ -269,10 +269,9 @@ const ListCaseUnResolve = () => {
       formData.append(key, values[key]);
     }
 
-
-
     try {
       const res = await changeDetailCase(id, formData)
+      console.log("🚀  file: ListCaseUnResolve.jsx:274  res:", res)
 
       if (res) {
         swal.fire('แจ้งเตือน', 'ทำการแก้ไขรายละเอียดสำเร็จ', 'success');
@@ -436,14 +435,16 @@ const ListCaseUnResolve = () => {
 
 
   const handleSendPhoto = async (e, file) => {
-    event.preventDefault()
+    e.preventDefault()
 
     const textToCopy = textRef.current.innerText;
     const base_url = `https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendPhoto`
 
     const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
 
-
+    if (file) {
+      console.log('ไฟล์ชื่อ', file);
+    }
 
     await Promise.all(chatid.map(async (id) => {
       await axios.post(base_url, {
@@ -480,6 +481,10 @@ const ListCaseUnResolve = () => {
     }, 1000);
 
   }
+
+
+
+
   //closeCaseByBot
 
 

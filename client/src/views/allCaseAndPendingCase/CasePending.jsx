@@ -415,7 +415,7 @@ const CasePending = ({ data,
 
                         {selectedCase.file
                           ? <Button
-                            onClick={(e) => handleSendPhoto(e, selectedCase.file)}
+                            onClick={(e) => handleSendPhoto(e, selectedCase.file, selectedCase.caseId)}
                             className="btn-primary float-end"
                             style={{ marginRight: "2px" }}
                           >

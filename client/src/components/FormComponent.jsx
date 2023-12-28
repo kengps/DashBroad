@@ -38,7 +38,7 @@ const FormComponent = () => {
 
 
   const editorSelect = nameEditor.map((item) => { return item.username }).join();
-  
+
 
 
 
@@ -196,9 +196,9 @@ const FormComponent = () => {
     try {
 
 
-      const { wallet, reporter, problemDetail, problem, detail, campgame } = values
+      const { wallet, reporter, problemDetail, problem, detail } = values
 
-      const result = { wallet, reporter, problemDetail, problem, detail, campgame }
+      const result = { wallet, reporter, problemDetail, problem, detail }
 
       const hasEmptyField = Object.values(result).some((value) => value === "");
 
