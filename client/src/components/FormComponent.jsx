@@ -28,6 +28,8 @@ const navDropdownItemStyle = {
   gap: "1px",
 };
 
+
+
 const FormComponent = () => {
 
   const { getEditors } = useStoreSetting()
@@ -167,8 +169,12 @@ const FormComponent = () => {
   };
 
   const reporterRef = useRef();
+
+
   const inputValue = (name) => (e) => {
-    console.log("🚀  file: FormComponent.jsx:171  name:", name)
+    console.log("🚀  file: FormComponent.jsx:175  e:", e)
+    console.log("🚀  file: FormComponent.jsx:175  name:", name)
+
 
     if (e.target.name === 'file') {
       if (e.target.files.length === 0) {
@@ -218,6 +224,7 @@ const FormComponent = () => {
           formData.append(key, values[key]);
         }
 
+
         await createCase(formData)
 
         setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
@@ -228,20 +235,7 @@ const FormComponent = () => {
           navigate("/dashboard/listunresolve");
         }, 2000);
       }
-      // setValues({
-      //   reporter: "",
-      //   problem: "",
-      //   problemDetail: "",
-      //   detail: "",
-      //   campgame: "",
-      //   wallet: "",
-      // });
-      // setValues(Object.fromEntries(Object.keys(values).map(key => [key, ""])));
-      // //กำหนดให้เป็นค่าว่างหลังจากกดตกลง
 
-      // setTimeout(() => {
-      //   navigate("/dashboard/listunresolve");
-      // }, 2000);
     } catch (error) {
       console.log('error Message', error);
     }

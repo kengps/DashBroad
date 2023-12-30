@@ -174,6 +174,7 @@ export const useStoreCase = create((set) => ({
     }
   },
   updateMessageId: async (value) => {
+  console.log("🚀  file: storeCase.js:177  value:", value)
 
     try {
       const response = await axios.post(
@@ -181,6 +182,7 @@ export const useStoreCase = create((set) => ({
         value
       );
       set({ resChangStatus: response.data })
+      return response
     } catch (error) {
 
     }

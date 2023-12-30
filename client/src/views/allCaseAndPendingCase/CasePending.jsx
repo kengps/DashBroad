@@ -251,7 +251,8 @@ const CasePending = ({ data,
                 <td>{data.reporter}</td>
                 <td>{data.problem.slice(0, 17)}</td>
                 <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
-                  {data.detail}
+                  {/* {dangerouslysetInnerHTML = {{__html: data.detail}}} */}
+                  <div dangerouslySetInnerHTML={{ __html: data.detail }} />
                 </td>
                 <td>
 
@@ -319,7 +320,7 @@ const CasePending = ({ data,
 
                   <Button
                     className="me-1 btn-change"
-                    onClick={() => showModal2(data._id)}
+                    onClick={() => showModal2(data._id, data.file)}
                   >
                     แก้ไข
                   </Button>
@@ -378,7 +379,7 @@ const CasePending = ({ data,
                           >
                             <strong>{"[รายละเอียด]: "}</strong>
                             <br />
-                            {selectedCase.detail}
+                            <div dangerouslySetInnerHTML={{ __html: selectedCase.detail }} />
 
                           </p>
                           <p className="d-block m-0 font-weight-bold">
@@ -415,7 +416,7 @@ const CasePending = ({ data,
 
                         {selectedCase.file
                           ? <Button
-                            onClick={(e) => handleSendPhoto(e, selectedCase.file, selectedCase.caseId)}
+                            onClick={(e) => handleSendPhoto(e, selectedCase.file, selectedCase._id)}
                             className="btn-primary float-end"
                             style={{ marginRight: "2px" }}
                           >
@@ -455,8 +456,8 @@ const CasePending = ({ data,
                     onCancel={handleCancel2}
 
                   >
-                    <EditFromCase handleChangeDetail={handleChangeDetail} handleOk2={handleOk2} textEmpty={textEmpty} onChangeCheckBox={onChangeCheckBox} data={data} notDetail={notDetail}/>
-                   
+                    <EditFromCase handleChangeDetail={handleChangeDetail} handleOk2={handleOk2} textEmpty={textEmpty} onChangeCheckBox={onChangeCheckBox} data={data} notDetail={notDetail} />
+
                   </Modal>
                 </td>
               </tr>
@@ -489,6 +490,7 @@ const CasePending = ({ data,
                     ))}
                   </p>
                 </p>
+                \
               </p>
               {/* <p>ส่งเคสโดย...{user}</p> */}
               {/* <div style={{ textAlign: 'center' }}>

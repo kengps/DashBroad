@@ -1,7 +1,7 @@
 const Cases = require("../models/caseModel");
 const Users = require("../models/register");
 
-
+const fs = require('fs')
 // let count = 0;
 // exports.requestUser = async (req, res) => {
 //   const {
@@ -113,12 +113,25 @@ exports.changeStatus = async (req, res) => {
 // };
 
 exports.updateDetail = async (req, res) => {
+  console.log("🚀  file: caseController.js:116  req:", req.body)
   try {
     const { id, detail } = req.body;
     const data = req.body;
+    console.log("🚀  file: caseController.js:120  req.body:", req.body)
+    console.log("🚀  file: caseController.js:120  req.body:",  req.file)
 
-    if (req.file) {
+    console.log(typeof req.file !== 'undefined');
+
+    if (typeof req.file !== 'undefined') {
       data.file = req.file.filename;
+
+      await fs.unlink('./uploads/' + data.fileOld, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('delete');
+        }
+      })
     }
 
     let updateFields = {};

@@ -233,6 +233,7 @@ const ListCaseUnResolve = () => {
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileOld, setFileOld] = useState(null)
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -248,13 +249,18 @@ const ListCaseUnResolve = () => {
 
   // modal สำหรับการแก้ไขรายละเอียด case
   const [isModalOpen2, setIsModalOpen2] = useState(false);
-  const showModal2 = (id) => {
+  const showModal2 = (id, file) => {
+
+
+
+    setFileOld(file)
     setIsModalOpen2(true);
 
     setValues({ ...values, id: id });
   };
 
   const handleOk2 = async () => {
+
     if (notDetail) {
       setTextEmpty(false);
     } else if (values.detail === '') {
@@ -268,10 +274,14 @@ const ListCaseUnResolve = () => {
     for (let key in values) {
       formData.append(key, values[key]);
     }
+    formData.append('fileOld', fileOld)
+
+    console.log("🚀  file: ListCaseUnResolve.jsx:278  formData:", formData)
 
     try {
+
       const res = await changeDetailCase(id, formData)
-      console.log("🚀  file: ListCaseUnResolve.jsx:274  res:", res)
+
 
       if (res) {
         swal.fire('แจ้งเตือน', 'ทำการแก้ไขรายละเอียดสำเร็จ', 'success');
@@ -375,16 +385,38 @@ const ListCaseUnResolve = () => {
 
 
   // func สำหรับการแก้ไชรายละเอียด
-  const handleChangeDetail = (event) => {
-    event.preventDefault()
 
-    if (event.currentTarget.name === 'file') {
-      const file = event.currentTarget.files[0];
-      setValues({ ...values, [event.currentTarget.name]: file });
-    } else {
-      setValues({ ...values, [event.currentTarget.name]: event.currentTarget.value });
+  //! textArea
+  // const handleChangeDetail = (event) => {
+  // console.log("🚀  file: ListCaseUnResolve.jsx:386  event:", event)
+
+  //   event.preventDefault()
+
+  //   if (event.currentTarget.name === 'file') {
+  //     const file = event.currentTarget.files[0];
+  //     setValues({ ...values, [event.currentTarget.name]: file });
+  //   } else {
+  //     setValues({ ...values, [event.currentTarget.name]: event.currentTarget.value });
+  //   }
+  // };
+
+
+  //! react quill ใช้ได้
+  const handleChangeDetail = (name, contentOrEvent) => {
+    console.log("🚀  file: ListCaseUnResolve.jsx:406  contentOrEvent:", contentOrEvent)
+    console.log("🚀  file: ListCaseUnResolve.jsx:406  name:", name)
+
+    if (typeof contentOrEvent === 'string') {
+      // Content is a string, coming from ReactQuill
+      setValues({ ...values, [name]: contentOrEvent });
+    } else if (contentOrEvent && contentOrEvent.target) {
+      // Content is an event, coming from the file input
+      const file = contentOrEvent.target.files[0];
+      setValues({ ...values, [name]: file });
     }
+
   };
+
 
 
   // ตัวแปรสำหรับหาจำนวนของเคสที่รอการแก้ไข
@@ -434,7 +466,7 @@ const ListCaseUnResolve = () => {
   let eveningTime = moment("20:32 PM", "h:mm A").locale('th');
 
 
-  const handleSendPhoto = async (e, file) => {
+  const handleSendPhoto = async (e, file, id) => {
     e.preventDefault()
 
     const textToCopy = textRef.current.innerText;
@@ -442,19 +474,18 @@ const ListCaseUnResolve = () => {
 
     const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
 
-    if (file) {
-      console.log('ไฟล์ชื่อ', file);
-    }
 
-    await Promise.all(chatid.map(async (id) => {
+
+    await Promise.all(chatid.map(async (cid) => {
       await axios.post(base_url, {
-        chat_id: id,
+        chat_id: cid,
         photo: `${import.meta.env.VITE_REACT_APP_IMG}/${file}`,
         caption: textToCopy
 
       }).then((res) => {
+        console.log("🚀  file: ListCaseUnResolve.jsx:456  res:", res)
         const messageId = res.data.result.message_id
-        console.log("🚀  file: ListCaseUnResolve.jsx:145  messageId:", messageId)
+
         const value = {
           id: id,
           messageId: messageId
