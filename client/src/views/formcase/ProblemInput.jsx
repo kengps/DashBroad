@@ -59,7 +59,7 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
 
 
     return (
-        <div className="mt-3">
+        <div >
             <Space direction="horizontal" size={16}>
 
                 <InputGroup className="mt-3" style={navDropdownItemStyle}>

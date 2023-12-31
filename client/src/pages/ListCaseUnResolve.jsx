@@ -635,9 +635,9 @@ const ListCaseUnResolve = () => {
   };
 
   const onChangeCheckBox = (e) => {
+    console.log("🚀  file: ListCaseUnResolve.jsx:638  e:", e.target.checked)
 
-    if (e.target.checked === true) {
-
+    if (e.target.checked) {
       setNotDetail(true)
     } else {
       setNotDetail(false)

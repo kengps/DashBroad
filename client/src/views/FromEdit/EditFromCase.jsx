@@ -18,6 +18,8 @@ import TextField from '@mui/material/TextField';
 import { Checkbox } from 'antd';
 
 
+
+
 const EditFromCase = ({ handleChangeDetail, handleOk2, textEmpty, onChangeCheckBox, data, notDetail }) => {
 
 
@@ -25,11 +27,13 @@ const EditFromCase = ({ handleChangeDetail, handleOk2, textEmpty, onChangeCheckB
     <div className="mt-2">
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Form onSubmit={handleOk2} encType="multipart/form-data">
-          <InputGroup>
-            <InputGroup.Text>รายละเอียด</InputGroup.Text>
-          </InputGroup>
+          {!notDetail && (
+            <>
+              <InputGroup>
+                <InputGroup.Text>รายละเอียด</InputGroup.Text>
+              </InputGroup>
 
-          {/* <TextArea
+              {/* <TextArea
             rows={5}
             type="text"
             name="detail"
@@ -37,14 +41,19 @@ const EditFromCase = ({ handleChangeDetail, handleOk2, textEmpty, onChangeCheckB
             disabled={notDetail}
           /> */}
 
-          <ReactQuill
-            theme="snow"
-            name="detail"
-            // onChange={(content) => handleChangeDetail({ target: { name: 'detail', value: content } })}
-            onChange={(content) => handleChangeDetail('detail', content)}
-            // disabled={notDetail}
-            readOnly={notDetail}
-          />
+              <ReactQuill
+
+                theme="snow"
+
+                name="detail"
+                // onChange={(content) => handleChangeDetail({ target: { name: 'detail', value: content } })}
+                onChange={(content) => handleChangeDetail('detail', content)}
+                // disabled={notDetail}
+                readOnly={notDetail}
+              />
+            </>
+          )}
+
 
           <Checkbox onChange={onChangeCheckBox} style={{ color: 'red', fontWeight: 'bold' }}>
             ไม่ต้องการแก้ไขรายละเอียด
@@ -52,12 +61,17 @@ const EditFromCase = ({ handleChangeDetail, handleOk2, textEmpty, onChangeCheckB
           <br />
           {!notDetail ? textEmpty && <span style={{ color: 'red' }}>กรุณากรอกรายละเอียด</span> : ''}
           <br />
+
           <input
             type="file"
             name="file"
             accept="image/*"
             onChange={(file) => handleChangeDetail('file', file)}
-            />
+          />
+          {/* 
+          <PictureInput
+           onChange={(file) => handleChangeDetail('file', file)}
+          /> */}
         </Form>
       </Box>
     </div>

@@ -33,7 +33,7 @@ const WalletInput = ({ navDropdownItemStyle, inputValue, wallet, typeProb, data,
 
   return (
 
-    <div className="mt-3">
+    <div>
 
       <Space direction="horizontal" size={16}>
         <InputGroup className="mt-3" style={navDropdownItemStyle}>
@@ -47,7 +47,7 @@ const WalletInput = ({ navDropdownItemStyle, inputValue, wallet, typeProb, data,
           >
             แพลตฟอร์ม
           </InputGroup.Text>
-          <FormControl size="small" sx={{ m: 1 , minWidth: '250px' }}>
+          <FormControl size="small" sx={{ m: 1, minWidth: '250px' }}>
             <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
             <Select
               defaultValue=""

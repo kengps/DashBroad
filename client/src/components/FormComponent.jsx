@@ -313,7 +313,7 @@ const FormComponent = () => {
           />
 
           <Input
-            type="hidden"
+            // type="hidden"
             defaultValue={editorSelect}
             value={editorSelect}
             //onChange={inputValue("editors")}

@@ -59,6 +59,9 @@ const PictureInput = ({ inputValue, imageURLs }) => {
         e.preventdefault()
         console.log('444');
     }
+    const handlePages = (e) => {
+
+    }
     return (
         <Box
             component="form"
@@ -67,11 +70,13 @@ const PictureInput = ({ inputValue, imageURLs }) => {
             }}
             noValidate
             autoComplete="off"
+            onPaste={handlePages}
+            style={{ marginTop: "10px" }}
         >
 
-            <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={inputValue("file")} />
+            {/* <TextField type='file' name='file' inputProps={{ accept: 'image/*' }} onChange={inputValue("file")} /> */}
 
-            {imageURLs && (
+            {/* {imageURLs && (
                 imageURLs.map((imageSrc, idx) => (
 
                     <>
@@ -96,9 +101,9 @@ const PictureInput = ({ inputValue, imageURLs }) => {
                     </>
 
                 ))
-            )}
+            )} */}
 
-            {/* <Upload.Dragger
+            <Upload.Dragger
                 {...props}
                 accept='image/*'
                 maxCount={1}
@@ -114,7 +119,7 @@ const PictureInput = ({ inputValue, imageURLs }) => {
                 }}
                 onPreview={handlePreview}
             >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                <Button icon={<UploadOutlined />}>อัปโหลดรูปภาพ</Button>
             </Upload.Dragger>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img
@@ -124,7 +129,7 @@ const PictureInput = ({ inputValue, imageURLs }) => {
                     }}
                     src={previewImage}
                 />
-            </Modal> */}
+            </Modal>
 
         </Box >
     )

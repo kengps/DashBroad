@@ -33,7 +33,8 @@ const GameInput = ({ values, inputValue, data, typeProb, navDropdownItemStyle, s
 
   //const campGameDetail = campGame.map((item) => { return item.data.main.sub.name })
   return (
-    <div>          {/* ตรวจสอบว่า ถ้าค่าในselectedOption ไม่เตรงกับ newProbType array ที่ 1 จะให้แสดง campGameDetail */}
+    <div>        
+        {/* ตรวจสอบว่า ถ้าค่าในselectedOption ไม่เตรงกับ newProbType array ที่ 1 จะให้แสดง campGameDetail */}
 
       <div className="mt-3">
         <InputGroup className="mt-3" style={navDropdownItemStyle}>

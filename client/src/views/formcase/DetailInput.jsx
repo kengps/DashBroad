@@ -42,6 +42,7 @@ const DetailInput = ({ inputValue, detail, textEmpty }) => {
             target: { name: 'detail', value: content },
           })
         }
+        placeholder='ระบุรายละเอียด'
         value={detail}
       />
 
