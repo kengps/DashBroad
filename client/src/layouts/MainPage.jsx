@@ -17,6 +17,7 @@ import Register from "../components/Register/Register";
 import LineLiff from "../components/LineLiff/LineLiff";
 import UserPage from "../pages/UserPage";
 import WebScraping from "../pages/WebScraping";
+import DayOff from "../components/Calendar/DayOff";
 //import DashBoard from "../pages/DashBoard";
 //IndexRouter คือ component ที่จะแสดงเมื่อไม่มีการ login
 
@@ -66,6 +67,10 @@ const MainPage = () => {
     {
       path: "/page-user",
       element: <UserPage />,
+    },
+    {
+      path: "/calendar-dayoff",
+      element: <DayOff />,
     },
   ]);
 

@@ -59,11 +59,16 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
 
 
     return (
-        <div >
-            <Space direction="horizontal" size={16}>
+        <div className="mt-3" >
+            {/* <Space direction="horizontal" size={16}> */}
 
-                <InputGroup className="mt-3" style={navDropdownItemStyle}>
-                    <InputGroup.Text
+            <Form.Label style={{ fontWeight: "bold", color: 'black' }}>ประเภทปัญหา</Form.Label>
+
+            {selectedOption.length === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}> * โปรดระบุ</span>) : ''}
+
+            <InputGroup style={navDropdownItemStyle}>
+
+                {/* <InputGroup.Text
                         className=""
                         style={{
                             fontSize: "18px",
@@ -72,47 +77,48 @@ const ProblemInput = ({ handleChange, inputValue, selectedOption, values, newPro
                         }}
                     >
                         ประเภทปัญหา
-                    </InputGroup.Text>
+                    </InputGroup.Text> */}
+                <Form.Select
+
+                    aria-label="test"
+                    value={selectedOption}
+                    //onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        inputValue("problem")(e);
+                        newProbTypeChange(e);
+                    }}
+                >
+                    <option key={9999} value="" >
+                        --กรุณาเลือกประเภทปัญหา--
+                    </option>
+                    {newProbType.map((item, index) => (
+                        <option key={index} value={item.name}>
+                            {item}
+                        </option>
+                    ))}
+                </Form.Select>
+
+                {dataDetail.length === 0 ? <></> :
                     <Form.Select
                         aria-label="test"
-                        value={selectedOption}
-                        //onChange={handleChange}
-                        onChange={(e) => {
-                            handleChange(e);
-                            inputValue("problem")(e);
-                            newProbTypeChange(e);
-                        }}
+                        value={values.problemDetail}
+                        onChange={inputValue("problemDetail")}
                     >
                         <option key={9999} value="">
-                            --กรุณาเลือกประเภทปัญหา--
+                            -รายละเอียดปัญหา-
                         </option>
-                        {newProbType.map((item, index) => (
-                            <option key={index} value={item.name}>
-                                {item}
+                        {dataDetail.map((items, index) => (
+                            <option value={items.name} key={index}>
+                                {items}
                             </option>
                         ))}
                     </Form.Select>
+                }
 
-                    {dataDetail.length === 0 ? <></> :
-                        <Form.Select
-                            aria-label="test"
-                            value={values.problemDetail}
-                            onChange={inputValue("problemDetail")}
-                        >
-                            <option key={9999} value="">
-                                -รายละเอียดปัญหา-
-                            </option>
-                            {dataDetail.map((items, index) => (
-                                <option value={items.name} key={index}>
-                                    {items}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    }
-
-                </InputGroup>
-                {selectedOption.length  === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}>* โปรดระบุ</span>) : ''}
-            </Space>
+            </InputGroup>
+         
+            {/* </Space> */}
         </div>
 
     )

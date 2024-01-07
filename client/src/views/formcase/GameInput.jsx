@@ -33,12 +33,14 @@ const GameInput = ({ values, inputValue, data, typeProb, navDropdownItemStyle, s
 
   //const campGameDetail = campGame.map((item) => { return item.data.main.sub.name })
   return (
-    <div>        
-        {/* ตรวจสอบว่า ถ้าค่าในselectedOption ไม่เตรงกับ newProbType array ที่ 1 จะให้แสดง campGameDetail */}
+    <div>
+      {/* ตรวจสอบว่า ถ้าค่าในselectedOption ไม่เตรงกับ newProbType array ที่ 1 จะให้แสดง campGameDetail */}
 
       <div className="mt-3">
-        <InputGroup className="mt-3" style={navDropdownItemStyle}>
-          <InputGroup.Text
+        <Form.Label style={{ fontWeight: "bold", color: 'black' }}>ค่ายเกม</Form.Label>
+
+        <InputGroup style={navDropdownItemStyle}>
+          {/* <InputGroup.Text
             style={{
               fontSize: "18px",
               fontFamily: "Times New Roman",
@@ -46,10 +48,10 @@ const GameInput = ({ values, inputValue, data, typeProb, navDropdownItemStyle, s
             }}
           >
             ค่ายเกม
-          </InputGroup.Text>
+          </InputGroup.Text> */}
 
-          <FormControl size="small" sx={{ m: 1, minWidth: 400 }}>
-            <InputLabel htmlFor="grouped-select">ค่ายเกม</InputLabel>
+          <FormControl size="small" sx={{ minWidth: "100%" }}>
+            <InputLabel htmlFor="grouped-select" style={{ fontStyle: 'italic', }}>ค่ายเกม</InputLabel>
             <Select
               defaultValue=""
               id="grouped-select"

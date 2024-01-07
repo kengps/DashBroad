@@ -1,5 +1,5 @@
 const express = require('express');
-const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail,updateMessageId } = require('../controllers/caseController');
+const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail,updateMessageId ,deletePicture} = require('../controllers/caseController');
 const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2, typeData, getTypeData,deleteTypeData } = require('../controllers/detailCaseForm');
 const { upload } = require('../middleware/uploadFile');
 
@@ -36,6 +36,8 @@ router.get('/findcase/:id', findCase)
 router.put('/change-status/:id', updateCase)
 
 router.put('/change-detail/:id',upload, updateDetail)
+
+router.delete('/deletePicture/:id',deletePicture)
 
 router.post('/change-status', changeStatus)
 

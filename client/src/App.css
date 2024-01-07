@@ -206,3 +206,18 @@
 .table-row-dark {
   background-color:rgb(222, 226, 230);
 }
+
+
+.editor-container{
+   overflow-y: scroll;
+   resize: vertical;
+   display: block;
+   /* border-top-left-radius: 0.5em;
+   border-top-right-radius: 0.5em;
+   height: 20vh */
+} 
+
+
+.btn-reserve:disabled {
+  cursor: not-allowed! important;
+}

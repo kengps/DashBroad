@@ -14,27 +14,29 @@ const DetailInput = ({ inputValue, detail, textEmpty }) => {
 
   return (
     <div className="mt-3">
-      <Space direction="horizontal" size={16}>
-
-        <InputGroup className="mt-3">
-          <InputGroup.Text
-            style={{
-              fontSize: "18px",
-              fontFamily: "Times New Roman",
-            }}
-          >
-            รายละเอียด
-          </InputGroup.Text>
-          {/* <TextArea
+      {/* <Space direction="horizontal" size={16}> */}
+      <Form.Label style={{ fontWeight: "bold", color: 'black' }}>รายละเอียด</Form.Label>
+      {detail.length === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}> * โปรดระบุ</span>) : ''}
+      <InputGroup >
+        {/* <InputGroup.Text
+          style={{
+            fontSize: "18px",
+            fontFamily: "Times New Roman",
+          }}
+        >
+          รายละเอียด
+        </InputGroup.Text> */}
+        {/* <TextArea
             rows={5}
             name="detail"
             onChange={inputValue("detail")}
             value={detail}
           /> */}
-        </InputGroup>
-        {detail.length === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}>* โปรดระบุ</span>) : ''}
-      </Space>
+      </InputGroup>
+
+      {/* </Space> */}
       <ReactQuill
+        className='editor-container'
         theme="snow"
         name="detail"
         onChange={(content, delta, source, editor) =>
@@ -42,8 +44,9 @@ const DetailInput = ({ inputValue, detail, textEmpty }) => {
             target: { name: 'detail', value: content },
           })
         }
-        placeholder='ระบุรายละเอียด'
+        placeholder='รายละเอียด'
         value={detail}
+
       />
 
     </div>

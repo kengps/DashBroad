@@ -276,7 +276,7 @@ const ListCaseUnResolve = () => {
     }
     formData.append('fileOld', fileOld)
 
-    console.log("🚀  file: ListCaseUnResolve.jsx:278  formData:", formData)
+
 
     try {
 
@@ -403,8 +403,7 @@ const ListCaseUnResolve = () => {
 
   //! react quill ใช้ได้
   const handleChangeDetail = (name, contentOrEvent) => {
-    console.log("🚀  file: ListCaseUnResolve.jsx:406  contentOrEvent:", contentOrEvent)
-    console.log("🚀  file: ListCaseUnResolve.jsx:406  name:", name)
+
 
     if (typeof contentOrEvent === 'string') {
       // Content is a string, coming from ReactQuill
@@ -513,8 +512,44 @@ const ListCaseUnResolve = () => {
 
   }
 
+  const deletePicture = async (id, file) => {
+    try {
+
+      const result = await sweetAlert.fire({
+        title: "คุณต้องการลบรูปภาพใช่หรือไม่",
+        icon: "warning",
+        showCancelButton: true,
+      });
+      // console.log("ยืนยันการลบ", result);
+      //todo ถ้ากดปุ่ม OK หรือ ตกลง จะส่ง request ไปที่  api เพื่อลบข้อมูล
+      if (result.isConfirmed) {
+        //todo หากมีการกด confirm ให้ทำการเรียกใช้ function confirmDelete
+
+        await axios.delete(`${import.meta.env.VITE_REACT_APP_API}/deletePicture/${id}`,
+          {
+            data: {
+              file: file
+            }
+          }).then((res) => {
+
+            sweetAlert.fire('แจ้งเตือน' ,'ลบรูปภาพสำเร็จ', 'success')
+            setTimeout(() => {
+
+              loadData();
+            }, 1000)
+
+          }).catch(err => console.log(err))
+
+      }
+
+    } catch (error) {
+
+    }
 
 
+
+
+  }
 
   //closeCaseByBot
 
@@ -666,7 +701,7 @@ const ListCaseUnResolve = () => {
         />
 
         <CasePending
-
+          deletePicture={deletePicture}
           handleCopyText={handleCopyText}
           handleSendPhoto={handleSendPhoto}
           data={resCasePending}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 
 import { Button, Card, Tag, message, Select, Modal, Input, Drawer, Avatar, Space, Image } from "antd";
-import { CopyOutlined, SendOutlined, UserOutlined } from "@ant-design/icons";
+import { CopyOutlined, SendOutlined, UserOutlined, DeleteOutlined } from "@ant-design/icons";
 import Table from 'react-bootstrap/Table';
 import { InputGroup } from "react-bootstrap";
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -49,7 +49,8 @@ const CasePending = ({ data,
   , handleCopyText,
   notiBot,
   onChangeCheckBox,
-  notDetail
+  notDetail,
+  deletePicture
 }) => {
 
 
@@ -191,7 +192,6 @@ const CasePending = ({ data,
   }, [images]);
 
 
-
   return (
 
 
@@ -259,10 +259,18 @@ const CasePending = ({ data,
                   <Space direction="vertical" size={16}>
                     <Space direction="horizontal" size={16}>
                       {data.file ? (
-                        <Image
-                          width={100}
-                          src={`${import.meta.env.VITE_REACT_APP_IMG}/${data.file}`}
-                        />
+                        <>
+                          <Image
+                            width={100}
+                            src={`${import.meta.env.VITE_REACT_APP_IMG}/${data.file}`}
+                          />
+                          <Button
+                          onClick={(e) => deletePicture(data._id ,data.file)}
+                          size="small" type="primary" danger style={{display: "flex" ,alignItems: "center"}}>
+                            <DeleteOutlined />
+                          </Button>
+                        </>
+
                       ) : (
                         <>
                           <Image
@@ -277,7 +285,8 @@ const CasePending = ({ data,
                   </Space>
 
                 </td>
-                <td>{data.campgame.length === 0 ? <Tag color="volcano"><i>ไม่ระบุ</i></Tag> : <>{data.campgame}</>}</td>
+                <td>
+                  {data.campgame.length === 0 ? <Tag color="volcano"><i>ไม่ระบุ</i></Tag> : <>{data.campgame}</>}</td>
                 <td>{data.recorder}</td>
 
 
@@ -378,7 +387,7 @@ const CasePending = ({ data,
                             }}
                           >
                             <strong>{"[รายละเอียด]: "}</strong>
-                            <br />
+
                             <div dangerouslySetInnerHTML={{ __html: selectedCase.detail }} />
 
                           </p>

@@ -20,7 +20,7 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                     <title> Dashboard | CaseAll </title>
                 </Helmet>
                 <table className="table table-striped ">
-                    <thead className="" style={{ fontSize: '18px',fontWeight:'bolder' }}>
+                    <thead className="" style={{ fontSize: '18px', fontWeight: 'bolder' }}>
                         <tr className="table-secondary ">
                             <th scope="col">ID</th>
                             <th scope="col">ผู้แจ้งปัญหา</th>
@@ -34,11 +34,11 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                             <th scope="col"></th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         {data
-                          .sort((a, b) => (a.status === "รอการแก้ไข" && b.select !==  "รอการแก้ไข" ? -1 : 1))
-                           .sort((a, b) => b.id - a.id)
+                            .sort((a, b) => (a.status === "รอการแก้ไข" && b.select !== "รอการแก้ไข" ? -1 : 1))
+                            .sort((a, b) => b.id - a.id)
                             .slice(
                                 currentPage * ITEM_PER_PAGE,
                                 (currentPage + 1) * ITEM_PER_PAGE
@@ -49,7 +49,8 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                                     <td>{data.reporter}</td>
                                     <td>{data.problemDetail}</td>
                                     <td style={{ wordWrap: "break-word", maxWidth: "30ch" }}>
-                                        {data.detail}
+                                        {/* {data.detail} */}
+                                        <div dangerouslySetInnerHTML={{ __html: data.detail }} />
                                     </td>
                                     <td>{data.campgame.length === 0 ? <Tag color="volcano"><i>ไม่ระบุ</i></Tag> : <>{data.campgame}</>}</td>
                                     <td>{data.recorder}</td>
@@ -84,7 +85,8 @@ const CaseAll = ({ data, currentPage, ITEM_PER_PAGE }) => {
                                                     style={{ wordWrap: "break-word", maxWidth: "30ch" }}
                                                 >
                                                     <strong>รายละเอียด: </strong>
-                                                    {data.detail}
+                                                    <div dangerouslySetInnerHTML={{ __html: data.detail }} />
+
                                                 </p>
                                                 <p className="d-block m-0 font-weight-bold">
                                                     <strong>ค่ายเกม:</strong> {data.campgame}

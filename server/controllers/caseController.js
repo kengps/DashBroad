@@ -113,14 +113,11 @@ exports.changeStatus = async (req, res) => {
 // };
 
 exports.updateDetail = async (req, res) => {
-  console.log("🚀  file: caseController.js:116  req:", req.body)
+
   try {
     const { id, detail } = req.body;
     const data = req.body;
-    console.log("🚀  file: caseController.js:120  req.body:", req.body)
-    console.log("🚀  file: caseController.js:120  req.body:",  req.file)
 
-    console.log(typeof req.file !== 'undefined');
 
     if (typeof req.file !== 'undefined') {
       data.file = req.file.filename;
@@ -317,3 +314,46 @@ exports.updateMessageId = async (req, res) => {
 
 
 }
+exports.deletePicture = async (req, res) => {
+  console.log("🚀  file: caseController.js:319  req:", req.body.file)
+
+  const id = req.params.id
+  const file = req.body.file
+
+  await Cases.findOneAndUpdate(
+    { _id: id, file: { $exists: true } },
+    { $set: { file: "" } },
+    { new: true }
+  ).exec()
+
+  if (file) {
+    await fs.unlink('./uploads/' + file, (err) => {
+      err ? console.log('delete fail') : res.status(200).send({ message: "Delate Success" })
+    })
+
+  }
+
+}
+//แบบที่สอง
+// exports.deletePicture = async (req, res) => {
+//   console.log("🚀  file: caseController.js:319  req:", req.params.id)
+//   const id = req.params.id
+
+//   const result = await Cases.findOne({ _id: id }).exec();
+//   if (result?.file) {
+//     await fs.unlink('./uploads/' + result.file, (err) => {
+//       err ? console.log('delete fail') : console.log('delete success')
+//     })
+
+//   }
+//   console.log("🚀  file: caseController.js:329  res:", result)
+
+//   const updatedResult = await Cases.findOneAndUpdate(
+//     { _id: id, file: { $exists: true } },
+//     { $unset: { file: "" } },
+//     { new: true }
+//   ).exec();
+
+//   res.json(updatedResult);
+
+// }

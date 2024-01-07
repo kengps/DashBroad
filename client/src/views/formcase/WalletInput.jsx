@@ -35,9 +35,15 @@ const WalletInput = ({ navDropdownItemStyle, inputValue, wallet, typeProb, data,
 
     <div>
 
-      <Space direction="horizontal" size={16}>
-        <InputGroup className="mt-3" style={navDropdownItemStyle}>
-          <InputGroup.Text
+      {/* <Space direction="horizontal" size={16}> */}
+      <Form.Label style={{ fontWeight: "bold", color: 'black' }}> แพลตฟอร์ม</Form.Label>
+
+
+      {wallet.length === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}> * โปรดระบุ</span>) : ''}
+
+
+      <InputGroup style={navDropdownItemStyle}>
+        {/* <InputGroup.Text
             className=""
             style={{
               fontSize: "18px",
@@ -46,29 +52,31 @@ const WalletInput = ({ navDropdownItemStyle, inputValue, wallet, typeProb, data,
             }}
           >
             แพลตฟอร์ม
-          </InputGroup.Text>
-          <FormControl size="small" sx={{ m: 1, minWidth: '250px' }}>
-            <InputLabel htmlFor="grouped-select">แพลตฟอร์ม</InputLabel>
-            <Select
-              defaultValue=""
-              id="grouped-select"
-              label="Grouping"
-              onChange={inputValue("wallet")}
-              value={wallet}
-            >
-              <MenuItem value="">
-                <em>--กรุณาเลือกแพลตฟอร์ม--</em>
+          </InputGroup.Text> */}
+        <FormControl size="small" sx={{ minWidth: '100%' }}>
+          <InputLabel htmlFor="grouped-select" style={{ fontStyle: 'italic', }}>แพลตฟอร์ม</InputLabel>
+
+
+          <Select
+            defaultValue=""
+            id="grouped-select"
+            label="Grouping"
+            onChange={inputValue("wallet")}
+            value={wallet}
+          >
+            <MenuItem value="">
+              <em>--กรุณาเลือกแพลตฟอร์ม--</em>
+            </MenuItem>
+            {NewDataPlatform.map((items, index) => (
+              <MenuItem key={index} value={items}>
+                {items}
               </MenuItem>
-              {NewDataPlatform.map((items, index) => (
-                <MenuItem key={index} value={items}>
-                  {items}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </InputGroup>
-        {wallet.length === 0 ? textEmpty && (<span style={{ color: 'red', alignSelf: 'center' }}>* โปรดระบุ</span>) : ''}
-      </Space>
+            ))}
+          </Select>
+        </FormControl>
+      </InputGroup>
+
+      {/* </Space> */}
     </div>
   )
 }

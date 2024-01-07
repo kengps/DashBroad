@@ -214,17 +214,19 @@ const Login = () => {
 
 
     } catch (error) {
-
-      console.log(errorRes);
-      let errorMessage = ''
-      if (errorRes.status === 400) {
-        errorMessage = errorRes.data.message
-      } else if (errorRes.status === 401) {
-        errorMessage = errorRes.data.error
-      } else {
-        errorMessage = 'กรุณาระบุข้อมูลให้ถูกต้อง'
+      if(error){
+         SweetAl.fire("แจ้งเตือน",'ไอดีหรือรหัสผ่านไม่ถูกต้อง', "error");
       }
-      SweetAl.fire("แจ้งเตือน", errorMessage, "error");
+      // console.log('d',errorRes);
+      // let errorMessage = ''
+      // if (errorRes.status === 400) {
+      //   errorMessage = errorRes.data.message
+      // } else if (errorRes.status === 401) {
+      //   errorMessage = errorRes.data.error
+      // } else {
+      //   errorMessage = 'กรุณาระบุข้อมูลให้ถูกต้อง'
+      // }
+      //  SweetAl.fire("แจ้งเตือน", errorMessage, "error");
 
     }
 

@@ -172,8 +172,8 @@ const FormComponent = () => {
 
 
   const inputValue = (name) => (e) => {
-    console.log("🚀  file: FormComponent.jsx:175  e:", e)
-    console.log("🚀  file: FormComponent.jsx:175  name:", name)
+    // console.log("🚀  file: FormComponent.jsx:175  e:", e)
+    // console.log("🚀  file: FormComponent.jsx:175  name:", name)
 
 
     if (e.target.name === 'file') {
@@ -313,7 +313,7 @@ const FormComponent = () => {
           />
 
           <Input
-            // type="hidden"
+            type="hidden"
             defaultValue={editorSelect}
             value={editorSelect}
             //onChange={inputValue("editors")}
