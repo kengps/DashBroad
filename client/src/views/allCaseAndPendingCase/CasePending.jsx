@@ -127,7 +127,7 @@ const CasePending = ({ data,
 
 
   const currentTime1 = moment();
-  const isMorning = currentTime1.isBetween(moment('08:35', 'HH:mm'), moment('20:35', 'HH:mm'));
+  const isMorning = currentTime1.isBetween(moment('09:35', 'HH:mm'), moment('21:35', 'HH:mm'));
 
   const timeOfDay = isMorning ? '(กะเช้า)' : '(กะดึก)';
 
@@ -499,7 +499,6 @@ const CasePending = ({ data,
                     ))}
                   </p>
                 </p>
-                \
               </p>
               {/* <p>ส่งเคสโดย...{user}</p> */}
               {/* <div style={{ textAlign: 'center' }}>

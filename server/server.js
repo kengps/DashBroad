@@ -34,6 +34,7 @@ const setupSocket = require('./configs/socket/socket');
 
 
 
+
 const port = process.env.PORT || 3000
 const mongoAtlas = process.env.DATABASE
 
@@ -57,6 +58,7 @@ connectWithRetry()
 const IP = require('ip');
 const axios = require('axios');
 const { connect } = require('http2');
+const bot_telegram = require('./services/bot_telegrsm');
 
 const API_KEY = 'a2526ee543b54eff953197387f67d99d';
 const URL = 'https://ipgeolocation.abstractapi.com/v1/?api_key=' + API_KEY;
@@ -144,6 +146,7 @@ cronSendCaseEvening.start();
 //start setupSocket
 setupSocket(http);
 
+bot_telegram();
 
 
 

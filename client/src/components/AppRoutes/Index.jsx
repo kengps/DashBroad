@@ -19,6 +19,7 @@ import IndexRouter from "../LoadingAndRedirect/Index";
 import SettingEditor from "../../pages/SettingEditor";
 import SettingProblemType from "../../pages/SettingProblemType";
 import { storeAuth } from "../../service/store/storeZustand";
+import DayOff from "../Calendar/DayOff";
 
 
 
@@ -76,6 +77,7 @@ const AppRoutes = () => {
         <Route path="/outstanding" element={<WebScraping />} />
         <Route path="/list-editor" element={<SettingEditor />} />
         <Route path="/create-type" element={<SettingProblemType />} />
+        <Route path="/dayoff-events" element={<DayOff />} />
 
       </Routes>
 

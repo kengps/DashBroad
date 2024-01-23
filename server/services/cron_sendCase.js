@@ -53,23 +53,31 @@ const resultTotal = async () => {
     const caseAwait = await Cases.find();
     const data = caseAwait.filter((item) => { return item.status === "รอการแก้ไข" });
 
-
     const msg = generateSummaryMessage(data, moment());
 
-
     await sendTelegramMessage(msg);
+
 }
 const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
-    resultTotal()
-    console.log('cronSendCaseMorning start...');
+    try {
+        resultTotal()
+        console.log('endCaseMorning Success')
+    } catch (error) {
+        console.log('err', error);
+    }
+
 }, {
     scheduled: true,
     timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
 });
 
 const cronSendCaseEvening = new cron.schedule('30 8 * * *', async () => {
-    resultTotal()
-    console.log('cronSendCaseEvening start...');
+    try {
+        resultTotal()
+        console.log('SendCaseEvening Success')
+    } catch (error) {
+        console.log('err', error);
+    }
 }, {
     scheduled: true,
     timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
