@@ -19,11 +19,7 @@ exports.logged = async (req, res) => {
       //check password ระหว่าง password ปกติ และ password ที่มีการใส่รหัส
       const isMatch = await bcrypt.compare(password, user.password);
       
-      console.log("🚀  file: authController.js:17  user:", user)
-      console.log("🚀  file: authController.js:22  isMatch:", isMatch)
-      console.log("pass", user.password);
-      console.log("🚀  file: authController.js:14  password:", password)
-      //   //const match = await bcrypt.compare(password, user.password);
+     
       if (!isMatch) {
         return res.status(401).json({ error: "Password Invalid" });
       }

@@ -15,6 +15,8 @@ export const loginFacebook = async (value) => {
 console.log("➡️  file: auth.jsx:14  value:", value)
 
   return await axios.post(`${import.meta.env.VITE_REACT_APP_API}/login-facebook`, value);
+
+  
 }; 
 export const currentUser = async (authtoken) =>
 

@@ -60,3 +60,7 @@ button:focus-visible {
 .custom-table-header {
   background-color: #f0f0f0; // กำหนดสีหัวข้อตารางที่คุณต้องการ
 }
+
+.ant-table-thead {
+  background-color: #000; // กำหนดสีหัวข้อตารางที่คุณต้องการ
+}

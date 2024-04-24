@@ -2,9 +2,12 @@ const express = require('express');
 const { requestUser, allCase, updateCase, removeCase, findCase, changeStatus, updateDetail, updateCaseDetail,updateMessageId ,deletePicture} = require('../controllers/caseController');
 const { createDetailCase, allDetailCase, createDetailCase2, allDetailCase2, typeData, getTypeData,deleteTypeData } = require('../controllers/detailCaseForm');
 const { upload } = require('../middleware/uploadFile');
+const { authen } = require('../middleware/auth');
+
 
 
 const router = express.Router();
+
 
 
 //สร้าง case 

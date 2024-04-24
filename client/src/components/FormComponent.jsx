@@ -223,6 +223,8 @@ const FormComponent = () => {
 
           formData.append(key, values[key]);
         }
+          console.log(`💢  file: FormComponent.jsx:226  formData :`, formData);
+
 
 
         await createCase(formData)

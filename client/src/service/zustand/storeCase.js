@@ -28,6 +28,8 @@ export const useStore = create((set) => ({
   },
   response: [],
   createCase: async (data) => {
+  console.log(`💢  file: storeCase.js:31  data :`, data);
+
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API}/createcase`, data);

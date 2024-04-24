@@ -39,28 +39,6 @@ const AppRoutes = () => {
   }, [])
 
 
-  // console.log("➡️  file: Index.jsx:39  idToken:", idToken)
-  // if (idToken) {
-  //   // console.log("idToken : " + idToken);
-  //   currentUser(idToken)
-  //     .then((response) => {
-  //       console.log("➡️  file: Index.jsx:33  response:", response)
-  //       // updateUserInfo({
-  //       //   payload: {
-  //       //     token: idToken,
-  //       //     username: response.data.username,
-  //       //     role: response.data.role,
-  //       //     id: response.data._id,
-  //       //     picture: response.data.pictureUrl,
-
-  //       //   },
-  //       // });
-
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-
-  const dispatch = useDispatch();
 
 
   return (
@@ -85,18 +63,4 @@ const AppRoutes = () => {
   );
 };
 
-// function DashboardRoutes() {
-//   return (
-//     <div>
-//       <Routes>
-//         <Route path='/app' element={<DashBoard />} />
-//         <Route path='/formcontrol' element={<FormCase />} />
-//         <Route path='/listunresolve' element={<ListCaseUnResolve />} />
-//         <Route path='/listcase' element={<ListCaseAll />} />
-//         <Route path='/listuser' element={<ListUser />} />
-//         <Route path='/reset-password' element={<ChangPassword />} />
-//       </Routes>
-//     </div>
-//   );
-// }
 export default AppRoutes;

@@ -23,6 +23,8 @@ const PictureInput = ({ inputValue, imageURLs }) => {
             authorization: 'authorization-text',
         },
         onChange(info) {
+        console.log(`💢  file: PictureInput.jsx:26  info :`, info);
+
 
             if (info.file.status !== 'uploading') {
             }
@@ -46,6 +48,7 @@ const PictureInput = ({ inputValue, imageURLs }) => {
     const handleCancel = () => setPreviewOpen(false);
 
     const handlePreview = async (file) => {
+       
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
         }
@@ -121,6 +124,7 @@ const PictureInput = ({ inputValue, imageURLs }) => {
             >
                 <Button icon={<UploadOutlined />}>อัปโหลดรูปภาพ</Button>
             </Upload.Dragger>
+           
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img
                     alt="example"
