@@ -58,13 +58,15 @@ const resultTotal = async () => {
     await sendTelegramMessage(msg);
 
 }
+const onlineBot = false
 const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
-    try {
+
+    if (onlineBot) {
         resultTotal()
-        console.log('endCaseMorning Success')
-    } catch (error) {
-        console.log('err', error);
+        console.log('sendCaseMorning Success')
+
     }
+    console.log('Bot Stop')
 
 }, {
     scheduled: true,
@@ -72,12 +74,14 @@ const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
 });
 
 const cronSendCaseEvening = new cron.schedule('30 8 * * *', async () => {
-    try {
+
+    if (onlineBot) {
         resultTotal()
-        console.log('SendCaseEvening Success')
-    } catch (error) {
-        console.log('err', error);
+        console.log('sendCaseMorning Success')
+
     }
+    console.log('Bot Stop')
+
 }, {
     scheduled: true,
     timezone: 'Asia/Bangkok' // ระบุ Timezone ที่ถูกต้อง
