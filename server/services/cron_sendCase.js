@@ -58,7 +58,7 @@ const resultTotal = async () => {
     await sendTelegramMessage(msg);
 
 }
-const onlineBot = false
+const onlineBot = true
 const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
 
     if (onlineBot) {
