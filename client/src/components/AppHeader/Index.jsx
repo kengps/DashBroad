@@ -72,7 +72,7 @@ const AppHeader = () => {
   const handleOk = () => {
     setIsModalOpen(false);
     //
-    console.log(values);
+    
     resetPassword(user.token, values.id, { values })
     .then((res) => {
       swal.fire('แจ้งเตือน','ทำการเปลี่ยนรหัสผ่านสำเร็จ', 'success')

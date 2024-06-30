@@ -15,6 +15,7 @@ const sendTelegramMessage = async (text) => {
     }
 };
 
+
 const generateSummaryMessage = (data, currentTime1) => {
 
     const timeStamp = currentTime1.locale('th').format('lll')
@@ -29,8 +30,6 @@ const generateSummaryMessage = (data, currentTime1) => {
     const formattedDate = currentTime1.clone().add(543, 'years').locale('th').format('ll');
     const formattedTime = momentTz().tz('Asia/Bangkok').format('HH:mm');
     const timeInWork = momentTz().tz('Asia/Bangkok').subtract(12, 'hours').format('HH:mm');
-
-
 
 
     let msg = "";
@@ -58,7 +57,7 @@ const resultTotal = async () => {
     await sendTelegramMessage(msg);
 
 }
-const onlineBot = true
+const onlineBot = false
 const cronSendCaseMorning = new cron.schedule('30 20 * * *', () => {
 
     if (onlineBot) {

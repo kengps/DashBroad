@@ -119,6 +119,7 @@ const ListCaseUnResolve = () => {
   const token = '6700000221:AAFxM4FjxfSAa29nsVLT6HuJT6asEghHgwk'
   const chatid = import.meta.env.VITE_TELEGRAM_CHATID_GROUB.split(',').map((id) => id.trim());
   const textToCopy = `${textRef.current.innerText}`;
+  
   const sendTelegram = () => {
     chatid.map(async (chatid) => {
       return axios.post(`https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_TOKEN}/sendMessage`, {
@@ -465,6 +466,8 @@ const ListCaseUnResolve = () => {
   let eveningTime = moment("20:32 PM", "h:mm A").locale('th');
 
 
+
+  //ส่งข้อความพร้อมรูปภาพ
   const handleSendPhoto = async (e, file, id) => {
     e.preventDefault()
 

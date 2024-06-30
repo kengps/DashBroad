@@ -85,10 +85,14 @@ const ListUser = () => {
 
 
     const checked = e.target.checked
+    console.log(`⩇⩇:⩇⩇🚨  file: ListUser.jsx:88  checked :`, checked);
+
     const value = {
       id: id,
       enabled: checked,
     };
+    console.log(`⩇⩇:⩇⩇🚨  file: ListUser.jsx:94  value :`, value);
+
     try {
       const result = await sweetAlert.fire({
         title: "คุณต้องการลบปิดการใช้งานหรือไม่",
